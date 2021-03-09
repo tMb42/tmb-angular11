@@ -1,0 +1,73 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-card{
+  min-width: 350px;
+  max-width: 600px;
+  text-align: left;
+  margin: 0.5em auto;
+  max-height: 600px;
+  position: relative;
+  padding-top: 16px;
+  border-radius: 0.5rem;
+  background-color: rgba(14, 14, 13, 0.5);  
+}
+.header {
+  text-align: left;
+  font-size: 30px !important;
+  font-weight: bold !important;
+  color: rgb(0, 255, 200) !important;
+}
+full-width{
+  width: 80%;
+}
+.mat-form-field {
+  display: block;
+}
+.email-input{
+  padding-top: 10px;
+}
+.aLink{
+  float: right;
+  padding-right: 60px;
+  text-decoration: none;
+}
+.btnGreen {
+  margin-left: auto;
+  margin: auto 0.8em auto 0.4em;
+  text-decoration: none;
+  color: rgb(255, 255, 255) !important;
+  background: linear-gradient(to right, #44ff4d, #22dff8);
+}
+
+.btnYellowRed {
+  margin-left: auto;
+  color: rgb(255, 255, 255) !important;
+  margin: auto 0.8em auto 0.4em;
+  text-decoration: none;
+  background: linear-gradient(to right, #afc016, #f50b9b);
+}
+
+.btnYellowRed:hover {
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
+  background: linear-gradient(to right, #f3633f, #3bffce);
+  box-shadow: 0 7px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 35px 0 rgba(0, 0, 0, 0.19);
+}
+
+.btnRed {
+  margin-left: auto;
+  margin: auto 0.8em auto 0.4em;
+  text-decoration: none;
+   color: rgb(255, 255, 255) !important;
+  background: linear-gradient(to right, #3f51f0, #dd4067);
+}
+
+.btnRed:hover {
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
+  color: black !important;
+  background: linear-gradient(to right, #1ff53c, #ece928);
+  box-shadow: 0 7px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 35px 0 rgba(0, 0, 0, 0.19);
+}

@@ -1,0 +1,128 @@
+<div class="col-lg-12 panel-body panel-form">
+    <div class="panel">
+        <div class="panel-heading col-lg-12 ">
+            <div id="table-header" class="input-group col-lg-12">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="color: black; font-size: large;" >Roles</span>
+                </div>
+                <span class="spacer"></span>
+                <div class="input-group-prepend col-lg-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="color: black; font-size: medium; margin-top: 2px;">Search</span>
+                    </div>
+                    <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="You Can Search table data" >
+                </div>
+                <div class="input-group-prepend col-lg-3">
+                    <span class="input-group-text" style="color: white; font-size: medium;"> 
+                        Total Roles :: {{ totalRecords }}
+                    </span>
+                </div>
+                <span class="spacer"></span>
+                <div class="input-group-prepend col-lg-2">
+                    <a routerLink="add" class="btn btn-sm btn-success">Add Role</a>
+                </div>
+            </div>
+
+            <div class="card container-fluid">
+                <form class="col-12"  [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="form-row">
+                        <div class="form-group col-2">
+                            <label>ID</label>
+                            <input type="text" formControlName="id" class="form-control"> 
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Role</label>
+                            <input type="text" formControlName="role" class="form-control"> 
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Role Name</label>
+                            <input type="text" formControlName="roleName" class="form-control"> 
+                        </div>
+                    
+                        <div class="form-group col-3">
+                            <label>Role</label>
+                            <select formControlName="role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }">
+                                <option value="null">--Select Role for Non Admin User--</option>
+                                <option *ngFor="let item of roles" [value]="item.id">
+                                    {{ item.label }}
+                                </option>                  
+                            </select>                            
+                            <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                                <div *ngIf="f.role.errors.required">Role is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-3 mt-4">
+                            <button  mat-raised-button  [disabled]="loading" class="btn btn-sm btn-primary">
+                                <span *ngIf="loading" class="spinner-border text-success spinner-border-sm mr-1"></span>
+                                Save
+                            </button>
+                            <a style="color:#e91e63;" routerLink="../../users" class="btn btn-link">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm ">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center text-truncate" scope="col" >ID</th>
+                            <th class="text-left" data-sortable="true" scope="col" >Name</th>
+                            <th class="text-left" scope="col">Role</th>
+                            <th class="text-center" scope="col">Created</th>
+                            <th class="text-center" scope="col">Last Update</th>
+                            <th class="text-center" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let role of roles">
+                            <td class="text-center" scope="row">{{ role.id }}</td>
+                            <td class="text-left" scope="row">{{role.label}}</td>
+                            <td class="text-left" scope="row">{{ role.name }}</td>
+                            <td class="text-center" scope="row">{{role.created_at | date: 'full' }}</td>
+                            <td class="text-center" scope="row">{{role.updated_at | date: 'medium' }}</td>
+                            <td class="text-center" scope="row" style="white-space: nowrap">
+                                <a routerLink="edit" class="btn btn-sm btn-primary mr-1"><fa-icon [icon]="faUserEdit"></fa-icon>&nbsp;Edit</a>
+                                <button (click)="deleteUser(role.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="role.isDeleting">
+                                    <span *ngIf="role.isDeleting" class="spinner-border spinner-border-sm"></span>
+                                    <span *ngIf="!role.isDeleting"><fa-icon [icon]="faTrashAlt"></fa-icon>&nbsp;Delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>                    
+                    </tfoot>
+                </table>
+            </div>
+            <div class="pagination" id="table-pagination">
+                <span class="spacer"></span>
+                <div *ngIf="loading" class="d-flex align-items-center">
+                    <strong>Loading...</strong>
+                    <span class="spinner-border text-light"></span>  
+                    <span class="spinner-border text-danger"></span>  
+                    <span class="spinner-border text-dark"></span>  
+                </div>
+                <span class="spacer"></span>
+                <div class="pagination">
+                    <pagination 
+                        [boundaryLinks]="showBoundaryLinks" 
+                        [totalItems]="totalRecords"
+                        [maxSize]="maxSize"
+                        [itemsPerPage]="pageSize"
+                        [(ngModel)]="currentPage" 
+                        (pageChanged)="pageChanged($event)" 
+                    ></pagination>
+                </div> 
+                <span class="spacer"></span>
+                <div class="d-flex justify-content-right">
+                    <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
+                    <select (change)="onTableSizeChange($event)" class="custom-select">
+                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    <div>
+<div>

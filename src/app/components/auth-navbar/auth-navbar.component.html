@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="wrapper">
+    <div class="navbar-top"> 
+      <mat-toolbar id="toolbar" class="transparent">
+        <span>tMb</span> 
+        <img class="logo" src="../assets/img/tmb/logo_tmb.png">  
+        <span class="spacer"></span>
+
+        <button mat-stroked-button *ngIf="!isLoggedIn" [routerLink]="['/auth']" routerLinkActive="active">
+          <mat-icon>home</mat-icon>
+          Home
+        </button>
+        
+        <button mat-stroked-button *ngIf="isLoggedIn" [routerLink]="['dashboard']" routerLinkActive="active">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button mat-stroked-button *ngIf="!isLoggedIn" [routerLink]="['auth/register']" routerLinkActive="active">
+          <mat-icon>how_to_reg</mat-icon>
+          Register
+        </button>
+        <button mat-stroked-button *ngIf="!isLoggedIn" [routerLink]="['auth/login']" routerLinkActive="active">
+          <mat-icon>fingerprint</mat-icon>
+          Login
+        </button>
+        <button mat-stroked-button *ngIf="isLoggedIn" (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          Logout
+        </button>
+      </mat-toolbar>
+    </div>
+  
+    <router-outlet></router-outlet>
+      
+  </div>
+</div>
+  
+  
+  
+  

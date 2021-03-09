@@ -1,0 +1,47 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.navbar-top {
+  position: relative;
+  background-color: transparent;
+  min-height: 145px;
+  padding-top: 0px;
+  padding-bottom: 100px;
+  background-image: url(https://picsum.photos/1920/1080?random);
+}
+
+#navbar-top {
+  min-height: 150px;
+  position: relative;
+  background-color: transparent;
+  padding-top: 20px;
+}
+
+#toolbar {
+  position: absolute;
+  background-color: transparent;
+  height: 125px;
+}
+
+.logo {
+  width: 100px;
+}
+
+.mat-icon {
+  margin-right: 10px;
+  vertical-align: middle;
+  font-size: 32px;
+  position: relative;
+}
+
+.wrapper {
+  position: relative;
+  background-color: transparent;
+  top: 0px;
+  height: 0vh;
+}
+
+
+
+

@@ -1,0 +1,50 @@
+.spacer {
+  flex: 1 1 auto;
+  }
+
+button.mat-menu-item {
+  width: auto;
+  vertical-align: middle;
+  font-size: 18px;
+}
+  .mat-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  // .mat-flat-button {
+    
+  // }
+  
+  .expanded-toolbar {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #toolbar {
+    position: absolute;
+    // background-color: red;
+    background-color: transparent;
+    height: 80px;
+  }
+  .logo {
+    width: 100px;
+  }
+  
+  .mat-icon {
+    margin-right: 10px;
+    vertical-align: middle;
+    font-size: 32px;
+    position: relative;
+  }
+  .wrapper {
+    position: relative;
+    background-color: transparent;
+    top: 0px;
+    height: 0vh;
+  }
+  .navbar-top {
+    position: relative;
+    background-color: transparent;
+    padding-top: 0px;
+    padding-bottom: 150px;
+  }
+  

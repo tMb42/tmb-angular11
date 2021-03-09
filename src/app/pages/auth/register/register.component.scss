@@ -1,0 +1,59 @@
+mat-card{
+    min-width: 400px;
+    max-width: 700px;
+    text-align: left;
+    margin: 0em auto;
+    max-height: 600px;
+    position: relative;
+    padding: 16px;
+    border-radius: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.5); 
+  }
+  
+  .header {
+    text-align: left;
+    font-size: 36px !important;
+    font-weight: bold !important;
+    color: rgb(255, 217, 0) !important;
+  }
+  
+  full-width {
+    width: 80%;
+  }
+  
+  .mat-form-field{
+    display: block;
+  }
+  
+  .input {
+    margin: 2em auto;
+    padding-top: 10px;
+  }
+  
+  .aLink {
+    float: right;
+    padding-right: 60px;
+    text-decoration: none;
+  }
+  
+  .btnGreen {
+    margin-left: auto;
+    margin: auto 0.8em auto 0.4em;
+    text-decoration: none;
+    color: white !important;
+    background: linear-gradient(to right, #16c0b0, #84cf6a);
+  }
+  
+  .btnRed {
+    margin-left: auto;
+    color: white;
+    margin: auto 0.8em auto 0.4em;
+    text-decoration: none;
+    background: linear-gradient(to right, #2fcae6, #ec0c96);
+  }
+  
+  .brnGreen:hover {
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+    box-shadow: 0 7px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 35px 0 rgba(0, 0, 0, 0.19);
+  }

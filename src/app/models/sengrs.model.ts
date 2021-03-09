@@ -1,0 +1,21 @@
+export interface SEngrs {  
+    id: number, 
+    gradation_sl_no: number, 
+    engineer_name: string, 
+    caste_alias: string, 
+    caste_name: string, 
+    designation_alias: string, 
+    engineer_dob: Date,
+    engineer_dor: Date,
+    ae_doj: Date,
+    ee_doj: Date,
+    se_doj: Date,
+    ce_doj: Date,   
+    gradation_list_wef: Date,
+    service_status: string,
+    notes: string,
+    year: string,
+    created_at: Date,
+    updated_at: Date,
+    designation_id: number
+}

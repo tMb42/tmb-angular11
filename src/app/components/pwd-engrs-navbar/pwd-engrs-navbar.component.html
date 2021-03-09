@@ -1,0 +1,56 @@
+
+<div class="container-fluid">
+  <div class="wrapper">
+    <div class="navbar-top"> 
+      <mat-toolbar id="toolbar" class="transparent">
+        <a class="navbar-brand">
+          <span style="font-size: 24px;">tMb</span>
+          <img class="image-responsive" src="../assets/img/tmb/logo_tmb.png"  style="max-height: 60px;" />
+        </a>
+    
+        <div class="dropdown">
+          <button class="dashboardbtn" [routerLink]="['dashboard']" routerLinkActive="active"> Dashboard </button>      
+        </div>
+
+        <span class="spacer"></span> 
+
+        <div class="dropdown" style="padding-top: 25px;">
+          <button class="dropbtn"> Junior Engineer </button>
+          <div class="dropdown-content">
+            <a href="jengrs/gradation">Gradation List</a>
+            <a href="jengrs/passed">Departmental Passed</a>
+            <a href="jengrs/Promotion">Promotinal Position</a>
+            <a href="jengrs/caste">Caste Wise Passed List</a>
+            <a href="jengrs/retirement">Retirement</a>
+          </div>
+        </div>
+        <div class="dropdown" style="padding-top: 25px;">
+          <button class="dropbtn"> Assistant Engineer</button>
+          <div class="dropdown-content">
+            <a href="aengrs/gradation">Gradation List</a>
+            <a href="#!aeProfPassed">Confirmation Details</a>
+            <a href="#!aeCasteWisePromo">Caste Wise Confirmation</a>
+            <a href="#!aePromotional">Promotional Details</a>
+            <a href="#!aeRetirement">Retirement Details</a>
+          </div>
+        </div>
+        <div class="dropdown" style="padding-top: 25px;">
+          <button class="dropbtn"> Senior Engineer </button>
+          <div class="dropdown-content">
+            <a href="sengrs/gradation">Gradation List</a>
+            <a href="#!seCasteWisePromo">Caste Wise Details</a>
+            <a href="#!sePromotional">Promotinal Details</a>
+            <a href="#!seRetirement">Retirement Details</a>
+          </div>
+        </div>
+      </mat-toolbar>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+
+
+
+ 

@@ -1,0 +1,64 @@
+<div class="container-fluid">
+  <div class="wrapper">
+    <div class="navbar-top"> 
+      <mat-toolbar id="toolbar" class="transparent">
+        <a class="navbar-brand">
+          <span style="font-size: 24px;">tMb</span>
+          <img class="image-responsive" src="../assets/img/tmb/logo_tmb.png"  style="max-height: 60px;" />
+        </a>
+        <div class="dropdown">
+          <button class="dashboardbtn" [routerLink]="['dashboard']" routerLinkActive="active"> Dashboard </button>      
+        </div>
+
+        <span class="spacer"></span>
+
+        <div class="dropdown">
+          <button class="dropbtn"> Estimate</button>
+          <div class="dropdown-content">
+            <a href="#!estimateMaster">RCC Box Culvert</a>
+            <a href="#">Quick Estimate</a>
+            <a href="#">Estimate for Individual Work</a>
+            <a href="#!scheduleRates">Schedule of Rates</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn"> Rate Analysis </button>
+          <div class="dropdown-content">
+            <a href="#!scheduleRates">Schedule of Rates</a>
+            <a href="#!rateAnalysis">Rate Analysis</a>
+            <a href="#">Rate Analysis for Project Work</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn"> Billing Section </button>
+          <div class="dropdown-content">
+            <a href="#!priceSchedule">Price Schedule</a>
+            <a href="#!billSection">Bill Preparation</a>
+            <a href="#">Supplymentary Statement</a>
+            <a href="#">Financial Statement</a>
+            <a href="#">Excess Statement</a>
+            <a href="#">Material Consumption</a>
+            <a href="#">Roller consumtion</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn"> Record Section </button>
+          <div class="dropdown-content">
+            <a href="pwd-works/tender-details">Tender Details</a>
+            <a href="#">Billing Section</a>
+            <a href="#">Road List</a>
+          </div>
+        </div>
+      </mat-toolbar>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+
+
+
+ 
+
+ 

@@ -1,0 +1,58 @@
+<div class="content" *ngIf="authUser">
+  <div class="card card-user">
+    <div class="card-header">
+      <h2 class="title">My Profile</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="card-text"></p>
+          <div class="author">
+            <span *ngIf="isLoading" class="spinner-border text-success"></span>  
+          </div>
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <img [src]="imagePreview || authUser.photo" class="avatar"><br/>
+            <strong>{{ authUser.name }}</strong>
+            <p>{{ authUser.email }}</p>
+            <p>{{ authUser.designation_name }}</p>
+            <p>{{ authUser.permissionLabel }}</p>
+            <p>Created: {{ authUser.created_at }}</p>
+            <p>Last Updated: {{ authUser.avatar_updated_at }}</p>
+          </div>
+        </div>
+        <div class="col-md-6">      
+          <div class="card-description" style="text-align: center;">
+            <p><strong>About me:</strong><br>
+              {{ authUser.remarks }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+    <div class="card-footer">
+      <div class="input-group col-md-4">
+        <input
+          title="Image supported file format jpeg, png, jpg, gif, svg Only with min: 15Kb & max: 300Kb"
+          class="custom-file-input"
+          type="file"
+          (change)="onFileSelected($event)" 
+          #fileInput
+        />
+        <label class="custom-file-label">Choose an image for your profile</label>
+      </div>
+      <div class="col-md-8">
+        <input type="hidden" (click)="fileInput.click()">
+        <button class="btn btn-fill btn-danger" [disabled]="!imagePreview" type="button" (click)="profilePictureUpload()" >
+        <span *ngIf="imageSending" class="spinner-border text-success"></span>
+          Submit
+        </button>
+      </div>
+    </div>        
+  </div>
+</div> 
+
