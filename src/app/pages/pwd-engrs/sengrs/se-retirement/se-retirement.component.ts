@@ -29,6 +29,7 @@ export class SeRetirementComponent implements OnInit {
   seRetireMonthList: any = [];
   totalInYear: any = null;
   totalInMonth: any = null;
+  SelectedDesignation: string = null;
   
   designation: any ='';
   retireYear: any = '';
@@ -90,6 +91,7 @@ export class SeRetirementComponent implements OnInit {
       this.seRetirementList = res.seDesignationRetirement.data;
       this.RetirementYearStatistic = res.seRetireYearStatistic;
       this.seRetireYearList = res.seRetireYear;
+      this.SelectedDesignation = res.selectedDesignation[0].designation_name;
 
       this.totalRecords = res.seDesignationRetirement.total;
       this.totalPages = res.seDesignationRetirement.total_pages;

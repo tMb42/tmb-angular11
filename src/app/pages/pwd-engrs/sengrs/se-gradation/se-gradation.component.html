@@ -4,16 +4,16 @@
             <div id="table-header" class="input-group col-lg-12">
                 <div class="input-group-prepend col-lg-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" style="color:white; font-size: medium;">Search</span>
+                        <span class="input-group-text" style="color:black; font-size: medium;">Search</span>
                     </div>
                     <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="You Can Search table data" >
                 </div>
 
                 <div class="input-group-prepend col-lg-6">
-                    <span class="input-group-text" style="color: white; font-size: medium;" >  Draft Gradation list of Senior Engineer (Civil) as stood {{ SelectedSeGradationWef.gradation_list_wef | date: 'dd-MM-yyyy' }}  Total : {{ SelectedSeGradationWef.total }} </span>
+                    <span class="input-group-text" style="color: black; font-size: medium;" >  Draft Gradation list of Senior Engineer (Civil) as stood {{ SelectedSeGradationWef.gradation_list_wef | date: 'dd-MM-yyyy' }}  Total : {{ SelectedSeGradationWef.total }} </span>
                 </div>
                 <div class="input-group-prepend col-lg-3">
-                    <span class="input-group-text" style="color: rgb(245, 239, 239); font-size: medium;">Published :</span>
+                    <span class="input-group-text" style="color: black; font-size: medium;">Published :</span>
                     <select formControlName="gradationDate" class="form-control" (change)="seGradationListByWef($event.target.value)">
                         <option [value]="" [selected]="true">--Select Gradation Date--</option>
                         <option *ngFor="let grdnDate of SeGradationDateLists" [value]="grdnDate.gradation_list_wef">

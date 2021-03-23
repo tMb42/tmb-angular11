@@ -24,10 +24,12 @@
 .panel-body {
   border-radius: 5px;
 }
+
 .p-bar {
   margin-top: -20px;
   margin-bottom: -20px;
 }
+
 .custom-select {
   display: inline-block;
   width: 100%;
@@ -50,8 +52,8 @@
   margin-bottom: 0rem;
   color: black;
   padding: 5px;
-  
 }
+
 #table-pagination {
   position: sticky;
   display: flex;
@@ -66,6 +68,7 @@
   justify-content: center;
   border-radius: 0.25rem;
 }
+
 .pagination-size {
   display: flex;
   justify-content: right;
@@ -80,7 +83,6 @@
   font-size: 14px;
   width: 100%;
   margin-top: 0rem;
-  // margin-bottom: 1rem;
   color: white;
   padding: 5px;
   background: rgba(26, 30, 253, 0.5);
