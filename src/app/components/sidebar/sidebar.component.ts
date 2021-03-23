@@ -11,6 +11,7 @@ export interface RouteInfo {
   path: string;
   title: string;
   role?: any;
+  ablity?: any;
   type: string;
   icontype: string;
   collapse?: string;
@@ -50,6 +51,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/engrs',
     title: 'WB PWD Engineers',
+    ablity: 'is_pwd_engineer',
     role: 'junior_engineer',
     type: 'link',
     icontype: 'architecture'
@@ -120,13 +122,10 @@ export class SidebarComponent implements OnInit {
 
     this.authService.getAuthUser().pipe(first()).subscribe( (response: any) => {
       this.authUser = response.data;
-      console.log('sidebar1', this.authUser);
-
     });
     
     this.authService.getAuthUserUpdateListener().subscribe( (res:any) => {
       this.authUser = res.user;
-      console.log('sidebar2', this.authUser);
     });
     
   }
@@ -143,6 +142,14 @@ export class SidebarComponent implements OnInit {
       bool = true;
     }
     return bool;
+  }
+
+  isPwdEngineer(menuitem): boolean {
+    if(menuitem.type === 'link' && this.authUser.role.includes(menuitem.role)){
+      return true;
+    }
+    
+    return false;
   }
 
 }

@@ -102,11 +102,11 @@
 
     </ul>
   </div>
-
+  
   <ul class="nav" *ngIf="authUser">
     <li routerLinkActive="active" *ngFor="let menuitem of menuItems" class="nav-item">
       <!--If is a single link-->
-      <a [routerLink]="[menuitem.path]" *ngIf="menuitem.type === 'link' && authUser.role.includes(menuitem.role)" class="nav-link">
+      <a [routerLink]="[menuitem.path]" *ngIf="isPwdEngineer(menuitem)" class="nav-link">
         <i class="material-icons">{{menuitem.icontype}}</i>
         <p>{{menuitem.title}}</p>
       </a>
@@ -133,16 +133,19 @@
     <li *ngIf="authUser">
       <ul *ngIf="authUser.gender == null">
         <h2 id="message">
-          Please Update your profile. It is compulsory for new user to use this website. <br> Click on above dropdown menu and then click on update Profile.
+            Please Update your profile. It is compulsory for new user to use this website. 
         </h2>
+        <h3 id="message2">
+          Click on above dropdown menu   and then click on update Profile.
+        </h3>
       </ul>
     </li>
     
-    <!-- <li class="nav-item">
-      <a href="http://md-pro-angular.creative-tim.com/documentation/tutorial?ref=md-pro-archive" class="nav-link">
+    <li class="nav-item">
+      <a href="https://trymybest.co.in" class="nav-link">
         <i class="material-icons">school</i>
-        <p>Documentation</p>
+        <p>Website for Professional</p>
       </a>
-    </li> -->
+    </li>
   </ul>
 </div>

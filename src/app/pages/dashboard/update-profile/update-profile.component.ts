@@ -70,9 +70,23 @@ export class UpdateProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.authService.getAuthUser().pipe(first()).subscribe((response) => {  
+    this.authService.getAuthUser().pipe(first()).subscribe((response: any) => {  
       this.isLoading = false;
-      this.authUser = response;
+      this.authUser = response.data;
+      this.profileUpdateForm.patchValue({
+        email: this.authUser.email,
+        firstname: this.authUser.first_name,
+        middlename: this.authUser.middle_name,
+        lastname: this.authUser.last_name,
+        department_id: this.authUser.designation_name,
+        designation: this.authUser.email,
+        mobileNo: this.authUser.mobile,
+        isDepartment: this.authUser.is_departmental,
+        // role: this.authUser.role[0],
+        gender: this.authUser.gender,
+        birthDate: this.authUser.dob,
+        aboutMe: this.authUser.remarks,
+      });
     });
 
     // this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
@@ -110,6 +124,20 @@ export class UpdateProfileComponent implements OnInit {
 
   }
 
+  onDepartmentChange(e){
+    if(e == 0){
+      this.profileUpdateForm.patchValue({
+        department: null,
+        designation: null,
+      });
+    }else{
+      this.profileUpdateForm.patchValue({
+        department: this.authUser.department_id,
+        designation: this.authUser.designation_id,
+      });
+    }
+  }     
+
   isMobileRegistered(mobileNo){
     this.searchMobile = true;
     this.authService.checkRegisteredMobile(mobileNo).subscribe(response => {
@@ -130,11 +158,11 @@ export class UpdateProfileComponent implements OnInit {
       this.isPwdEngr = res.isPwdEngineer;
       this.dobMessage = res.dobMessage;
       console.log(res);
-      if(res.isPwdEngineer == 1){
-        Swal.fire({ position: 'top-end', icon: 'success',  title: "Welcome, Your Bithdate matched", showConfirmButton: false, timer: 6000 });
-      }else{
-        Swal.fire({ position: 'top-end', icon: 'error',  title: res.message, showConfirmButton: false, timer: 6000 });
-      } 
+      // if(res.isPwdEngineer == 1){
+      //   Swal.fire({ position: 'top-end', icon: 'success',  title: "Welcome, Your Bithdate matched", showConfirmButton: false, timer: 6000 });
+      // }else{
+      //   Swal.fire({ position: 'top-end', icon: 'error',  title: res.message, showConfirmButton: false, timer: 6000 });
+      // } 
     },
     err => {
       this.isLoading = false;

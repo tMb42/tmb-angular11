@@ -1,9 +1,9 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
-import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { JengrsService } from 'src/app/services/jengrs.service';
+
 
 @Component({
   selector: 'app-je-promotion',
@@ -11,7 +11,8 @@ import { JengrsService } from 'src/app/services/jengrs.service';
   styleUrls: ['./je-promotion.component.scss']
 })
 export class JePromotionComponent implements OnInit {  
-  
+  JeForm: FormGroup;
+
   showBoundaryLinks = true;
   page: number = 1;
   currentPage: number;
@@ -30,12 +31,17 @@ export class JePromotionComponent implements OnInit {
   expanded = false;
   panelOpenState = true;
 
-  constructor(private jengrsService: JengrsService) { 
+  constructor(private jengrsService: JengrsService, private fb: FormBuilder) { 
     this.getJePromotionalList();
   }
 
   ngOnInit(): void {
     this.getJePromotionalList();
+
+    this.JeForm = this.fb.group({
+      gradationDate: new FormControl(null)
+    });
+
   }
 
   getJePromotionalList(){

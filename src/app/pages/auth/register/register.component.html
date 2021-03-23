@@ -63,6 +63,154 @@
         </div>
       </div>
       <div class="row">
+        <div class="form-group col-12">
+            <!-- Button trigger modal -->
+            <mat-checkbox 
+              type="checkbox"
+              class="example-margin"
+              formControlName="termsAndCondition" 
+              required
+              [(ngModel)]="checked"
+              >
+              I agree to 
+              <a 
+                style="color: goldenrod;"
+                data-toggle="modal" 
+                data-target="#exampleModalLong" 
+                data-placement="top" 
+                title="Click to open terms & condition "
+                >
+                terms and conditions
+              </a>  
+            </mat-checkbox>
+            <mat-error type="checkbox" *ngIf="registerForm.get('termsAndCondition').errors?.required">
+              You must agree to the terms and conditions to register for an account.
+            </mat-error>
+        </div>
+        <!-- Modal -->
+        <div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" style="font-size: large; color: red;" id="exampleModalLongTitle">Terms & Conditions</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body paragraph">
+                <tr style="font-size: medium; color: blue;">
+                  <th>
+                    Please read the following terms and conditions carefully as it sets out the terms of a legally binding agreement between you (the user) and https://bestcivilengineers.co.in.
+                  </th>
+                </tr>
+                <tr>
+                  <th>
+                    1) Introduction
+                  </th> 
+                </tr>
+                <tr>
+                  <td>
+                    <ul>
+                      <li> 
+                        It is a totally unofficial web site (https://bestcivilengineers.co.in) only for West Bengal PWD Civil Engineers to know their departmental cadre details without losing their valuable official time. This following sets out the terms and conditions on which you may use the content on bestcivilengineers.co.in website owned by tMb (Try My Best) all the services herein will be given in free cost.
+                      </li> 
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    2) Registration Access and Use
+                  </th>
+                </tr>
+                <tr>
+                  <td>
+                    <ul>
+                      <li>
+                        We welcome users to register on this website. This website is extremely for the West Bengal PWD Civil Engineers. This website offers the below mentioned registration services which may be subject to change in the future. All changes will be appended in the terms and conditions page and communicated to existing users by email.
+                      </li> 
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <ul>
+                      <li>
+                        Registration services are offered for individual subscribers only. There is no option to use multiple individuals to access the same account.
+                      </li>
+                      <li>
+                        The nature and service of tMb services you access on the digital platforms will vary according to the type of registration you choose or allowed.
+                      </li> 
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    3) Privacy Policy and Registration
+                  </th>
+                </tr>
+                <tr>
+                  <td>
+                    <ul>
+                      <li> 
+                        All information received by tMb from your registration on https://bestcivilengineers.co.in. will be used by tMb with our Privacy Policy. Kindly read the below mentioned details.
+                      </li>
+                      <li>
+                        On registration, we expect you to provide tMb with an accurate and complete information of the compulsory fields. tMb also expect you to keep the information secure, specifically access passwords. Kindly update the information periodically to keep your account relevant. tMb will rely on any information you provide to us.
+                      </li>
+                      <li>   
+                        Each registration is for a single user only. On registration, you will choose your email Id as a unique user name and password (alpha numeric minimum 8 character). You are not allowed to share your user ID or give access to your account to anyone else. tMb does not allow multiple users on a network or within an organization to use the same user ID.
+                      </li>
+                      <li>   
+                        On knowledge, tMb may cancel or suspend your access to tMb services if it comes across you sharing your personal access without further obligation to you.
+                      </li>
+                      <li>   
+                        You are responsible for all the use of on https://bestcivilengineers.co.in service made by you or anyone else using your ID and for preventing unauthorised use of your user ID. If you believe there has been any breach of security such as the disclosure, theft or unauthorised use of your user ID or any other information, you must notify tMb immediately by e-mailing at support@bestcivilengineers.co.in. It is recommended that you do not select an obvious user password (such as your name, date of birth or easily rememberable) and that you change it regularly.
+                      </li>
+                      <li>   
+                        If you provide tMb with an email address that will result in any messages tMb may send you being sent to you then you promise that you are entitled to receive those messages. To ensure email's land in your inbox, you will add the tMb receipt id to your safe list. You also agree that tMb may stop sending messages to you without notifying you.
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    4. Content Sources    
+                  </th>
+                </tr>
+                <tr>
+                  <td>
+                    <ul>
+                      <li>
+                        All Content created and published on this website under the url https://www.bestcivilengineers.co.in are taken from openly published gradation lists, orders from time to time throughout the year from WB PWD website. If any discrepancy is found in this website then that would be treated as unintentional typo or programme bug(error) and tMb apologies you in advance for that type of mistake and also requests you to inform by e-mailing at support@bestcivilengineers.co.in for necessary correction.
+                      </li>
+                    </ul>     
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    5. Support to tMb     
+                  </th>
+                </tr>
+                <tr>
+                  <td>
+                    <ul>
+                      <li>
+                        tMb request to all engineers of the West Bengal PWD wishing to get an admin role in this website which would help in the proper data maintenance to make it the future website for all West Bengal PWD Civil Engineers.
+                      </li>
+                    </ul>     
+                  </td>
+                </tr>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-success" (click)="checked = true" required data-dismiss="modal">I agree with the terms and conditions</button>
+                <span class="spacer"></span>
+                <button type="button" (click)="checked = false" class="btn btn-sm btn-primary" data-dismiss="modal" >disagree</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="form-group col-6">
           <button class="btn btn-sm btnRed  btn-block" [disabled]="!registerForm.valid">
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>Register</button>

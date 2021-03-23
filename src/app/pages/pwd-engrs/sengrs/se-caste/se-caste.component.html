@@ -1,0 +1,148 @@
+<div class="col-lg-12 panel-body">
+    <div class="panel">
+        <div class="panel-heading col-12 ">
+            <mat-accordion >
+                <mat-expansion-panel [expanded]=expanded class="accordion-panel" >
+                    <mat-expansion-panel-header class="accordion-header">
+                        <mat-panel-title>
+                            Senior Engineers (Civil)
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{ SelectedDesignation }} Total {{ totalRecords }} :: As per availability of record from latest Gradation List
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="d-flex" style="font-size: small;">
+                        <table class="table table-striped table-sm ">                  
+                            <tbody>
+                                <tr class="reverse-table">
+                                    <th style="display: flex; margin-left: 10px; font-weight: bold;">
+                                        Caste
+                                    </th>
+                                    <th style="display: flex; margin-left: 10px; font-weight: bold;">
+                                        Total
+                                    </th>
+                                </tr>
+                                <tr class="reverse-table" *ngFor="let item of SeProfCasteGroupTotal">
+                                    <td class="text-center" scope="row">{{ item.caste_name }}</td>
+                                    <td style="color: chartreuse;" class="text-left" scope="row">{{ item.total }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion >
+            <form  class="d-flex" [formGroup]="seCastePromoForm" style="margin-bottom: 0px;">
+                <div id="table-header" class="input-group col-lg-12">
+                    <div class="input-group-prepend col-2">
+                        <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="Search table data" >
+                    </div>
+
+                    <span class="spacer"></span> 
+                    
+                    <div class="input-group-prepend col-lg-4">
+                        <span class="input-group-text" style="color: white; font-size: medium;" >
+                            Caste-Wise Details :: {{ SelectedDesignation }} ::
+                        </span>
+                    </div>
+                    <div class="input-group-prepend col-3">
+                        <span class="input-group-text" style="color: rgb(250, 243, 243); font-size: medium;">
+                            Designation ::
+                        </span>
+                        <select
+                            [(ngModel)]="designation"
+                            formControlName="designation" 
+                            class="form-control" 
+                            (change)="seCastePromoListByDesignation($event.target.value)"
+                            >
+                            <option [value]="null" [selected]="true">--Select Designation--</option>
+                            <option *ngFor="let item of Designations" [value]="item.id" >
+                                {{ item.designation_name }}
+                            </option>                  
+                        </select>
+                    </div>
+                    <div class="input-group-prepend col-lg-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="color: black; font-size: medium;">Post ::</span>
+                        </div>
+                        <input (keyup)="seCastePromoScopeByPostNo($event.target.value)" type="text" class="form-control" placeholder="No of Post" >
+                    </div>
+                </div>
+            </form> 
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm ">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center text-truncate" scope="col">Sl.</th>
+                            <th class="text-center" data-sortable="true" scope="col">Grad. Sl no.</th>
+                            <th class="text-left" scope="col" >Engineers' Name</th>
+                            <th class="text-center" scope="col">Designation</th>
+                            <th class="text-center" class="text-center" scope="col">Caste</th>
+                            <th class="text-center" scope="col">Date of Birth</th>
+                            <th class="text-center" scope="col">Date of Retirement</th>
+                            <th class="text-center" scope="col">Joining as AE</th>
+                            <th class="text-center" scope="col">Joining as EE</th>
+                            <th class="text-center" scope="col">Joining as SE</th>
+                            <th class="text-center" scope="col">Joining as CE</th>
+                            <th class="text-center" scope="col">Published</th>
+                            <th class="text-center" scope="col">Service Status</th>
+                            <th class="text-center" scope="col">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let item of SePromoCasteGroup">                                              
+                        <tr >
+                            <td colspan="13" id="group-header">
+                                {{ item.caste_name }} 
+                            </td>
+                        </tr>
+                        <tr *ngFor="let item of item.groupItem; let sl = index;" >
+                            <td class="text-center" scope="row">{{ sl + 1 }}</td>
+                            <td class="text-center" scope="row">{{ item.gradation_sl_no }}</td>
+                            <td class="text-left" scope="row">{{ item.engineer_name }}</td>
+                            <td class="text-center" scope="row">{{ item.designation_alias }}</td>
+                            <td class="text-center" scope="row">{{ item.caste_alias }}</td>
+                            <td class="text-center" scope="row">{{ item.engineer_dob | date: 'xx-MM-yyyy'  }}</td>
+                            <td class="text-center" scope="row">{{ item.engineer_dor | date: 'dd-MM-yyyy'  }}</td>
+                            <td class="text-center" scope="row">{{ item.ae_doj | date: 'dd-MM-yyyy'  }}</td>
+                            <td class="text-center" scope="row">{{ item.ee_doj | date: 'dd-MM-yyyy'  }}</td>
+                            <td class="text-center" scope="row">{{ item.se_doj | date: 'dd-MM-yyyy'  }}</td>
+                            <td class="text-center" scope="row">{{ item.ce_doj | date: 'dd-MM-yyyy'  }}</td>
+                            <td class="text-center" scope="row">{{ item.gradation_list_wef | date: 'dd-MM-yyyy'  }}</td>
+                            <td class="text-justify" scope="row">{{ item.service_status }}</td>
+                            <td class="text-justify" scope="row">{{ item.note }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" id="table-pagination">
+                <span class="spacer"></span>
+                <div *ngIf="loading" class="d-flex align-items-center">
+                    <strong>Loading...</strong>
+                    <span class="spinner-border text-light"></span>  
+                    <span class="spinner-border text-danger"></span>  
+                    <span class="spinner-border text-dark"></span>  
+                </div>
+                <span class="spacer"></span>
+                <div class="pagination">
+                    <pagination 
+                        [boundaryLinks]="showBoundaryLinks" 
+                        [totalItems]="totalRecords"
+                        [maxSize]="maxSize"
+                        [itemsPerPage]="pageSize"
+                        [(ngModel)]="currentPage" 
+                        (pageChanged)="pageChanged($event)" 
+                    ></pagination>
+                </div> 
+                <span class="spacer"></span>
+                <div class="d-flex justify-content-right">
+                    <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
+                    <select (change)="onTableSizeChange($event)" class="custom-select" >
+                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    <div>
+<div>

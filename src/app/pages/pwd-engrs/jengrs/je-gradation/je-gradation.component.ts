@@ -89,13 +89,13 @@ jeGradationListByWef(value : Date): void{
     console.log(requestObj);
     this.jengrsService.getJeGradationListByWef(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
-      this.SelectedJeGradationWef = res.seLatestTotal[0];
-      this.juniorEngineers = res.seniorEngineer.data;
-      this.JeGradationDateLists = res.seGradationDate;
+      this.SelectedJeGradationWef = res.jeLatestTotal[0];
+      this.juniorEngineers = res.juniorEngineer.data;
+      this.JeGradationDateLists = res.jeGradationDate;
       
       this.totalRecords = res.seLatestTotal[0].total;
-      this.totalPages = res.seniorEngineer.total_pages;
-      this.currentPage = res.seniorEngineer.current_page;
+      this.totalPages = res.juniorEngineer.total_pages;
+      this.currentPage = res.juniorEngineer.current_page;
       
     });
   }

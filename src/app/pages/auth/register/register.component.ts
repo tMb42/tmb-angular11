@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 import { AuthService } from 'src/app/services/auth.service';
-import { SocialiteService } from '../../../services/socialite.service';
 import { MustMatch } from '../../../validation/must-match.validator';
 import Swal from 'sweetalert2';
 import { Md5 } from 'ts-md5';
@@ -17,20 +16,23 @@ import { Md5 } from 'ts-md5';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
+  checked = false;
   hide = true;
   submitted = false;
   isLoading = false;
   error: {};
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private socialiteService: SocialiteService, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit(): void {
+    
     this.registerForm = this.fb.group({
       firstname: new FormControl(null, [Validators.required, Validators.minLength(2)]),
       middlename: new FormControl(null),
       lastname: new FormControl(null, [Validators.required, Validators.minLength(2)]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      password_confirmation: new FormControl(null, [Validators.required, Validators.minLength(8)])     
+      password_confirmation: new FormControl(null, [Validators.required, Validators.minLength(8)]),     
+      termsAndCondition: new FormControl(null, [Validators.required])     
     }, { validator: MustMatch('password', 'password_confirmation')
     });
   }

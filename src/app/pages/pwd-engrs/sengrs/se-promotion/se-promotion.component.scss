@@ -1,0 +1,137 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.card {
+  width: 600px;
+  background: #fff;
+  border-radius: 5px;
+  padding: 15px;
+  position: relative;
+  max-width: 100%;
+  height: 100%;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-panel {
+  position: relative;
+  border-radius: 5px;
+  padding: 0px;
+  max-width: 100%;
+  height: 100%;
+  margin-bottom: 0px;
+  background: hsl(235, 22%, 20%, 0.5);
+}
+
+.accordion-header {
+  border-radius: 5px;
+  padding: 5px;
+  max-width: 100%;
+  height: 40px;
+  margin-bottom: 0px;
+  background: rgba(24, 24, 24, 0.5);
+}
+
+.form-control {
+  border-color: #2b3553;
+  border-radius: 0.4285rem;
+  font-size: 0.7500000025rem;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.panel-body {
+  border-radius: 5px;
+}
+
+.p-bar {
+  margin-top: -20px;
+  margin-bottom: -20px;
+}
+
+.custom-select {
+  display: inline-block;
+  width: 100%;
+  color: red;
+  height: 35px;
+  padding: 0.375rem 1.75rem 0.375rem 0rem;
+}
+
+.table-responsive {
+  min-height: 230px;
+  max-height: 400px;
+}
+
+#table-header {
+  position: sticky;
+  background: linear-gradient(to right, #ff1a1a, #500eeb, #05ff2f);
+  vertical-align: center;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 0rem;
+  color: rgb(245, 240, 240);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#table-pagination {
+  position: sticky;
+  display: flex;
+  border-radius: 5px;
+  margin-top: -15px;
+  height: 35px;
+  background: linear-gradient(to right, #03b2e7, #48ff48, #df4fd7);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+
+.pagination-size {
+  display: flex;
+  justify-content: right;
+  padding-right: 0px;
+  border-radius: 0.25rem;
+}
+
+.reverse-table {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  font-size: 12px;
+}
+
+.table {
+  position: relative;
+  border-collapse: collapse;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 0rem;
+  // margin-bottom: 1rem;
+  background: rgba(17, 112, 255, 0.5);
+  color: white;
+  padding: 5px;
+}
+
+.table :hover {
+  background: rgba(104, 97, 103, 0.5);
+  color: white;
+  border-radius: 5px;
+}
+
+.table td {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.table th {
+  background-color: black;
+  top: 0px;
+  position: sticky;
+  font-size: 12px;
+  z-index: 5;
+  /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}

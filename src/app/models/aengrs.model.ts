@@ -1,4 +1,4 @@
-export interface AeSelectedGradations {  
+export interface AEngrs {  
     id: number, 
     gradation_sl_no: number, 
     engineer_name: string, 

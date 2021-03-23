@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Title } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
+import { first } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -10,11 +12,14 @@ import Swal from 'sweetalert2';
   styleUrls: ['./auth-navbar.component.scss']
 })
 export class AuthNavbarComponent implements OnInit {
+  loading = false;
+  returnUrl: string;
+
   sidebarClose() {
     throw new Error('Method not implemented.');
   }
 
-  constructor(private titleService: Title, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
 
   ngOnInit(): void {
@@ -24,14 +29,15 @@ export class AuthNavbarComponent implements OnInit {
     return this.authService.isLoggedIn(); 
   }
 
-  logout() {
+  logoutCurrentUser(): void {
+    this.loading = true;
     this.authService.logout();
-    Swal.fire({
-      icon: 'success',
-      title: 'You Are Logout Successfully',
-      showConfirmButton: false,
-      timer: 2000
-    });  
+      localStorage.removeItem('authToken');
+      this.loading = false;
+      this.router.navigate(['/auth']);
+      Swal.fire({icon: 'success', title: 'You Are Logout Successfully', showConfirmButton: false, timer: 2000 });
+      
+      
   }
 
 }

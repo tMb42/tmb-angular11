@@ -14,8 +14,7 @@ import { faEnvelope, faMobile, faMobileAlt, faTrashAlt, faUserAlt, faUserCircle,
   styleUrls: ['./se-gradation.component.scss']
 })
 export class SeGradationComponent implements OnInit {
-  seniorEngineers: Array<any>;
-  returnedArray: string[];
+  SeForm: FormGroup;
 
   showBoundaryLinks = true;
   page: number = 1;
@@ -26,33 +25,32 @@ export class SeGradationComponent implements OnInit {
   totalPages: number;
   totalRecords: number;
   
+  seniorEngineers: SEngrs[] = [];
   SeGradationDateLists: any = [];
-  SelectedSeGradationWef: any = [];
-  gradationDate: string = null;
-  loading = false; 
+  SelectedSeGradationWef: any = '';
+  gradationDate: any = '';
+  loading = false;
+  
+  
+  
 
-  max: number = 100;
-  showWarning: boolean;
-  dynamic: number = 100;
+  constructor( private sengrsService: SengrsService, private fb: FormBuilder) { }
 
-  constructor( private sengrsService: SengrsService) {
-    this.seniorEngineers = new Array<any>();
-  }
 
   ngOnInit(): void {
     this.seLatestGradations();
-    
-    // this.seniorEngineers = this.seniorEngineers.map((v: string, i: number) => `Content line ${i + 1}`);
-    // this.returnedArray = this.seniorEngineers.slice(0, 10);
-  
+
+    this.SeForm = this.fb.group({
+      gradationDate: new FormControl(null)
+    });
   }
 
   seLatestGradations(){
     this.loading = true;
-    // const wef = this.gradationDate
     const requestObj = {
       page: this.page,
       itemsPerPage: this.pageSize,
+      wef: this.gradationDate,
     }
 
     this.sengrsService.getSeLatestGradations(requestObj).pipe(first()).subscribe((res:any) => {
@@ -60,12 +58,12 @@ export class SeGradationComponent implements OnInit {
       this.SelectedSeGradationWef = res.seLatestTotal[0];
       this.SeGradationDateLists = res.seGradationDate;
       this.seniorEngineers = res.seniorEngineer.data;
+      console.log(this.SelectedSeGradationWef);
+      console.log(this.SeGradationDateLists);
 
       this.totalRecords = res.seLatestTotal[0].total;
       this.totalPages = res.seniorEngineer.total_pages;
       this.currentPage = res.seniorEngineer.current_page;
-      
-      // this.SelectedSeGradationWef = res.seSelectedTotal[0];
     });
 
   }
@@ -74,19 +72,15 @@ export class SeGradationComponent implements OnInit {
     this.pageSize = event.target.value;
     this.currentPage = this.page;
     this.seLatestGradations();
-
     console.log('Current page: ' + this.currentPage, 'Items per page: ' + this.pageSize);
   }
   
   pageChanged(event: PageChangedEvent): void {
     this.page = event.page;
-    this.pageSize = event.itemsPerPage;
-    
+    this.pageSize = event.itemsPerPage;    
     const startItem = (event.page - 1) * event.itemsPerPage + 1;
     const endItem = event.page * event.itemsPerPage;
-    this.returnedArray = this.seniorEngineers.slice(startItem, endItem);
-    this.seLatestGradations();
-    
+    this.seLatestGradations();    
     console.log('Current page: ' + event.page, 'Items per page: ' + event.itemsPerPage, 'Start item :' + startItem, 'End item :' + endItem);
   }
 

@@ -22,8 +22,11 @@
                 <div class="input-group-prepend col-lg-5">
                     <span class="input-group-text" style="color: white; font-size: medium;" >  Draft Gradation list of Junior Engineer (Civil) as stood {{ SelectedJeGradationWef.gradation_list_wef | date: 'dd-MM-YYYY' }}  Total : {{ SelectedJeGradationWef.total }} </span>
                 </div>
+
+                <span class="spacer"></span>
+
                 <div class="input-group-prepend col-lg-">
-                    <span class="input-group-text" style="color: black; font-size: medium;">Published :</span>
+                    <span class="input-group-text" style="color: rgb(247, 241, 241); font-size: medium;">Published :</span>
                     <select [(ngModel)]="gradationDate" formControlName="gradationDate" class="form-control" (change)="jeGradationListByWef($event.target.value)">
                         <option [ngValue]="null" [selected]="true">--Select Gradation Date--</option>
                         <option *ngFor="let grdnDate of JeGradationDateLists" [ngValue]="grdnDate.gradation_list_wef">

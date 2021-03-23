@@ -15,6 +15,7 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
+  rememberMe = false;
   isLoading = false;
   submitted = false;
   returnUrl: string;
@@ -28,17 +29,17 @@ export class LoginComponent implements OnInit {
       provider: 'google',
       icon: 'mdi-google',
       iconColor: '#e91e63'
-    },
-    {
-      provider: 'facebook',
-      icon: 'mdi-facebook',
-      iconColor: '#007bff'
-    },
+    },    
     {
       provider: 'github',
       icon: 'mdi-github',
       iconColor: 'black'
     }
+    // {
+    //   provider: 'facebook',
+    //   icon: 'mdi-facebook',
+    //   iconColor: '#007bff'
+    // },
   ]
 
   constructor(
@@ -56,7 +57,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)])
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      rememberMe: new FormControl(false)
     });
   }
 
@@ -69,7 +71,7 @@ export class LoginComponent implements OnInit {
     const loginData = {
       email: formData.email,
       password: formData.password,
-      remember: '',
+      remember: formData.rememberMe,
       device_name: 'mobile'      
     }
         
@@ -77,15 +79,8 @@ export class LoginComponent implements OnInit {
       // get return url from query parameters or default to home page
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
       this.router.navigateByUrl(returnUrl);
-      
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Thank you for signing in',
-        showConfirmButton: false,
-        timer: 2000
-      });  
 
+      Swal.fire({ position: 'top-end', icon: 'success', title: 'Thank you for signing in', showConfirmButton: false, timer: 2000 });
     },
       error: err => {
         this.error = err;

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlertService } from 'src/app/services/alert.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 
@@ -9,33 +8,42 @@ import Swal from 'sweetalert2';
   templateUrl: './google.component.html',
   styleUrls: ['./google.component.scss']
 })
-export class GoogleComponent implements OnInit {
-  emailVerified: boolean = false;
-  verifyStatus: any ={};
-  urlParams: any = {};
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private alertService: AlertService) { }
+export class GoogleComponent implements OnInit {
+  urlParams: any = {};
+  returnUrl: string;
+  error = '';
+  isLoading = false;
+
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.urlParams.token = this.route.snapshot.queryParamMap.get('code');
+    this.urlParams.code = this.route.snapshot.queryParamMap.get('code');
     this.loginGoogleSocialite();
   }
 
   loginGoogleSocialite() {
-    // this.isLoading = true;
-    this.authService.loginGoogleCallback(this.urlParams.token).subscribe((res: any) => {    
-      this.emailVerified = true;
-      this.verifyStatus = res.message;
-      console.log('eweew', res);
+    this.isLoading = true;
+    this.authService.loginGoogleCallback(this.urlParams).subscribe({ next: () => {
+      // get return url from query parameters or default to home page
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      this.router.navigateByUrl(returnUrl);
+      this.isLoading = false;
+      Swal.fire({ position: 'top-end', icon: 'success', title: 'Google Logged In Successfully', showConfirmButton: false, timer: 4000 });
+    },
+      error: err => {
+        this.error = err;
+        this.isLoading = false;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Email associated with Google has already been Registered',
+          showConfirmButton: false,
+          timer: 4000
+        });
+      }
 
-      Swal.fire({ position: 'top-end', icon: 'success', title: res.message, showConfirmButton: false, timer: 4000 });
-    }, 
-    (err : any) => {
-      console.log(err);
-      this.emailVerified = false;
-      this.verifyStatus = err.message;
-
-      Swal.fire({ position: 'top-end', icon: 'error', title: 'err.message', showConfirmButton: false, timer: 4000});
-    })
+    });
   }
+
 }

@@ -11,57 +11,61 @@
                             <div class="col-md-3 pr-md-1">
                                 <div class="form-group">
                                     <label> Email address </label>
-                                    <input [(ngModel)]="authUser.data.email" class="form-control" formControlName="email" type="email" placeholder="Valid Email Address" disabled style="color: greenyellow; font-size: 14px; "
+                                    <input  class="form-control" formControlName="email" type="email" placeholder="Valid Email Address" disabled style="color: greenyellow; font-size: 12px; "
                                     />
                                 </div>
                             </div>
                             <div class="col-md-3 pr-md-1">
                                 <div class="form-group">
                                     <label> First Name </label>
-                                    <input [(ngModel)]="authUser.data.first_name" class="form-control" formControlName="firstname" type="text" placeholder="First Name"/>
+                                    <input  class="form-control" formControlName="firstname" type="text" placeholder="First Name"/>
                                 </div>
                             </div>
                             <div class="col-md-3 pl-md-1">
                                 <div class="form-group">
                                     <label> Middle Name </label>
-                                    <input [(ngModel)]="authUser.data.middle_name" class="form-control" formControlName="middlename" type="text" placeholder="Middle Name if any"/>
+                                    <input  class="form-control" formControlName="middlename" type="text" placeholder="Middle Name if any"/>
                                 </div>
                             </div>
                             <div class="col-md-3 pl-md-1">
                                 <div class="form-group">
                                     <label> Last Name </label>
-                                    <input [(ngModel)]="authUser.data.last_name" class="form-control" formControlName="lastname" type="text" placeholder="Last Name"/>
+                                    <input  class="form-control" formControlName="lastname" type="text" placeholder="Last Name"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-4 pr-md-1">
                                 <label>Are you Civil Engineer under PWD(WB) ?</label>
-                                <select [(ngModel)]="isDepartment" formControlName="isDepartment" class="form-control" value="null">
+                                <select  
+                                    formControlName="isDepartment" 
+                                    class="form-control" 
+                                    value="null" 
+                                    (change)="onDepartmentChange($event.target.value)">
                                     <option value="null">--Select--</option>
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
+                                    <option value=1>Yes</option>
+                                    <option value=0>No</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 pr-md-1" *ngIf="isDepartment==1">
+                            <div class="form-group col-md-4 pr-md-1" *ngIf="profileUpdateForm.get('isDepartment').value==1" >
                                 <label>Department</label>
-                                <select [(ngModel)]="authUser.data.department_id" formControlName="department" class="form-control">
+                                <select  formControlName="department" class="form-control" >
                                     <option value="null">--Select Department--</option>
                                     <option *ngFor="let department of depts" [value]="department.id">
                                         {{ department.department_short_name }}
                                     </option>                  
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 pr-md-1" *ngIf="isDepartment==1">
+                            <div class="form-group col-md-4 pr-md-1" *ngIf="profileUpdateForm.get('isDepartment').value==1">
                                 <label>Designation</label>
-                                <select [(ngModel)]="authUser.data.designation_id" formControlName="designation" class="form-control">
+                                <select formControlName="designation" class="form-control" >
                                     <option value="null">--Select Designation--</option>
                                     <option *ngFor="let designation of designs" [value]="designation.id">
                                         {{ designation.designation_name }}
                                     </option>                  
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 pr-md-1" *ngIf="isDepartment==0">
+                            <div class="form-group col-md-4 pr-md-1" *ngIf="profileUpdateForm.get('isDepartment').value==0">
                                 <label>Profession</label>
                                 <select formControlName="role" class="form-control">
                                     <option value="null">--Select Your Profesion--</option>
@@ -74,7 +78,7 @@
                         <div class="row">
                             <div class="form-group col-md-3 pr-md-1">
                                 <label>Gender</label>
-                                <select [(ngModel)]="authUser.data.gender" formControlName="gender" class="form-control">
+                                <select  formControlName="gender" class="form-control">
                                     <option value="null">--Select Gender--</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -84,7 +88,7 @@
                             <div class="col-md-4 px-md-1">
                                 <div class="form-group">
                                     <label> Mobile No </label>
-                                    <input [(ngModel)]="authUser.data.mobile" formControlName="mobileNo" class="form-control" (keyup)="isMobileRegistered($event.target.value)" type="text" placeholder="Mobile No" required />
+                                    <input formControlName="mobileNo" class="form-control" (keyup)="isMobileRegistered($event.target.value)" type="text" placeholder="Mobile No" required />
                                     <span *ngIf="searchMobile" class="spinner-border spinner-border-sm text-primary"></span>
                                     <alert style="color: rgb(248, 85, 85); font-size: 10px; " *ngIf="message">{{ message.message }}</alert>
                                 </div>  
@@ -100,8 +104,8 @@
                                         [minDate]="minDate"
                                         [maxDate]="maxDate"
                                         (bsValueChange)="compaireGradationListDOB($event)"
-                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
-                                        [(ngModel)]="authUser.data.dob"
+                                        [bsConfig]="{ dateInputFormat: 'dd-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
+                                        
                                     >
                                     <alert  style="color: rgb(85, 248, 153); font-size: 10px; " *ngIf="dobMessage">{{ dobMessage }}</alert>
                                 </div>
@@ -111,7 +115,7 @@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label> About Me </label>
-                                    <textarea [(ngModel)]="authUser.data.remarks" formControlName="aboutMe" class="form-control" placeholder="Write Somthing about yourself" cols="80" rows="1">
+                                    <textarea  formControlName="aboutMe" class="form-control" placeholder="Write Somthing about yourself" cols="80" rows="1">
                                     </textarea>
                                 </div>
                             </div>

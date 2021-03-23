@@ -10,7 +10,7 @@
           [ngStyle]="{'background-color': button.iconColor}"
           (click)="socialiteLogin(button.provider)"
           >
-          {{ button.provider }}
+          Login with {{ button.provider }}
         </button>
       </div>
     </div>
@@ -42,8 +42,12 @@
           </mat-form-field>
         </div>
       </div>
+      
       <div class="row">
-        <div class="form-group col-12">
+        <div class="form-group col-3">
+          <mat-checkbox type="checkbox" formControlName="rememberMe">Remember me</mat-checkbox>          
+        </div>
+        <div class="form-group col-9">
           <button class="btn btn-sm btnGreen btn-block" [disabled]="!loginForm.valid">Login</button>
         </div>
       </div>

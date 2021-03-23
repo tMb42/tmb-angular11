@@ -41,7 +41,6 @@ console.log('Test for Auth Module. Loaded Ok')
     MatIconModule,
     MatInputModule,
     FontAwesomeModule,
-       
   ]
 
 })

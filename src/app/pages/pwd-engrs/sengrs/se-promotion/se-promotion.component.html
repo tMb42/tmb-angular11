@@ -1,0 +1,243 @@
+
+<div class="panel">
+    <div class="panel-heading col-12">
+        <mat-accordion >
+                <mat-expansion-panel [expanded]=expanded class="accordion-panel" >
+                    <mat-expansion-panel-header class="accordion-header">
+                        <mat-panel-title>
+                            Senior Engineer (Civil)
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Promotional Statistic :: {{ SelectedDesignation }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="d-flex" style="font-size: small;">
+                        <div class="col-3">
+                            <thead>
+                                <tr>
+                                    <th style="color:rgb(0, 255, 98);">
+                                        As Per 50 Point Roster
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="color:black;">
+                                        <span>Quota Provision Against <strong style="color:greenyellow; "> {{ SeCalculatedData.se50PointRosterPost }} </strong> nos Promotional Post </span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <ul>
+                                        <li> UR Total: <strong style="color:greenyellow;">{{ SeCalculatedData.urProvisionTotal }}</strong></li>
+                                        <li> SC Total: <strong style="color:greenyellow;">{{ SeCalculatedData.scProvisionTotal }}</strong></li>
+                                        <li> ST Total: <strong style="color:greenyellow;">{{ SeCalculatedData.stProvisionTotal }}</strong></li>
+                                    </ul>
+                                </tr>
+                            </thead>
+                        </div>
+                        <div class="col-3">
+                            <thead>
+                                <tr>
+                                     <th style="color:rgb(0, 255, 98);">
+                                        Eligible for Promotion
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="color:greenyellow;">
+                                        <span>Available Candidates Against <strong style="color:black;"> {{ SeCalculatedData.se50PointRosterPost }} </strong> nos Promotional Post </span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <ul>
+                                        <li>Max UR Total: <strong style="color:black;">{{ SeCalculatedData.urAvailableTotal }}</strong></li>
+                                        <li>Max SC Total: <strong style="color:black;">{{ SeCalculatedData.scAvailableTotal }}</strong></li>
+                                        <li>Max ST Total: <strong style="color:black;">{{ SeCalculatedData.stAvailableTotal }}</strong></li>
+                                    </ul>
+                                </tr>
+                            </thead>
+                        </div>
+                        <div class="col-3">
+                            <thead>
+                                <tr>
+                                     <th style="color:rgb(0, 255, 98);">
+                                        As Per 50 Point Roster
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="color:blue;">
+                                        <span>Eligible Candidates Against <strong style="color:black;"> {{ SeCalculatedData.se50PointRosterPost }} </strong> nos Promotional Post </span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <ul>
+                                        <li> UR Total: <strong style="color:black;">{{ SeCalculatedData.urEligibleTotal }}</strong></li>
+                                        <li> SC Total: <strong style="color:black;">{{ SeCalculatedData.scEligibleTotal }}</strong></li>
+                                        <li> ST Total: <strong style="color:black;">{{ SeCalculatedData.stEligibleTotal }}</strong></li>
+                                    </ul>
+                                </tr>
+                            </thead>
+                        </div>
+                        <div class="col-3">  
+                            <thead>
+                                <tr>
+                                     <th style="color:rgb(0, 255, 98);">
+                                        As Per 50 Point Roster
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="color:white;">
+                                        <span>Quota Assign Against <strong style="color:black;"> {{ SeCalculatedData.se50PointRosterPost }} </strong> nos Promotional Post </span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <ul>
+                                        <li> UR Total: <strong style="color:black;">{{ SeCalculatedData.urAsignedTotal }}</strong></li>
+                                        <li> SC Total: <strong style="color:black;">{{ SeCalculatedData.scAsignedTotal }}</strong></li>
+                                        <li> ST Total: <strong style="color:black;">{{ SeCalculatedData.stAsignedTotal }}</strong></li>
+                                    </ul>
+                                </tr>
+                            </thead>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion > 
+            <mat-accordion >   
+                <mat-expansion-panel [expanded]=expanded class="accordion-panel">
+                    <mat-expansion-panel-header class="accordion-header">
+                        <mat-panel-description> As per 50 point roaster </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <table class="table table-striped table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center text-truncate" scope="col">Sl. No.</th>
+                                    <th class="text-center" data-sortable="true" scope="col">Vacancy</th>
+                                    <th class="text-center text-truncate" scope="col">Name of Engineer</th>
+                                    <th class="text-left" scope="col" >Reservation</th>
+                                    <th class="text-center" class="text-center" scope="col">Caste</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of Se50PointRosterPromo; let sl = index; ">
+                                    <td class="text-center" scope="row">{{ sl + 1 }}</td>
+                                    <td class="text-center" scope="row">{{ item.vacancy_model }}</td>
+                                    <td class="text-center" scope="row"></td>
+                                    <td class="text-left" scope="row">{{ item.remarks }}</td>
+                                    <td class="text-center" scope="row">{{ item.caste_alias }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        <div class="d-flex">
+            <div *ngIf="loading" class="align-items-center col-3">
+                <strong>Loading...</strong>
+                <span class="spinner-border text-primary"></span>  
+                <span class="spinner-border text-light"></span>  
+                <span class="spinner-border text-danger"></span>  
+                <span class="spinner-border text-success"></span>  
+            </div> 
+        </div> 
+        <form  class="d-flex" [formGroup]="sePromoForm" style="margin-bottom: 0px;">
+            <div id="table-header" class="input-group col-12">
+                <div class="input-group-prepend col-2">
+                    <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="Search table" >
+                </div>
+                <div class="input-group-prepend col-5">
+                    <span class="input-group-text" style="color: white; font-size: 16px;" >
+                        Un-Official Promotional Position Details : {{ SelectedDesignation }} : Total in Service: {{ SePromotionalTotal }} 
+                    </span>
+                </div>
+
+                <span class="spacer"></span>
+
+                <div class="input-group-prepend col-3">
+                    <span class="input-group-text" style="color: rgb(250, 243, 243); font-size: medium;">
+                        Designation
+                    </span>
+                    <select
+                        [(ngModel)]="designation"
+                        formControlName="designation" 
+                        class="form-control" 
+                        (change)="sePromoListByDesignation($event.target.value)"
+                        >
+                        <option [value]="null" [selected]="true">--Select Designation--</option>
+                        <option *ngFor="let item of Designations" [value]="item.id" >
+                            {{ item.designation_name }}
+                        </option>                  
+                    </select>
+                </div> 
+
+                <div class="input-group-prepend col-2">
+                    <div class="input-group">
+                        <span class="input-group-text" style="color: rgb(247, 240, 240); font-size: medium;">No of Post</span>
+                    </div>
+                    <input (keyup)="getSePromoScopeByPostNo($event.target.value)" type="text" class="form-control" placeholder="No of Post" >
+                </div>            
+            </div>
+        </form>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-sm ">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center text-truncate" scope="col">Sl.</th>
+                        <th class="text-center" data-sortable="true" scope="col">Grad. Sl no.</th>
+                        <th class="text-left" scope="col" >Engineers' Name</th>
+                        <th class="text-center" scope="col">Designation</th>
+                        <th class="text-center" class="text-center" scope="col">Caste</th>
+                        <th class="text-center" scope="col">Date of Birth</th>
+                        <th class="text-center" scope="col">Date of Retirement</th>
+                        <th class="text-center" scope="col">Joining as AE</th>
+                        <th class="text-center" scope="col">Joining as EE</th>
+                        <th class="text-center" scope="col">Joining as SE</th>
+                        <th class="text-center" scope="col">Joining as CE</th>
+                        <th class="text-center" scope="col">Published</th>
+                        <th class="text-center" scope="col">Service Status</th>
+                        <th class="text-center" scope="col">Note</th>
+                    </tr>
+                </thead>
+                <tbody class="table-dark">
+                    <tr *ngFor="let item of SePromotionalList; let sl = index; ">
+                        <td class="text-center" scope="row">{{ sl + 1 }}</td>
+                        <td class="text-center" scope="row">{{ item.gradation_sl_no }}</td>
+                        <td class="text-left" scope="row">{{ item.engineer_name }}</td>
+                        <td class="text-center" scope="row">{{ item.designation_alias }}</td>
+                        <td class="text-center" scope="row">{{ item.caste_alias }}</td>
+                        <td class="text-center" scope="row">{{ item.engineer_dob | date: 'xx-MM-yyyy'  }}</td>
+                        <td class="text-center" scope="row">{{ item.engineer_dor | date: 'dd-MM-yyyy'  }}</td>
+                        <td class="text-center" scope="row">{{ item.ae_doj | date: 'dd-MM-yyyy'  }}</td>
+                        <td class="text-center" scope="row">{{ item.ee_doj | date: 'dd-MM-yyyy'  }}</td>
+                        <td class="text-center" scope="row">{{ item.se_doj | date: 'dd-MM-yyyy'  }}</td>
+                        <td class="text-center" scope="row">{{ item.ce_doj | date: 'dd-MM-yyyy'  }}</td>
+                        <td class="text-center" scope="row">{{ item.gradation_list_wef | date: 'dd-MM-yyyy'  }}</td>
+                        <td class="text-justify" scope="row">{{ item.service_status }}</td>
+                        <td class="text-justify" scope="row">{{ item.note }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination" id="table-pagination" *ngIf="totalRecords">
+            <span class="spacer"></span>
+            <div class="pagination">
+                <pagination 
+                    [boundaryLinks]="showBoundaryLinks" 
+                    [totalItems]="totalRecords"
+                    [maxSize]="maxSize"
+                    [itemsPerPage]="pageSize"
+                    [(ngModel)]="currentPage" 
+                    (pageChanged)="pageChanged($event)" 
+                ></pagination>
+            </div> 
+            <span class="spacer"></span>
+            <div class="d-flex justify-content-right">
+                <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
+                <select (change)="onTableSizeChange($event)" class="custom-select" >
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                        {{ size }}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+

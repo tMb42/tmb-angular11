@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { EmailValidator } from '@angular/forms';
 import { AuthUser } from '../models/auth-user.model';
 
+
 export interface AuthResponseData {
   success: number;
   message: string;
@@ -156,19 +157,25 @@ export class AuthService {
   }
 
   loginWithSocialite(provider: any) {
-    // console.log(provider);
-    return this.http.get(`${this.serverUrl}/auth/${provider}`).pipe(
-      catchError(this.handleError)
+    return this.http.get(`${this.serverUrl}/auth/${provider}`).pipe(map((response: any) => {
+      console.log(response);
+      if (response.url) {
+        window.location.href = response.url
+      }
+    }),
+    catchError(this.handleError)
+
     );
   }
 
   loginFacebookCallback(data) {
-    return this.http.get(`${this.serverUrl}/auth/facebook/callback`, data)
+    console.log('data', data);
+    return this.http.get(`${this.serverUrl}/auth/facebook/callback`, { params: data })
       .pipe(map((res: any) => {
+        console.log(res);
         if (res.token) {
-        localStorage.setItem('token ', JSON.stringify(res.token));
-        // this.userSubject.next(res);
-        return res;
+          localStorage.setItem('authToken', JSON.stringify(res));
+          this.userSubject.next({...res});
         }
       }),
       catchError(this.handleError)
@@ -177,13 +184,11 @@ export class AuthService {
   }
   
   loginGoogleCallback(data) {
-    console.log('google', data);
-    return this.http.get(`${this.serverUrl}/auth/google/callback`, data)
-      .pipe(map((res: any) => {         
+    return this.http.get(`${this.serverUrl}/auth/google/callback`, { params: data })
+      .pipe(map((res: any) => {
         if (res.token) {
-        localStorage.setItem('token ', JSON.stringify(res.token));
-        // this.userSubject.next(res);
-        return res;
+          localStorage.setItem('authToken', JSON.stringify(res));
+          this.userSubject.next({...res});
         }
       }),
       catchError(this.handleError)
@@ -192,14 +197,11 @@ export class AuthService {
   }
 
   loginGitHubCallback(data) {
-    console.log('gihub', data);
-    return this.http.get(`${this.serverUrl}/auth/github/callback`, data)
-      .pipe(map((res: any) => {         
+    return this.http.get(`${this.serverUrl}/auth/github/callback`, { params: data })
+      .pipe(map((res: any) => {
         if (res.token) {
-        localStorage.setItem('token ', JSON.stringify(res.token));
-        this.getAuthUser();
-        // this.userSubject.next(res);
-        // return res;
+          localStorage.setItem('authToken', JSON.stringify(res));
+          this.userSubject.next({...res});
         }
       }),
       catchError(this.handleError)
