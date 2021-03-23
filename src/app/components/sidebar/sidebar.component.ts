@@ -42,6 +42,8 @@ export const ROUTES: RouteInfo[] = [
     icontype: 'widgets',
     collapse: 'superadmin',
     children: [
+      {path: 'user-role', title: 'User - Role', ab:'UR'},
+      {path: 'user-permission', title: 'User - Permission', ab:'UP'},
       {path: 'users', title: 'Users', ab:'U'},
       {path: 'roles', title: 'Roles', ab:'R'},
       {path: 'active-users', title: 'Active User', ab:'AU'},
@@ -145,7 +147,7 @@ export class SidebarComponent implements OnInit {
   }
 
   isPwdEngineer(menuitem): boolean {
-    if(menuitem.type === 'link' && this.authUser.role.includes(menuitem.role)){
+    if(menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)){
       return true;
     }
     

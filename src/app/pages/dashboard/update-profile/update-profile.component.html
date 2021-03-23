@@ -93,7 +93,42 @@
                                     <alert style="color: rgb(248, 85, 85); font-size: 10px; " *ngIf="message">{{ message.message }}</alert>
                                 </div>  
                             </div>
-                            <div class="col-md-4  px-md-1">                
+                            <div class="col-md-3">
+                                <div class="form-group d-flex">
+                                    <mat-form-field>
+                                        <mat-label>Date of Birth</mat-label>
+                                        <input 
+                                            class="form-control"
+                                            matInput 
+                                            formControlName="birthDate" 
+                                            [matDatepicker]="picker"
+                                            (dateInput)="compaireGradationListDOB('input', $event)" 
+                                            (dateChange)="compaireGradationListDOB('change', $event)"
+                                            >
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="form-group d-flex">
+                                    <mat-form-field>
+                                        <mat-label>Date of Birth</mat-label>
+                                        <input 
+                                            class="form-control"
+                                            formControlName="birthDate" 
+                                            matInput [min]="minDate" 
+                                            [max]="maxDate" 
+                                            [matDatepicker]="picker"
+                                            (bsValueChange)="compaireGradationListDOB($event)"
+                                            >
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="col-md-4  px-md-1">                
                                 <div class="form-group">
                                     <label>Date of Birth</label>
                                     <input type="text"
@@ -104,12 +139,12 @@
                                         [minDate]="minDate"
                                         [maxDate]="maxDate"
                                         (bsValueChange)="compaireGradationListDOB($event)"
-                                        [bsConfig]="{ dateInputFormat: 'dd-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
-                                        
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"                                        
                                     >
-                                    <alert  style="color: rgb(85, 248, 153); font-size: 10px; " *ngIf="dobMessage">{{ dobMessage }}</alert>
+                                    <alert  style="color: rgb(85, 248, 153); font-size: 10px; " 
+                                    *ngIf="dobMessage">{{ dobMessage }}</alert>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="card-footer">
                             <div class="col-md-8">
@@ -128,5 +163,18 @@
             </div>
         </div>
     </div>
-</div>  
+    
+    <div *ngIf="true">
+        <h1>
+            Developer Area
+        </h1>
+        <pre>
+            profileUpdateForm = {{ profileUpdateForm.value | json  }}
+        </pre>
+    </div> 
+
+</div> 
+
+
+
 

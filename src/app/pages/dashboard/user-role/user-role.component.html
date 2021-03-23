@@ -1,24 +1,60 @@
-﻿<div class="col-lg-12 panel-body panel-form">
+
+<div class="col-lg-12 panel-body panel-form">
     <div class="panel">
+        <div class="card container-fluid">
+            <form [formGroup]="userRoleForm" (ngSubmit)="onSubmit()">
+                <div class="d-flex col-12" style="color: white;">
+                    <div class="form-group col-1">
+                        <label>ID</label>
+                        <input type="text" formControlName="id" class="form-control" readonly required>
+                    </div>
+                    <div class="form-group col-2">
+                        <label>Name</label>
+                        <input type="text" formControlName="name" class="form-control" readonly required>
+                    </div>
+                
+                    <div class="form-group col-3">
+                        <label>Email</label>
+                        <input type="text" formControlName="email" class="form-control" readonly required>
+                    </div>
+                
+                    <div class="form-group col-4">
+                        <div class="container" >
+                            <label>Role</label>
+                            <ng-multiselect-dropdown 
+                                required
+                                formControlName="roles"
+                                [placeholder]="'-- Select Role --'" 
+                                [data]="roles" 
+                                [(ngModel)]="selectedItems" 
+                                [settings]="dropdownSettings"
+                                (onSelect)="onItemSelect($event)" 
+                                (onSelectAll)="onSelectAll($event)" >
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                
+                    <div class="form-group col-2 mt-4">
+                        <button class="btn btn-sm btn-success" [disabled]="!userRoleForm.valid" >Save</button>
+                        <button class="btn btn-sm btn-danger" (click)="formReset()"> Reset </button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="panel-heading col-lg-12 ">
             <div id="table-header" class="input-group col-lg-12">
                 <div class="input-group-prepend col-lg-2">
-                    <span class="input-group-text" style="color: #ffffff; font-size: large;" >Users</span>
+                    <span class="input-group-text" style="color: black; font-size: large;" >User Role</span>
                 </div>
-                <div class="input-group-prepend col-lg-2">
-                    <a routerLink="add/new" class="btn btn-sm btn-success mb-2">Add User</a>
+                <div class="input-group-prepend col-3">
+                    <input type="text" class="form-control" placeholder="Search table data" >
                 </div>
-                
-                <div class="input-group-prepend col-lg-5">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" style="color: white; font-size: medium; margin-top: 2px;">Search</span>
-                    </div>
-                    <input type="text" class="form-control" placeholder="You Can Search table data" >
-                </div>
+
+                <span class="spacer"></span>
 
                 <div class="input-group-prepend col-lg-3">
                     <span class="input-group-text" style="color: white; font-size: medium;"> 
-                        Total User :: {{ totalRecords }}
+                        Total Active User :: {{ totalRecords }}
                     </span>
                 </div>
             </div>
@@ -28,31 +64,21 @@
                         <tr>
                             <th class="text-center text-truncate" scope="col" >Sl.</th>
                             <th class="text-center text-truncate" scope="col" >ID</th>
-                            <th class="text-left" data-sortable="true" scope="col" >Name</th>
-                            <th class="text-center" scope="col" >Email</th>
-                            <th class="text-center" scope="col">Email Verified</th>
-                            <th class="text-center" class="text-center" scope="col">Role</th>
-                            <th class="text-center" scope="col">Created</th>
-                            <th class="text-center" scope="col">Last Update</th>
+                            <th class="text-left" scope="col" >Name</th>
+                            <th class="text-left" scope="col" >Email</th>
+                            <th class="text-left" scope="col">Role</th>
                             <th class="text-center" scope="col">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="table-dark">
+                    <tbody>
                         <tr *ngFor="let user of users; let sl = index;" >
                             <td class="text-center" scope="row">{{ sl + 1 }}</td>
                             <td class="text-center" scope="row">{{ user.id }}</td>
                             <td class="text-left" scope="row">{{ user.name }}</td>
                             <td class="text-left" scope="row">{{user.email}}</td>
-                            <td scope="row">{{user.email_verified_at}}</td>
-                            <td scope="row">{{user.roleLabel}}</td>
-                            <td scope="row">{{user.created_at}}</td>
-                            <td scope="row">{{user.updated_at}}</td>
-                            <td scope="row" style="white-space: nowrap">
-                                <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                                <button routerLink="add/{{user.id}}" class="btn btn-sm btn-success btn-delete-user" [disabled]="user.isDeleting">
-                                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
-                                    <span *ngIf="!user.isDeleting">Add</span>
-                                </button>
+                            <td class="text-left" scope="row">{{user.roleLabel}}</td>
+                            <td class="text-right" scope="row" style="white-space: nowrap">
+                                <a (click)="getUserDetailsById(user.id)" class="btn btn-sm btn-primary mr-1"><fa-icon [icon]="faUserEdit"></fa-icon>&nbsp; Edit User's Role</a>
                             </td>
                         </tr>
                         <tr *ngIf="!users">
@@ -61,9 +87,6 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot>
-                        
-                    </tfoot>
                 </table>
             </div>
             <div class="pagination" id="table-pagination">

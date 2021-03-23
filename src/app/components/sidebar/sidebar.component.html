@@ -112,7 +112,7 @@
       </a>
 
       <!--If it have a submenu-->
-      <a data-toggle="collapse" href="#{{menuitem.collapse}}" *ngIf="menuitem.type === 'sub' && authUser.role.includes(menuitem.role)" (click)="updatePS()" class="nav-link">
+      <a data-toggle="collapse" href="#{{menuitem.collapse}}" *ngIf="menuitem.type === 'sub' && authUser.roles.includes(menuitem.role)" (click)="updatePS()" class="nav-link">
         <i class="material-icons">{{menuitem.icontype}}</i>
         <p>{{menuitem.title}}<b class="caret"></b></p>
       </a>

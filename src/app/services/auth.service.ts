@@ -62,6 +62,10 @@ export class AuthService {
     }
   }
 
+  getAuthUserUpdateListener() {
+    return this.authUserSubject.asObservable();    
+  }
+
   login(loginData) {
     return this.http.post<AuthResponseData>(`${this.serverUrl}/login`, loginData)
       .pipe(map((resData: any) => {  
@@ -150,10 +154,6 @@ export class AuthService {
         this.authUserSubject.next({...this.authUser});
       })
     );
-  }
-
-  getAuthUserUpdateListener() {
-    return this.authUserSubject.asObservable();    
   }
 
   loginWithSocialite(provider: any) {

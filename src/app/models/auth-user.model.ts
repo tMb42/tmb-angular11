@@ -6,7 +6,7 @@ export class AuthUser {
   last_name: string;
   email: string; 
   gender: string;
-  role?: string; 
+  roles?: string; 
   dob: Date; 
   mobile: number;
   photo: string;

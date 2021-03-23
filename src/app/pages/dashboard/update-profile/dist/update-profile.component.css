@@ -1,4 +1,3 @@
-
 .example-custom-date-class {
   background: orange;
   border-radius: 100%;
@@ -36,7 +35,7 @@
 .card label {
   font-size: 0.75rem;
   margin-bottom: 0px;
-  color: rgb(255, 255, 255);
+  color: white;
 }
 
 strong {

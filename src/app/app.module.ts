@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { DateAdapter } from '@angular/material/core';
 
 import { httpInterceptorProviders } from './http-interceptors';
 import { AuthNavbarModule } from './components/auth-navbar/auth-navbar.module';
@@ -23,6 +24,7 @@ import { FixedpluginModule } from './components/fixedplugin/fixedplugin.module';
 import { FooterModule } from './components/footer/footer.module';
 import { AlertComponent } from './components/alert/alert.component';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
+import { DateFormat } from './dateFormat';
 
 
 
@@ -52,7 +54,12 @@ import { ProgressBarModule } from './components/progress-bar/progress-bar.module
     PwdEngrsNavbarModule,
     PwdWorksNavbarModule,
   ],
-  providers: [httpInterceptorProviders],
+  providers: [httpInterceptorProviders, {provide: DateAdapter, useClass: DateFormat}],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private dateAdapter: DateAdapter<Date>) {
+    this.dateAdapter.setLocale('en-in'); // DD/MM/YYYY
+  }
+
+ }

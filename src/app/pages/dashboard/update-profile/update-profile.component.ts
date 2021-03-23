@@ -7,6 +7,7 @@ import { DropdownService } from '../../../services/dropdown.service';
 import Swal from 'sweetalert2';
 import { formatDate } from '@angular/common';
 import { AuthUser } from '../../../models/auth-user.model';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 
 export interface Department {
@@ -54,6 +55,7 @@ export class UpdateProfileComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
   birthDate: string;
+  events: string[] = [];
   
   constructor( 
     private fb: FormBuilder, 
@@ -62,11 +64,20 @@ export class UpdateProfileComponent implements OnInit {
     private route: ActivatedRoute, 
     private authService: AuthService
   ) { 
+
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 20, 0, 1);
+    this.maxDate = new Date(currentYear + 1, 11, 31);
+    
     this.minDate = new Date();
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 29200); //maximum age 80yrs
     this.maxDate.setDate(this.maxDate.getDate() - 6570);  //minimum age 18yrs
   }
+
+  
+  
+
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -146,38 +157,59 @@ export class UpdateProfileComponent implements OnInit {
     });
   }
     
-  compaireGradationListDOB(value: Date): void {
-    this.birthDate = formatDate(value, 'yyyy-MM-dd', 'en');
+  compaireGradationListDOB(type: string, event: MatDatepickerInputEvent<Date>) {
+    this.events.push(`${type}: ${event.value}`);
+
     const dobCheckData = {
       designation: this.profileUpdateForm.value.designation,
       birthDate: this.birthDate,
       lastname: this.profileUpdateForm.value.lastname,
     }
-    
+
     this.authService.getCompaireGradationListBirthDate(dobCheckData).pipe(first()).subscribe((res: any) => {      
       this.isPwdEngr = res.isPwdEngineer;
       this.dobMessage = res.dobMessage;
       console.log(res);
-      // if(res.isPwdEngineer == 1){
-      //   Swal.fire({ position: 'top-end', icon: 'success',  title: "Welcome, Your Bithdate matched", showConfirmButton: false, timer: 6000 });
-      // }else{
-      //   Swal.fire({ position: 'top-end', icon: 'error',  title: res.message, showConfirmButton: false, timer: 6000 });
-      // } 
     },
     err => {
       this.isLoading = false;
-      
-      // this.alertService.error(err);
       Swal.fire({ position: 'top-end', icon: 'error',  title: err.dobMessage, showConfirmButton: false, timer: 2000 }); 
     }); 
    
   }
+  // compaireGradationListDOBlllll(value: Date): void {
+  //   this.birthDate = formatDate(value, 'yyyy-MM-dd', 'en');
+  //   const dobCheckData = {
+  //     designation: this.profileUpdateForm.value.designation,
+  //     birthDate: this.birthDate,
+  //     lastname: this.profileUpdateForm.value.lastname,
+  //   }
+    
+  //   this.authService.getCompaireGradationListBirthDate(dobCheckData).pipe(first()).subscribe((res: any) => {      
+  //     this.isPwdEngr = res.isPwdEngineer;
+  //     this.dobMessage = res.dobMessage;
+  //     console.log(res);
+  //     // if(res.isPwdEngineer == 1){
+  //     //   Swal.fire({ position: 'top-end', icon: 'success',  title: "Welcome, Your Bithdate matched", showConfirmButton: false, timer: 6000 });
+  //     // }else{
+  //     //   Swal.fire({ position: 'top-end', icon: 'error',  title: res.message, showConfirmButton: false, timer: 6000 });
+  //     // } 
+  //   },
+  //   err => {
+  //     this.isLoading = false;
+      
+  //     // this.alertService.error(err);
+  //     Swal.fire({ position: 'top-end', icon: 'error',  title: err.dobMessage, showConfirmButton: false, timer: 2000 }); 
+  //   }); 
+   
+  // }
 
   updateUserProfile(){
     this.submitted = true;
     this.isLoading = true;
 
-    const formData = this.profileUpdateForm.getRawValue();    
+    const formData = this.profileUpdateForm.getRawValue();  
+    console.log(formData);  
     const updateUserProfileData = {
       firstname: formData.firstname,
       middlename: formData.middlename,

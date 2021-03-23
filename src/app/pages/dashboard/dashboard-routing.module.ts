@@ -12,6 +12,8 @@ import { UserManageComponent } from './users/user-manage.component';
 import { UsersComponent } from './users/users.component';
 import { UserActiveComponent } from './user-active/user-active.component';
 import { UserBlackListComponent } from './user-black-list/user-black-list.component';
+import { UserRoleComponent } from './user-role/user-role.component';
+import { UserPermissionComponent } from './user-permission/user-permission.component';
 
 const DashboardRoutes: Routes = [
   {
@@ -30,6 +32,16 @@ const DashboardRoutes: Routes = [
       {
         path: 'change-password',
         component: PasswordChangeComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'user-role',
+        component: UserRoleComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'user-permission',
+        component: UserPermissionComponent,
         canActivate: [AuthGuard]
       },
       {

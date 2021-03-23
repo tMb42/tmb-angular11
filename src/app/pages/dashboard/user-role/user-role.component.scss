@@ -1,0 +1,109 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.card {
+  background: #fff;
+  border-radius: 5px;
+  position: relative;
+  max-width: 100%;
+  height: 100%;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  background: rgba(1, 5, 255, 0.3);
+}
+
+.form-control {
+  border-color: #eaecf3;
+  border-radius: 0.4285rem;
+  font-size: 0.7500000025rem;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.panel-body {
+  border-radius: 5px;
+}
+
+.p-bar {
+  margin-top: -20px;
+  margin-bottom: -20px;
+}
+
+.table-responsive {
+  width: auto;
+  min-height: 350px;
+  max-height: 490px;
+}
+
+#table-header {
+  position: sticky;
+  background: linear-gradient(to right, #03e75a, #0d0e0d, #f5e505);
+  vertical-align: center;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 0rem;
+  color: rgb(0, 0, 0);
+  padding: 5px;
+}
+
+#table-pagination {
+  position: sticky;
+  display: flex;
+  border-radius: 5px;
+  margin-top: -15px;
+  height: 35px;
+  background: linear-gradient(to right, #03b2e7, #48ff48, #df4fd7);
+}
+
+.custom-select {
+  display: inline-block;
+  width: 100%;
+  color: red;
+  height: 35px;
+  padding: 0.375rem 1.75rem 0.375rem 0rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+
+.pagination-size {
+  display: flex;
+  justify-content: right;
+  padding-right: 0px;
+  border-radius: 0.25rem;
+}
+
+.table {
+  position: relative;
+  border-collapse: collapse;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 0rem;
+  color: white;
+  background: rgba(56, 58, 61, 0.5);
+  padding: 5px;
+}
+
+.table :hover {
+  background: rgba(36, 104, 250, 0.5);
+  color: white;
+  border-radius: 5px;
+}
+
+.table td {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.table th {
+  background-color: black;
+  top: 0px;
+  position: sticky;
+  font-size: 14px;
+  z-index: 5;
+  /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
