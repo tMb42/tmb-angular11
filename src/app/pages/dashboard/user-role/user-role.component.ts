@@ -28,7 +28,7 @@ export class UserRoleComponent implements OnInit {
   users: Users[] = null; 
   roles: Roles[] = null;
   success: number = 0;
-  message: any;
+  message: any = '';
 
   submitted = false;
   loading = false;  
@@ -129,8 +129,12 @@ export class UserRoleComponent implements OnInit {
       this.users = res.users.data;
       if(this.success == 1){
         Swal.fire({ position: 'top-end', icon: 'success', title: 'Role updated successfully', showConfirmButton: false, timer: 2000 }); 
-      }else{
+      }else if(this.success == 422){
+        console.log(res);
+        this.message = res.message;
         Swal.fire({ position: 'top-end', icon: 'error', title: res.message, showConfirmButton: false, timer: 4000 }); 
+      }else{
+
       }    
     }, err => {
       this.loading = false;

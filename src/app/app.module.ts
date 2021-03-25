@@ -24,8 +24,6 @@ import { FixedpluginModule } from './components/fixedplugin/fixedplugin.module';
 import { FooterModule } from './components/footer/footer.module';
 import { AlertComponent } from './components/alert/alert.component';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
-import { DateFormat } from './dateFormat';
-
 
 
 @NgModule({
@@ -36,7 +34,6 @@ import { DateFormat } from './dateFormat';
     PwdEngrsLayoutComponent,
     PwdWorksLayoutComponent,
     AlertComponent,
-    // FieldErrorDisplayComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,12 +51,9 @@ import { DateFormat } from './dateFormat';
     PwdEngrsNavbarModule,
     PwdWorksNavbarModule,
   ],
-  providers: [httpInterceptorProviders, {provide: DateAdapter, useClass: DateFormat}],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(private dateAdapter: DateAdapter<Date>) {
-    this.dateAdapter.setLocale('en-in'); // DD/MM/YYYY
-  }
+export class AppModule { }
 
- }
+

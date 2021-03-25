@@ -1,35 +1,80 @@
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+
 <div class="container-fluid">
   <div class="wrapper">
-    <div class="navbar-top"> 
+    <div class="navbar-top">
       <mat-toolbar id="toolbar" class="transparent">
         <span>tMb</span> 
-        <img class="logo" src="../assets/img/tmb/logo_tmb.png">  
+        <img class="logo" src="../assets/img/tmb/logo_tmb.png"> 
+
         <span class="spacer"></span>
 
-        <button mat-stroked-button *ngIf="!isLoggedIn" [routerLink]="['/auth']" routerLinkActive="active">
+        <p class="marquee">
+          <span>This website is Developed for West Bengal PWD Civil Engineers. 
+            <strong style="color: white;">Step-1 => </strong> Register with valid email address.
+            <strong style="color: white;">Step-2 =></strong> Verify your email from email verify Notification.
+            <strong style="color: white;">Step-3 =></strong> After succesfull email verification. Go for Login.
+            <strong style="color: white;">Step-4 =></strong> After login you access Dashboard and then update your profile to get your website menu as per your regitration profile.
+            <strong style="color: red;">Step-5 =></strong> upto 21-04-2021 all menu if accesable for all valid registered user.
+          </span>
+        </p>
+
+        <span class="spacer"></span>
+        
+        <button mat-button *ngIf="!isLoggedIn" [routerLink]="['/auth']" routerLinkActive="active">
           <mat-icon>home</mat-icon>
           Home
         </button>
         
-        <button mat-stroked-button *ngIf="isLoggedIn" [routerLink]="['dashboard']" routerLinkActive="active">
+        <button mat-button *ngIf="isLoggedIn" [routerLink]="['dashboard']" routerLinkActive="active">
           <mat-icon>dashboard</mat-icon>
           Dashboard
         </button>
-        <button mat-stroked-button *ngIf="!isLoggedIn" [routerLink]="['auth/register']" routerLinkActive="active">
+        <button mat-button *ngIf="!isLoggedIn" [routerLink]="['auth/register']" routerLinkActive="active">
           <mat-icon>how_to_reg</mat-icon>
           Register
         </button>
-        <button mat-stroked-button *ngIf="!isLoggedIn" [routerLink]="['auth/login']" routerLinkActive="active">
+        <button mat-button *ngIf="!isLoggedIn" [routerLink]="['auth/login']" routerLinkActive="active">
           <mat-icon>fingerprint</mat-icon>
           Login
         </button>
-        <button mat-stroked-button *ngIf="isLoggedIn" (click)="logoutCurrentUser()">
+        <button mat-button *ngIf="isLoggedIn" (click)="logoutCurrentUser()">
           <mat-icon>exit_to_app</mat-icon>
           Logout
         </button>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
+            <span>About</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>email</mat-icon>
+            <span>Support</span>
+          </button>
+          <button mat-menu-item>
+            <a href="https://www.youtube.com/playlist?list=PL-XnBqE6GzTrF2nX1Qm3v_eQgqo1U4xYH">
+              <mat-icon >ondemand_video</mat-icon>
+              <span>Help</span>
+            </a>
+          </button>
+          <button mat-menu-item>
+            <a href="https://www.facebook.com/tmb2021">
+              <mat-icon >facebook</mat-icon>
+              <span>Facebook</span>
+            </a>
+          </button>
+          <button mat-menu-item disable>
+            <mat-icon>notifications_off</mat-icon>
+            <span>Disable alerts</span>
+          </button>
+        </mat-menu>
       </mat-toolbar>
     </div>
-  
+
     <router-outlet></router-outlet>
       
   </div>
