@@ -10,8 +10,12 @@ declare const $: any;
 export interface RouteInfo {
   path: string;
   title: string;
-  role?: any;
-  ablity?: any;
+  role?: string;
+  ablity?: number;
+  permission?: any;
+  is_departmental?: number;
+  inforce?: number;
+  display?: number;
   type: string;
   icontype: string;
   collapse?: string;
@@ -30,7 +34,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/dashboard',
     title: 'Dashboard',
-    role: 'visitor',
+    inforce: 1,
     type: 'link',
     icontype: 'dashboard'
   },
@@ -53,15 +57,14 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/engrs',
     title: 'WB PWD Engineers',
-    ablity: 'is_pwd_engineer',
-    role: 'junior_engineer',
+    ablity: 1,
     type: 'link',
     icontype: 'architecture'
   },
   {
     path: '/pwd-works',
     title: 'PWD-Works',
-    role: 'junior_engineer',
+    is_departmental: 1,
     type: 'link',
     icontype: 'work'
   },
@@ -88,6 +91,18 @@ export const ROUTES: RouteInfo[] = [
     children: [
       {path: 'software', title: 'Software', ab:'S'},
       {path: 'dev', title: 'Coding', ab:'C'},
+    ]
+  },
+  {
+    path: '/chat',
+    title: 'Discussion Room',
+    display: 1,
+    type: 'sub',
+    icontype: 'mail',
+    collapse: 'chat',
+    children: [
+      {path: 'chat', title: 'Chat', ab:'C'},
+      {path: 'inbox', title: 'Inbox', ab:'IB'},
     ]
   }
   
@@ -117,6 +132,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+
     if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
       const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
       this.ps = new PerfectScrollbar(elemSidebar);
@@ -146,12 +162,45 @@ export class SidebarComponent implements OnInit {
     return bool;
   }
 
+  //  for a single link menu
   isPwdEngineer(menuitem): boolean {
-    if(menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)){
+    if(this.authUser.is_departmental ==1){
+      if(menuitem.is_departmental === this.authUser.is_departmental || 
+          menuitem.ablity === this.authUser.is_pwd_engineer || 
+          (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)) || 
+          menuitem.inforce === this.authUser.inforce){
+        return true;
+      }
+
+      if(this.authUser.is_pwd_engineer == 1){
+        if((menuitem.ablity === this.authUser.is_pwd_engineer) || 
+          (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
+          return true;
+        }
+        return false;
+      }else{
+        if(menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)){
+          return true;
+        } 
+        return false;
+      }
+
+    }else{
+      if( menuitem.inforce === this.authUser.inforce || menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)){
+        return true;
+      } 
+      return false;
+    }   
+  
+  }
+
+  //  for a sub menu link
+  activeSubMenu(menuitem): boolean{
+    if(menuitem.display === this.authUser.display || (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
       return true;
-    }
-    
+    }  
     return false;
   }
+ 
 
 }

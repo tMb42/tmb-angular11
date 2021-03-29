@@ -32,12 +32,7 @@ export class AuthNavbarComponent implements OnInit {
   logoutCurrentUser(): void {
     this.loading = true;
     this.authService.logout();
-      localStorage.removeItem('authToken');
-      this.loading = false;
-      this.router.navigate(['/auth']);
-      Swal.fire({icon: 'success', title: 'You Are Logout Successfully', showConfirmButton: false, timer: 2000 });
-      
-      
+    Swal.fire({icon: 'success', title: 'You Are Logout Successfully', showConfirmButton: false, timer: 2000 });
   }
 
 }

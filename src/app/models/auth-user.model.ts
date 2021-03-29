@@ -7,6 +7,8 @@ export class AuthUser {
   email: string; 
   gender: string;
   roles?: string; 
+  permissions?: string; 
+  ability_id?: number; 
   dob: Date; 
   mobile: number;
   photo: string;
@@ -23,4 +25,6 @@ export class AuthUser {
   updated_at: Date;
   profile_updated_at: Date;
   remarks?: string;
+  inforce: number;
+  display: number;
 }

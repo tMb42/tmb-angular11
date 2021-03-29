@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../services/auth.guard';
 
 import { JeCasteComponent } from './je-caste/je-caste.component';
 import { JeGradationComponent } from './je-gradation/je-gradation.component';
@@ -13,7 +14,11 @@ const JeRoutes: Routes = [
     children: [
       {
         path: "gradation",
-        component: JeGradationComponent
+        canActivate: [AuthGuard],
+        component: JeGradationComponent,
+        data: {
+          roles: ["junior_engineer", "chief_engineer"]
+        }
       },
       {
         path: "passed",

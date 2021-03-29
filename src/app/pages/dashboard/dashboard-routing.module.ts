@@ -16,6 +16,7 @@ import { UserRoleComponent } from './user-role/user-role.component';
 import { UserPermissionComponent } from './user-permission/user-permission.component';
 
 const DashboardRoutes: Routes = [
+  { path: '', redirectTo: '/auth', pathMatch: 'full' },
   {
     path: '',
     children: [ 
@@ -34,20 +35,30 @@ const DashboardRoutes: Routes = [
         component: PasswordChangeComponent,
         canActivate: [AuthGuard]
       },
+      
       {
         path: 'user-role',
         component: UserRoleComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        }        
       },
       {
         path: 'user-permission',
         component: UserPermissionComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        }  
       },
       {
         path: 'users',
         component: UserLayoutComponent,
         canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        },  
         children: [
           { path: '', component: UsersComponent },
           { path: 'add/:id', component: UserManageComponent },
@@ -57,17 +68,26 @@ const DashboardRoutes: Routes = [
       {
         path: 'active-users',
         component: UserActiveComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        }  
       },
       {
         path: 'block-users',
         component: UserBlackListComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        }  
       },
       {
         path: 'roles',
         component: RolesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        }  
       }
     ]
   }

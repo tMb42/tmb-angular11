@@ -100,7 +100,6 @@ export class LoginComponent implements OnInit {
   socialiteLogin(data: any) {
     this.isLoading = true;
     this.authService.loginWithSocialite(data).pipe(first()).subscribe((response: any) => {
-      window.location.href = response.url;
       this.isLoading = false;
     })
 

@@ -2,14 +2,14 @@
   flex: 1 1 auto;
   }
 
-.marquee {
+.movingtext {
   width: 450px;
   margin: 0 auto;
   overflow: hidden;
   box-sizing: border-box;
 }
 
-.marquee span {
+.movingtext span {
   display: inline-block;
   width: max-content;
   color: greenyellow;
@@ -20,16 +20,16 @@
   padding-left: 100%;
   /* show the marquee just outside the paragraph */
   will-change: transform;
-  animation: marquee 45s linear infinite;
+  animation: movingtext 45s linear infinite;
 }
 
-.marquee span:hover {
+.movingtext span:hover {
   animation-play-state: paused;
   
 }
 
 
-@keyframes marquee {
+@keyframes movingtext {
   0% { transform: translate(0, 0); }
   100% { transform: translate(-100%, 0); }
 }
@@ -37,7 +37,7 @@
 
 /* Respect user preferences about animations */
 @media (prefers-reduced-motion: reduce) {
-  .marquee span {
+  .movingtext span {
     animation-iteration-count: 1;
     animation-duration: 0.001; 
     /* instead of animation: none, so an animationend event is 

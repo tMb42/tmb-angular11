@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="col-md-4 offset-md-10 mt-0" id="contact-Form">
+    <div class="d-flex">
+      <div style="color: white; font-size: large;">Contact Us</div>>
+      <div *ngIf="isLoading" class="align-items-center offset-md-1">
+        <span class="spinner-border text-danger"></span>  
+        <span class="spinner-border text-primary"></span>  
+        <span class="spinner-border text-light"></span>  
+        <span class="spinner-border text-success"></span>  
+      </div>
+    </div>
+    
+    <form style="margin-bottom: 0px;" [formGroup]="contactForm" name="contactForm" (ngSubmit)="submitContactForm()" >
+      <div class="form-group">
+        <input type="text" formControlName="fullname" class="form-control" placeholder="full Name" [ngClass]="{ 'is-invalid': submitted && f.fullname.errors }" />
+        <div *ngIf="submitted && f.fullname.errors" class="invalid-feedback">
+          <div *ngIf="f.fullname.errors.required">Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="email" formControlName="email" class="form-control" placeholder="E-Mail" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">Feild must be a valid email address</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" formControlName="mobile" class="form-control" placeholder="Mobile no" [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" />
+        <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+          <div *ngIf="f.mobile.errors.pattern">Please, Enter 10 digit Mobile Number</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <textarea formControlName="message" rows="3" class="form-control" placeholder="Write your Message here" [ngClass]="{ 'is-invalid': submitted && f.message.errors }" ></textarea>
+        <div *ngIf="submitted && f.message.errors" class="invalid-feedback">
+          <div *ngIf="f.message.errors.required">Feild must be contains some message</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-5">
+          <button class="btn btn-sm btnRed btn-block" (click)="resetForm()">Reset</button>
+        </div>
+        <div class="form-group col-7">
+          <button class="btn btn-sm btnGreen  btn-block" [disabled]="!contactForm.valid">Send Message</button>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="form-group col-12">
+        <button class="btn btn-sm btnSimpleRed btn-block" [routerLink]="['/auth']" >Cancel</button>
+      </div>
+    </div> 
+  </div>
+</div>    
+
+

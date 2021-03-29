@@ -10,11 +10,16 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { FacebookComponent } from './socialite/facebook/facebook.component';
 import { GithubComponent } from './socialite/github/github.component';
 import { GoogleComponent } from './socialite/google/google.component';
+import { SendMailComponent } from '../send-mail/send-mail.component';
 
 const AuthRoutes: Routes = [
   {
     path: '',
     children: [ 
+      {
+        path: 'contact',
+        component: SendMailComponent
+      },
       {
         path: 'login',
         component: LoginComponent

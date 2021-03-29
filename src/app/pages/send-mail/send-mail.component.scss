@@ -1,0 +1,31 @@
+.btnGreen {
+  margin-left: auto;
+  margin: auto 0.8em auto 0.4em;
+  text-decoration: none;
+  color: white !important;
+  background: linear-gradient(to right, #16c0b0, #84cf6a);
+}
+
+.btnRed {
+  margin-left: auto;
+  color: white;
+  margin: auto 0.8em auto 0.4em;
+  text-decoration: none;
+  background: linear-gradient(to right, #e02fe6, #ec0c96);
+}
+.btnSimpleRed {
+  margin-left: auto;
+  color: white;
+  margin: auto 0.8em auto 0.4em;
+  text-decoration: none;
+  background: linear-gradient(to right, #dae62f, #1940ee, #ee1000);
+}
+
+#contact-Form {
+    min-width: 200px;
+    max-width: 300px;
+    text-align: left;
+    padding: 15px;
+    border-radius: 0.5rem;
+    background-color: rgba(19, 120, 138, 0.5);
+}

@@ -16,7 +16,7 @@ import { Md5 } from 'ts-md5';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  checked = false;
+  checked: boolean = false;
   hide = true;
   submitted = false;
   isLoading = false;
@@ -32,9 +32,18 @@ export class RegisterComponent implements OnInit {
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       password_confirmation: new FormControl(null, [Validators.required, Validators.minLength(8)]),     
-      termsAndCondition: new FormControl(null, [Validators.required])     
-    }, { validator: MustMatch('password', 'password_confirmation')
-    });
+      termsAndCondition: new FormControl(false, [Validators.required])     
+    }, 
+      { validator: MustMatch('password', 'password_confirmation')}
+    );
+  }
+
+  aggreTermsAndCondition(){
+    return this.checked = true;
+    
+  }
+  disAggreTermsAndCondition(){
+    return this.checked = false; 
   }
 
   onSubmit() {
@@ -74,10 +83,6 @@ export class RegisterComponent implements OnInit {
     });
 
   }
-
-  // facebookLogin() {
-  //   this.socialiteService.loginWithFacebook();
-  // }
 
 
 }

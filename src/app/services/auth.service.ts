@@ -4,7 +4,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { EmailValidator } from '@angular/forms';
 import { AuthUser } from '../models/auth-user.model';
 
 
@@ -29,6 +28,7 @@ export interface AuthResponseData {
       department_id: number;
     };    
   };
+
 }
 
 
@@ -39,6 +39,7 @@ export interface AuthResponseData {
 export class AuthService {
   serverUrl = environment.baseURL;
 
+  url: string;
   authUser: AuthUser = null;
   authUserSubject = new Subject<AuthUser>(); 
 
@@ -91,9 +92,9 @@ export class AuthService {
   }  
 
   logout() {
+    this.userSubject.next(null);
     // remove authToken from local storage and set current user to null
     localStorage.removeItem('authToken');
-    this.userSubject.next(null);
     this.router.navigate(['/auth']);
   }
   
@@ -158,7 +159,6 @@ export class AuthService {
 
   loginWithSocialite(provider: any) {
     return this.http.get(`${this.serverUrl}/auth/${provider}`).pipe(map((response: any) => {
-      console.log(response);
       if (response.url) {
         window.location.href = response.url
       }

@@ -68,9 +68,9 @@
             <mat-checkbox 
               type="checkbox"
               class="example-margin"
-              formControlName="termsAndCondition" 
+              formControlName="termsAndCondition"
+              [(ngModel)]="checked" 
               required
-              [(ngModel)]="checked"
               >
               I agree to 
               <a 
@@ -78,7 +78,7 @@
                 data-toggle="modal" 
                 data-target="#exampleModalLong" 
                 data-placement="top" 
-                title="Click to open terms & condition "
+                title="Click to open terms & condition"
                 >
                 terms and conditions
               </a>  
@@ -88,11 +88,11 @@
             </mat-error>
         </div>
         <!-- Modal -->
-        <div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="modalLongTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" style="font-size: large; color: red;" id="exampleModalLongTitle">Terms & Conditions</h5>
+                <h5 class="modal-title" style="font-size: large; color: red;" id="modalLongTitle">Terms & Conditions</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -174,37 +174,23 @@
                 </tr>
                 <tr>
                   <th>
-                    4. Content Sources    
+                    4. Content Sources:    
                   </th>
                 </tr>
                 <tr>
                   <td>
                     <ul>
                       <li>
-                        All Content created and published on this website under the url https://www.bestcivilengineers.co.in are taken from openly published gradation lists, orders from time to time throughout the year from WB PWD website. If any discrepancy is found in this website then that would be treated as unintentional typo or programme bug(error) and tMb apologies you in advance for that type of mistake and also requests you to inform by e-mailing at support@bestcivilengineers.co.in for necessary correction.
-                      </li>
-                    </ul>     
-                  </td>
-                </tr>
-                <tr>
-                  <th>
-                    5. Support to tMb     
-                  </th>
-                </tr>
-                <tr>
-                  <td>
-                    <ul>
-                      <li>
-                        tMb request to all engineers of the West Bengal PWD wishing to get an admin role in this website which would help in the proper data maintenance to make it the future website for all West Bengal PWD Civil Engineers.
+                        All Content created and published on this website under the url https://www.bestcivilengineers.co.in are collected from openly published gradation lists or several other orders from time to time throughout the year from West Bengal PWD website or may be from any other reliable sources. If any discrepancy is found in this website then that would be treated as unintentional typo or programme bug(error) and tMb apologies you in advance for that type of mistake and also requests you to inform by e-mailing at support@bestcivilengineers.co.in for necessary correction.
                       </li>
                     </ul>     
                   </td>
                 </tr>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-success" (click)="checked = true" required data-dismiss="modal">I agree with the terms and conditions</button>
+                <button type="button" class="btn btn-sm btn-success" (click)="aggreTermsAndCondition()" required data-dismiss="modal">I agree with the terms and conditions</button>
                 <span class="spacer"></span>
-                <button type="button" (click)="checked = false" class="btn btn-sm btn-primary" data-dismiss="modal" >disagree</button>
+                <button type="button" (click)="disAggreTermsAndCondition()" class="btn btn-sm btn-primary" data-dismiss="modal" >disagree</button>
               </div>
             </div>
           </div>
