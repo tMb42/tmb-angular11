@@ -15,6 +15,11 @@ export class DropdownService {
 
   constructor(private http: HttpClient) { }
 
+  getCastes() {
+    return this.http.get(`${this.serverUrl}/castes`).pipe(
+      catchError(this.handleError)
+    );
+  }
   getDepartments() {
     return this.http.get(`${this.serverUrl}/departments`).pipe(
       catchError(this.handleError)
@@ -34,6 +39,11 @@ export class DropdownService {
   }
   getNonAdminRole() {
     return this.http.get(`${this.serverUrl}/rolesExceptAdmin`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getAllUserPermission() {
+    return this.http.get(`${this.serverUrl}/permissions`).pipe(
       catchError(this.handleError)
     );
   }

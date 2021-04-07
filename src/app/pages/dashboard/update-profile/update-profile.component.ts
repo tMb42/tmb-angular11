@@ -66,6 +66,9 @@ export class UpdateProfileComponent implements OnInit {
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 29200); //maximum age 80yrs
     this.maxDate.setDate(this.maxDate.getDate() - 6570);  //minimum age 18yrs
+
+
+
   }
 
   ngOnInit(): void {
@@ -170,7 +173,6 @@ export class UpdateProfileComponent implements OnInit {
     this.isLoading = true;
 
     const formData = this.profileUpdateForm.getRawValue();  
-    console.log(formData);  
     const updateUserProfileData = {
       firstname: formData.firstname,
       middlename: formData.middlename,
@@ -188,7 +190,7 @@ export class UpdateProfileComponent implements OnInit {
       remarks: formData.aboutMe,      
     }
 
-    this.authService.updateUserProfile(updateUserProfileData).pipe(first()).subscribe(response => {
+    this.authService.getUpdateUserProfile(updateUserProfileData).pipe(first()).subscribe(() => {
       this.router.navigate(['/dashboard'], { relativeTo: this.route });
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: "Your are successfully update your Profile" });       
     },

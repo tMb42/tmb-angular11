@@ -5,6 +5,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { AuthService } from '../../../../services/auth.service';
 import { PasswordValidation } from '../../../../validation/password-validator';
 import Swal from 'sweetalert2';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -29,7 +30,7 @@ export class PasswordChangeComponent implements OnInit {
   validConfirmPassword: boolean = false;
   matcher = new MyErrorStateMatcher();
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   isFieldValid(form: FormGroup, field: string) {
     return !form.get(field).valid && form.get(field).touched;
@@ -53,12 +54,12 @@ export class PasswordChangeComponent implements OnInit {
         password: formData.password,
         newPassword: formData.confirmPassword,
       }
-      console.log(changePasswordData);
       this.authService.changeLoginPassword(changePasswordData)
         .pipe(first())
         .subscribe( (res: any) => {
         if(res.success == 1){
           this.isLoading = false;
+          this.router.navigate(['../login'], { relativeTo: this.route });
           Swal.fire({ position: 'top-end', icon: 'success', title: res.message, showConfirmButton: false, timer: 4000});
         }else{
           this.isLoading = false;

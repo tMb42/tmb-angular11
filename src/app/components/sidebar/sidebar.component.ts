@@ -39,6 +39,20 @@ export const ROUTES: RouteInfo[] = [
     icontype: 'dashboard'
   },
   {
+    path: '/engrs',
+    title: 'WB PWD Engineers',
+    ablity: 1,
+    type: 'link',
+    icontype: 'architecture'
+  },
+  {
+    path: '/pwd-works',
+    title: 'PWD-Works',
+    is_departmental: 1,
+    type: 'link',
+    icontype: 'work'
+  },
+  {
     path: '/dashboard',
     title: 'User Management',
     role: 'super_admin',
@@ -55,19 +69,18 @@ export const ROUTES: RouteInfo[] = [
     ]
   },
   {
-    path: '/engrs',
-    title: 'WB PWD Engineers',
-    ablity: 1,
-    type: 'link',
-    icontype: 'architecture'
-  },
-  {
-    path: '/pwd-works',
-    title: 'PWD-Works',
-    is_departmental: 1,
-    type: 'link',
-    icontype: 'work'
-  },
+    path: '/engrsCpanel',
+    title: 'Cpanel - PWD Engineers',
+    role: 'super_admin',
+    type: 'sub',
+    icontype: 'school',
+    collapse: 'pwdEngrs',
+    children: [
+      {path: 'update-je', title: 'Junior Engineer', ab:'UJE'},
+      {path: 'update-ae', title: 'Assistant Engineer', ab:'UAE'},
+      {path: 'update-se', title: 'Senior Engineer', ab:'USE'},
+    ]
+  },  
   {
     path: '/developers',
     title: 'Web Development',
@@ -131,6 +144,10 @@ export class SidebarComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.getAuthUserUpdateListener().subscribe( (res:any) => {
+      this.authUser = res.user;
+    });
+
     this.menuItems = ROUTES.filter(menuItem => menuItem);
 
     if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
@@ -140,10 +157,6 @@ export class SidebarComponent implements OnInit {
 
     this.authService.getAuthUser().pipe(first()).subscribe( (response: any) => {
       this.authUser = response.data;
-    });
-    
-    this.authService.getAuthUserUpdateListener().subscribe( (res:any) => {
-      this.authUser = res.user;
     });
     
   }
@@ -164,7 +177,7 @@ export class SidebarComponent implements OnInit {
 
   //  for a single link menu
   isPwdEngineer(menuitem): boolean {
-    if(this.authUser.is_departmental ==1){
+    if(this.authUser.is_departmental == 1){
       if(menuitem.is_departmental === this.authUser.is_departmental || 
           menuitem.ablity === this.authUser.is_pwd_engineer || 
           (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)) || 
@@ -195,12 +208,12 @@ export class SidebarComponent implements OnInit {
   }
 
   //  for a sub menu link
-  activeSubMenu(menuitem): boolean{
-    if(menuitem.display === this.authUser.display || (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
-      return true;
-    }  
-    return false;
-  }
+  // activeSubMenu(menuitem): boolean{
+  //   if(menuitem.display === this.authUser.display || (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
+  //     return true;
+  //   }  
+  //   return false;
+  // }
  
 
 }

@@ -39,8 +39,7 @@ export class RegisterComponent implements OnInit {
   }
 
   aggreTermsAndCondition(){
-    return this.checked = true;
-    
+    return this.checked = true;    
   }
   disAggreTermsAndCondition(){
     return this.checked = false; 
@@ -79,7 +78,6 @@ export class RegisterComponent implements OnInit {
       }else{
         Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.errors.password, showConfirmButton: false, timer: 4000 });
       }
-
     });
 
   }

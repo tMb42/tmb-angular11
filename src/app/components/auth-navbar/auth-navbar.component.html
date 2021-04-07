@@ -13,7 +13,6 @@
               <strong style="color: white;">Step-2 =></strong> Verify your email from email verify Notification.
               <strong style="color: white;">Step-3 =></strong> After succesfull email verification. Go for Login.
               <strong style="color: white;">Step-4 =></strong> After login you access Dashboard and then update your profile to get your website menu as per your registration profile.
-              <strong style="color: red;">Step-5 =></strong> upto 21-04-2021 all menu if accesable for all valid registered user.
             </span>
           </p>
         </div>
@@ -23,7 +22,7 @@
           <mat-icon>home</mat-icon>
           Home
         </button>
-        <button mat-button *ngIf="isLoggedIn" [routerLink]="['dashboard']" routerLinkActive="active">
+        <button mat-button *ngIf="isLoggedIn" [routerLink]="['/dashboard']" routerLinkActive="active">
           <mat-icon>dashboard</mat-icon>
           Dashboard
         </button>
@@ -55,13 +54,13 @@
             <span>Contact</span>
           </button>
           <button mat-menu-item>
-            <a href="https://www.youtube.com/playlist?list=PL-XnBqE6GzTrF2nX1Qm3v_eQgqo1U4xYH">
+            <a href="https://www.youtube.com/playlist?list=PL-XnBqE6GzTrF2nX1Qm3v_eQgqo1U4xYH" target="_blank">
               <mat-icon >ondemand_video</mat-icon>
               <span>Help</span>
             </a>
           </button>
           <button mat-menu-item>
-            <a href="https://www.facebook.com/tmb2021">
+            <a href="https://www.facebook.com/tmb2021" target="_blank">
               <mat-icon >facebook</mat-icon>
               <span>Facebook</span>
             </a>

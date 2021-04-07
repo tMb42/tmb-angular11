@@ -1,4 +1,4 @@
-<nav class="navbar-expand-lg navbar-transparent  navbar-absolute">
+<nav class="navbar-expand-lg navbar-transparent navbar-absolute">
     <div class="wrapper">
         <div class="navbar-top">
             <mat-toolbar id="toolbar" class="transparent">
@@ -21,10 +21,10 @@
 
                 <span class="spacer"></span>
 
-                <button mat-stroked-button color="primary" [routerLink]="['']" routerLinkActive="active">
+                <button mat-button color="primary" [routerLink]="['']" routerLinkActive="active">
                     <mat-icon>home</mat-icon>Home
                 </button>
-                <button mat-stroked-button color="warn" *ngIf="isLoggedIn" (click)="logout()">
+                <button mat-button color="warn" *ngIf="isLoggedIn" (click)="logout()">
                     <mat-icon>exit_to_app</mat-icon>Logout
                 </button>
             </mat-toolbar>

@@ -24,17 +24,17 @@ declare var $: any;
 export class NavbarComponent implements OnInit {
 
   private listTitles: any[];
-    location: Location;
-    mobile_menu_visible: any = 0;
-    private nativeElement: Node;
-    private toggleButton: any;
-    private sidebarVisible: boolean;
-    private _router: Subscription;
+  location: Location;
+  mobile_menu_visible: any = 0;
+  private nativeElement: Node;
+  private toggleButton: any;
+  private sidebarVisible: boolean;
+  private _router: Subscription;
   
   @ViewChild('app-navbar', {static: false}) button: any;
   
    
-  constructor(private authService: AuthService, location: Location, private renderer: Renderer2, private element:     ElementRef, private router: Router,) {
+  constructor(private authService: AuthService, location: Location, private renderer: Renderer2, private element: ElementRef, private router: Router,) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
@@ -234,13 +234,10 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    Swal.fire({
-      icon: 'success',
-      title: 'You Are Logout Successfully',
-      showConfirmButton: false,
-      timer: 2000
-    });  
+    this.authService.logout().subscribe(data=>{
+      Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 }); 
+    });
+     
   }
 
 

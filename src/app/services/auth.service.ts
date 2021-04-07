@@ -8,10 +8,10 @@ import { AuthUser } from '../models/auth-user.model';
 
 
 export interface AuthResponseData {
-  success: number;
-  message: string;
+  success: number,
+  message: string,
   userData: {
-    token: string;
+    token: string,
     user: { 
       firstname: string, 
       middlename: string, 
@@ -21,11 +21,12 @@ export interface AuthResponseData {
       password: string, 
       password_confirmation: string,
       device_name: string, 
-      roleId: number,
-      id: number
-      dob: Date;
-      designation_id: number;
-      department_id: number;
+      roles: string,
+      roleId: string,
+      id: number,
+      dob: Date,
+      designation_id: number,
+      department_id: number,
     };    
   };
 
@@ -41,17 +42,17 @@ export class AuthService {
 
   url: string;
   authUser: AuthUser = null;
-  authUserSubject = new Subject<AuthUser>(); 
+  authUserSubject = new Subject<AuthUser>();  
 
-  private userSubject: BehaviorSubject<AuthResponseData>;
-  public user: Observable<AuthResponseData>;
+  private userSubject: BehaviorSubject<AuthUser>;
+  public user: Observable<AuthUser>;
 
   constructor(private http: HttpClient, private router: Router) { 
-    this.userSubject = new BehaviorSubject<AuthResponseData>(JSON.parse(localStorage.getItem('authToken')));
+    this.userSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('authToken')));
     this.user = this.userSubject.asObservable();
   }
-
-  public get userValue(): AuthResponseData {
+  
+  public get userValue(): AuthUser {
     return this.userSubject.value;    
   }
 
@@ -73,6 +74,7 @@ export class AuthService {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('authToken', JSON.stringify(resData));
         this.userSubject.next({...resData});
+       
       }),
       catchError(this.handleError)
 
@@ -92,10 +94,15 @@ export class AuthService {
   }  
 
   logout() {
-    this.userSubject.next(null);
-    // remove authToken from local storage and set current user to null
-    localStorage.removeItem('authToken');
-    this.router.navigate(['/auth']);
+    return this.http.post<any>(`${this.serverUrl}/logout`, {})
+      .pipe(catchError(this.handleError), tap(() => {
+        this.userSubject.next(null);
+        // remove authToken from local storage and set current user to null
+        localStorage.removeItem('authToken');
+        this.router.navigate(['/auth']);
+      })
+    );
+    
   }
   
   register(registerData) {
@@ -103,8 +110,10 @@ export class AuthService {
   }
 
   getAuthUser() {
-    return this.http.get<AuthUser>(`${this.serverUrl}/userDetails`).pipe(
-    catchError(this.handleError)
+    return this.http.get<AuthUser>(`${this.serverUrl}/userDetails`)
+      .pipe(catchError(this.handleError), tap((res: any) => {
+        this.authUser = res.data;
+      })
     );
   }
 
@@ -138,7 +147,7 @@ export class AuthService {
     );
   }
 
-  updateUserProfile(profileData) {
+  getUpdateUserProfile(profileData) {
     return this.http.post<any>(`${this.serverUrl}/user/profile`, profileData).pipe(
       catchError(this.handleError),
       tap((res: any) => {
@@ -179,7 +188,6 @@ export class AuthService {
         }
       }),
       catchError(this.handleError)
-
     );
   }
   
@@ -192,7 +200,6 @@ export class AuthService {
         }
       }),
       catchError(this.handleError)
-
     );
   }
 

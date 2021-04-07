@@ -5,14 +5,8 @@ import { first } from 'rxjs/operators';
 import { DropdownService } from '../../../services/dropdown.service';
 import { UserService } from '../../../services/user.service';
 import { Users } from '../../../models/user.model';
+import { Roles } from '../../../models/role.model';
 import Swal from 'sweetalert2';
-
-
-export interface Roles {
-  id: number;
-  label: string;
-  name: string;
-}
 
 @Component({
   selector: 'app-user-role',
@@ -29,7 +23,7 @@ export class UserRoleComponent implements OnInit {
   roles: Roles[] = null;
   success: number = 0;
   message: any = '';
-
+  status: any = '';
   submitted = false;
   loading = false;  
   showBoundaryLinks = true;
@@ -42,7 +36,7 @@ export class UserRoleComponent implements OnInit {
   totalRecords: Number;
   skip: number; 
   
-  selectedItems = [];
+  selectedItems:any = [];
   dropdownSettings: any = {};  
 
   constructor(private fb: FormBuilder, private userService: UserService, private dropdownService: DropdownService,) 
@@ -62,13 +56,12 @@ export class UserRoleComponent implements OnInit {
       searchPlaceholderText: 'search Roles',
       clearSearchFilter: true,
       singleSelection: false,
-      // closeDropDownOnSelection:true
+      closeDropDownOnSelection:true
     };
 
     this.getAllUserList();
 
     this.userService.getUserUpdateListener().subscribe( (res:any) => {
-      console.log('dsgsg', res)
       this.users = res.users.data;
     });
     
@@ -78,12 +71,9 @@ export class UserRoleComponent implements OnInit {
     });
   }
 
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
+  onItemSelect(item: any) {}
+
+  onSelectAll(items: any) {}
 
   getAllUserList() {
     const requestObj = {
@@ -96,7 +86,6 @@ export class UserRoleComponent implements OnInit {
       this.loading = false;
       this.users = res.users.data;
       this.totalRecords = res.users.total;
-      console.log(this.users);
     });  
 
     this.userRoleForm = this.fb.group({
@@ -121,15 +110,36 @@ export class UserRoleComponent implements OnInit {
     this.loading = false;
   }
 
-  onSubmit() {
+  addRole() {
    this.submitted = true;
     this.loading = true;
-    this.userService.updateUserRoles(this.userRoleForm.value).pipe(first()).subscribe((res: any) => {
+    this.userService.addUserRoles(this.userRoleForm.value).pipe(first()).subscribe((res: any) => {
       this.loading = false;
       this.users = res.users.data;
-      if(this.success == 1){
-        Swal.fire({ position: 'top-end', icon: 'success', title: 'Role updated successfully', showConfirmButton: false, timer: 2000 }); 
-      }else if(this.success == 422){
+      if(res.success == 1){
+        Swal.fire({ position: 'top-end', icon: 'success', title: 'Role added successfully', showConfirmButton: false, timer: 2000 }); 
+      }else if(res.success == 0){
+        console.log(res);
+        this.message = res.message;
+        Swal.fire({ position: 'top-end', icon: 'error', title: res.message, showConfirmButton: false, timer: 4000 }); 
+      }else{
+
+      }    
+    }, err => {
+      this.loading = false;
+      Swal.fire({ position: 'top-end', icon: 'error', title: err, showConfirmButton: false, timer: 2000 }); 
+    }); 
+  }
+
+  deleteRole() {
+   this.submitted = true;
+    this.loading = true;
+    this.userService.deleteUserRoles(this.userRoleForm.value).pipe(first()).subscribe((res: any) => {
+      this.loading = false;
+      this.users = res.users.data;
+      if(res.success == 1){
+        Swal.fire({ position: 'top-end', icon: 'success', title: 'Role deleted successfully', showConfirmButton: false, timer: 2000 }); 
+      }else if(res.success == 0){
         console.log(res);
         this.message = res.message;
         Swal.fire({ position: 'top-end', icon: 'error', title: res.message, showConfirmButton: false, timer: 4000 }); 
@@ -160,4 +170,6 @@ export class UserRoleComponent implements OnInit {
     this.userService.delete(id).pipe(first()).subscribe(() => 
     this.users = this.users.filter(x => x.id !== id));
   }
+
+
 }

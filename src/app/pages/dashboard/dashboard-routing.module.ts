@@ -16,7 +16,7 @@ import { UserRoleComponent } from './user-role/user-role.component';
 import { UserPermissionComponent } from './user-permission/user-permission.component';
 
 const DashboardRoutes: Routes = [
-  { path: '', redirectTo: '/auth', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
     path: '',
     children: [ 
@@ -41,7 +41,7 @@ const DashboardRoutes: Routes = [
         component: UserRoleComponent,
         canActivate: [AuthGuard],
         data: {
-          roles: ["super_admin"]
+          roles: ["junior_engineer"]
         }        
       },
       {

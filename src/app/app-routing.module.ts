@@ -3,16 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { CpanelLayoutComponent } from './layouts/cpanel-layout/cpanel-layout.component';
 import { PwdEngrsLayoutComponent } from './layouts/pwd-engrs-layout/pwd-engrs-layout.component';
 import { PwdWorksLayoutComponent } from './layouts/pwd-works-layout/pwd-works-layout.component';
 import { AuthGuard } from './services/auth.guard';
 
 const AppRoutes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'auth',
-  //   pathMatch: 'full',
-  // },
+  {
+    path: '',
+    redirectTo: 'auth',
+    pathMatch: 'full',
+  },
   {
     path: '',
     component: AdminLayoutComponent,
@@ -33,7 +34,6 @@ const AppRoutes: Routes = [
   {
     path: '',
     component: PwdEngrsLayoutComponent,
-    canActivate: [AuthGuard],
     children: [
       {
         path: 'engrs',
@@ -42,6 +42,9 @@ const AppRoutes: Routes = [
       {
         path: 'jengrs',
         canActivate: [AuthGuard],
+        data: {
+          roles: ["junior_engineer"]
+        },
         loadChildren:()=> import('./pages/pwd-engrs/jengrs/jengrs.module').then(mod => mod.JengrsModule)
       },
       {
@@ -54,10 +57,20 @@ const AppRoutes: Routes = [
       }
     ]
   },
+  {
+    path: '',
+    component: CpanelLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [{
+      path: 'engrsCpanel',
+      loadChildren:()=> import('./pages/control-panel/Control-Panel.module').then(mod => mod.ControlPanelModule)
+    }]
+  },
   
   {
     path: '',
     component: PwdWorksLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'pwd-works',

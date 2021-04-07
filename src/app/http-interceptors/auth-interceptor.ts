@@ -11,13 +11,10 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // add auth header with token if user is logged in and request is to the api url
         const user = this.auth.userValue;
-        const isLoggedIn = user && user.userData;
-        // const isLoggedIn = this.auth.isLoggedIn();
+        const isLoggedIn = user && user.token;
         const isApiUrl = request.url.startsWith(environment.baseURL);
-        // console.log('TestCase', isLoggedIn);
         if (isLoggedIn && isApiUrl) { 
             const authKey = this.auth.getAuthorizationToken();
-            // console.log('sfafag', authKey)
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${authKey}`

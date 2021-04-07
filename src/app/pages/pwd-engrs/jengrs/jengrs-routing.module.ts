@@ -14,11 +14,7 @@ const JeRoutes: Routes = [
     children: [
       {
         path: "gradation",
-        canActivate: [AuthGuard],
-        component: JeGradationComponent,
-        data: {
-          roles: ["junior_engineer", "chief_engineer"]
-        }
+        component: JeGradationComponent
       },
       {
         path: "passed",

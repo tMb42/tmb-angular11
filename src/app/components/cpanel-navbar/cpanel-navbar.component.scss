@@ -1,0 +1,46 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.container-fluid {
+  margin: 0px;
+  width: auto;
+}
+
+.wrapper {
+  position: relative;
+  background-color: transparent;
+  top: 0px;
+  width: 100%;
+  height: 0vh;
+}
+
+.navbar-top {
+  position: relative;
+  background-color: transparent;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.navbar {
+  overflow: visible;
+  font-family: century gothic;
+  background-color: transparent;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#toolbar {
+  position: relative;
+  background-color: transparent;
+  height: 100px;
+}
+
+#navbar-top {
+  min-height: 125px;
+  position: relative;
+  background-color: transparent;
+  padding-top: 0px;
+  //   padding-bottom: 100px;
+}
+

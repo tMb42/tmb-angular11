@@ -31,7 +31,9 @@ export class AuthNavbarComponent implements OnInit {
 
   logoutCurrentUser(): void {
     this.loading = true;
-    this.authService.logout();
+    this.authService.logout().subscribe(data=>{
+      console.log(data);
+    });
     Swal.fire({icon: 'success', title: 'You Are Logout Successfully', showConfirmButton: false, timer: 2000 });
   }
 

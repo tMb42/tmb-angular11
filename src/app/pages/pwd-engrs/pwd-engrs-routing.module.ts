@@ -11,11 +11,8 @@ const PwdEngrsRoutes: Routes = [
       {
         path: 'engrs',
         component: JeGradationComponent,
-        canActivate: [AuthGuard],
-        data: {
-          roles: ["super_admin"]
-        }
-      },  
+      }
+      
     ]    
   }
 ];

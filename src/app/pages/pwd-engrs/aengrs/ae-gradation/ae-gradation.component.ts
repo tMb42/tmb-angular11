@@ -15,6 +15,7 @@ import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 })
 
 export class AeGradationComponent implements OnInit {
+  aeGradationForm: FormGroup; 
   showBoundaryLinks = true;
   page: number = 1;
   currentPage: number;
@@ -34,6 +35,11 @@ export class AeGradationComponent implements OnInit {
 
   ngOnInit(): void {
     this.aeLatestGradations();
+
+    this.aeGradationForm = this.fb.group({
+      gradationDate: new FormControl(null)
+    });
+
   }
 
   aeLatestGradations(){
@@ -54,6 +60,10 @@ export class AeGradationComponent implements OnInit {
       this.totalRecords = res.aeLatestTotal[0].total;
       this.totalPages = res.assistantEngineers.total_pages;
       this.currentPage = res.assistantEngineers.current_page;
+
+      this.aeGradationForm.patchValue({
+        gradationDate: this.SelectedAeGradationWef.gradation_list_wef,      
+      });
 
     });
 
@@ -91,7 +101,12 @@ export class AeGradationComponent implements OnInit {
       
       this.totalRecords = res.assistantEngineers.total;
       this.totalPages = res.assistantEngineers.total_pages;
-      this.currentPage = res.assistantEngineers.current_page;      
+      this.currentPage = res.assistantEngineers.current_page;   
+      
+      this.aeGradationForm.patchValue({
+        gradationDate: this.SelectedAeGradationWef.gradation_list_wef,      
+      });
+
     });
   }
 

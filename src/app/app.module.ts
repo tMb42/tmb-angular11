@@ -23,6 +23,8 @@ import { FooterModule } from './components/footer/footer.module';
 import { AlertComponent } from './components/alert/alert.component';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { SendMailComponent } from './pages/send-mail/send-mail.component';
+import { CpanelLayoutComponent } from './layouts/cpanel-layout/cpanel-layout.component';
+import { CpanelNavbarModule } from './components/cpanel-navbar/cpanel-navbar.module';
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import { SendMailComponent } from './pages/send-mail/send-mail.component';
     PwdWorksLayoutComponent,
     AlertComponent,
     SendMailComponent,
+    CpanelLayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,9 +50,10 @@ import { SendMailComponent } from './pages/send-mail/send-mail.component';
     FooterModule,
     AuthNavbarModule,
     ProgressBarModule,
-    NavbarModule,
+    NavbarModule,   
     PwdEngrsNavbarModule,
     PwdWorksNavbarModule,
+    CpanelNavbarModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

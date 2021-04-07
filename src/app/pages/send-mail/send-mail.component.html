@@ -10,7 +10,7 @@
       </div>
     </div>
     
-    <form style="margin-bottom: 0px;" [formGroup]="contactForm" name="contactForm" (ngSubmit)="submitContactForm()" >
+    <form style="margin-bottom: 0px;" [formGroup]="contactForm" name="contactForm" >
       <div class="form-group">
         <input type="text" formControlName="fullname" class="form-control" placeholder="full Name" [ngClass]="{ 'is-invalid': submitted && f.fullname.errors }" />
         <div *ngIf="submitted && f.fullname.errors" class="invalid-feedback">
@@ -41,7 +41,7 @@
           <button class="btn btn-sm btnRed btn-block" (click)="resetForm()">Reset</button>
         </div>
         <div class="form-group col-7">
-          <button class="btn btn-sm btnGreen  btn-block" [disabled]="!contactForm.valid">Send Message</button>
+          <button class="btn btn-sm btnGreen  btn-block" [disabled]="!contactForm.valid" (click)="submitContactForm()">Send Message</button>
         </div>
       </div>
     </form>

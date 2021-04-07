@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
         
     this.authService.login(loginData).pipe(first()).subscribe({ next: () => {
       // get return url from query parameters or default to home page
-      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
       this.router.navigateByUrl(returnUrl);
 
       Swal.fire({ position: 'top-end', icon: 'success', title: 'Thank you for signing in', showConfirmButton: false, timer: 2000 });

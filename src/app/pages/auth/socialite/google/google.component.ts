@@ -26,7 +26,7 @@ export class GoogleComponent implements OnInit {
     this.isLoading = true;
     this.authService.loginGoogleCallback(this.urlParams).subscribe({ next: () => {
       // get return url from query parameters or default to home page
-      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
       this.router.navigateByUrl(returnUrl);
       this.isLoading = false;
       Swal.fire({ position: 'top-end', icon: 'success', title: 'Google Logged In Successfully', showConfirmButton: false, timer: 4000 });
@@ -39,7 +39,7 @@ export class GoogleComponent implements OnInit {
           icon: 'error',
           title: 'Email associated with Google has already been Registered',
           showConfirmButton: false,
-          timer: 4000
+          timer: 4000,
         });
       }
 

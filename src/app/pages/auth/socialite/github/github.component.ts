@@ -25,7 +25,7 @@ export class GithubComponent implements OnInit {
     this.isLoading = true;
     this.authService.loginGitHubCallback(this.urlParams).subscribe({ next: () => {
       // get return url from query parameters or default to home page
-      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
       this.router.navigateByUrl(returnUrl);
        this.isLoading = false;
       Swal.fire({ position: 'top-end', icon: 'success', title: 'Github Logged In Successfully', showConfirmButton: false, timer: 4000 });

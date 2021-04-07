@@ -1,4 +1,5 @@
 export class AuthUser {
+  token: string;
   id: number;
   name: string;
   first_name: string;
@@ -7,6 +8,7 @@ export class AuthUser {
   email: string; 
   gender: string;
   roles?: string; 
+  roleId?: string; 
   permissions?: string; 
   ability_id?: number; 
   dob: Date; 

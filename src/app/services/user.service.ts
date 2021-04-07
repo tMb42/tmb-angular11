@@ -43,8 +43,26 @@ export class UserService {
   }
 
 
-  updateUserRoles(params: any) {
-    return this.http.put(`${serverUrl}/updateRoles/${params.id}`, params).pipe(
+  addUserRoles(params: any) {
+    return this.http.put(`${serverUrl}/addRoles/${params.id}`, params).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteUserRoles(params: any) {
+    return this.http.put(`${serverUrl}/deleteRoles/${params.id}`, params).pipe(
+      catchError(this.handleError)
+    );
+  }
+  addUserPermissions(data: any) {
+    return this.http.put(`${serverUrl}/addAbility/${data.id}`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteUserPermissions(data: any) {
+    console.log('ff', data);
+    return this.http.delete(`${serverUrl}/deleteAbility/${data.id}`, data).pipe(
       catchError(this.handleError)
     );
   }
