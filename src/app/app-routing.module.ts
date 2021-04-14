@@ -34,6 +34,7 @@ const AppRoutes: Routes = [
   {
     path: '',
     component: PwdEngrsLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'engrs',
@@ -43,16 +44,24 @@ const AppRoutes: Routes = [
         path: 'jengrs',
         canActivate: [AuthGuard],
         data: {
-          roles: ["junior_engineer"]
+          roles: ["super_admin", "junior_engineer","assistant_engineer", "executive_engineer", "superindending_engineer", "chief_engineer"]
         },
         loadChildren:()=> import('./pages/pwd-engrs/jengrs/jengrs.module').then(mod => mod.JengrsModule)
       },
       {
         path: 'aengrs',
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin", "junior_engineer","assistant_engineer", "executive_engineer", "superindending_engineer", "chief_engineer"]
+        },
         loadChildren:()=> import('./pages/pwd-engrs/aengrs/aengrs.module').then(mod => mod.AengrsModule)
       },
       {
         path: 'sengrs',
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin","junior_engineer","assistant_engineer", "executive_engineer", "superindending_engineer", "chief_engineer"]
+        },
         loadChildren:()=> import('./pages/pwd-engrs/sengrs/sengrs.module').then(mod => mod.SengrsModule)
       }
     ]
@@ -63,6 +72,10 @@ const AppRoutes: Routes = [
     canActivate: [AuthGuard],
     children: [{
       path: 'engrsCpanel',
+      canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin", "admin"]
+        },
       loadChildren:()=> import('./pages/control-panel/Control-Panel.module').then(mod => mod.ControlPanelModule)
     }]
   },
@@ -74,6 +87,10 @@ const AppRoutes: Routes = [
     children: [
       {
         path: 'pwd-works',
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin", "junior_engineer","assistant_engineer", "executive_engineer", "superindending_engineer", "chief_engineer"]
+        },
         loadChildren:()=> import('./pages/pwd-works/pwd-works.module').then(mod => mod.PwdWorksModule)
       }
     ]

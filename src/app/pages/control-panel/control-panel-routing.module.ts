@@ -15,7 +15,7 @@ const pwdEngrsControlRoute: Routes = [
         component: JuniorEngrsComponent,
         canActivate: [AuthGuard],
         data: {
-          roles: ["super_admin"]
+          roles: ["super_admin", "admin"]
         },
       },
       {
@@ -23,7 +23,7 @@ const pwdEngrsControlRoute: Routes = [
         component: AssistantEngrsComponent,
         canActivate: [AuthGuard],
         data: {
-          roles: ["super_admin"]
+          roles: ["super_admin", "admin"]
         },
       },
       {
@@ -31,7 +31,7 @@ const pwdEngrsControlRoute: Routes = [
         component: SeniorEngrsComponent,
         canActivate: [AuthGuard],
         data: {
-          roles: ["super_admin"]
+          roles: ["super_admin", "admin"]
         },
       },
     ]
