@@ -12,7 +12,7 @@ export interface AuthResponseData {
   message: string,
   userData: {
     token: string,
-    user: { 
+    // user: { 
       firstname: string, 
       middlename: string, 
       lastname: string, 
@@ -27,7 +27,7 @@ export interface AuthResponseData {
       dob: Date,
       designation_id: number,
       department_id: number,
-    };    
+    // };    
   };
 
 }
@@ -44,15 +44,15 @@ export class AuthService {
   authUser: AuthUser = null;
   authUserSubject = new Subject<AuthUser>();  
 
-  private userSubject: BehaviorSubject<AuthUser>;
-  public user: Observable<AuthUser>;
+  private userSubject: BehaviorSubject<AuthResponseData>;
+  public user: Observable<AuthResponseData>;
 
   constructor(private http: HttpClient, private router: Router) { 
-    this.userSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('authToken')));
+    this.userSubject = new BehaviorSubject<AuthResponseData>(JSON.parse(localStorage.getItem('authToken')));
     this.user = this.userSubject.asObservable();
   }
   
-  public get userValue(): AuthUser {
+  public get userValue(): AuthResponseData {
     return this.userSubject.value;    
   }
 

@@ -24,10 +24,14 @@
                         <tr>
                             <th class="text-center text-truncate" scope="col" >Sl.</th>
                             <th class="text-center text-truncate" scope="col" >ID</th>
+                            <th class="text-center" data-sortable="true" scope="col" >Avatar</th>
                             <th class="text-left" data-sortable="true" scope="col" >Name</th>
+                            <th class="text-center" scope="col" >Socialite</th>
                             <th class="text-center" scope="col" >Email</th>
-                            <th class="text-center" scope="col">Email Verified</th>
+                            <th class="text-center" class="text-center" scope="col">Department</th>
+                            <th class="text-center" class="text-center" scope="col">Designation</th>
                             <th class="text-center" class="text-center" scope="col">Role</th>
+                             <th class="text-center" scope="col">Email Verified</th>
                             <th class="text-center" scope="col">Created</th>
                             <th class="text-center" scope="col">Last Update</th>
                             <th class="text-center" scope="col">Action</th>
@@ -37,17 +41,24 @@
                         <tr *ngFor="let user of users; let sl = index;" >
                             <td class="text-center" scope="row">{{ sl + 1 }}</td>
                             <td class="text-center" scope="row">{{ user.id }}</td>
+                            <td class="text-center" scope="row"><img [src]="user.photo" class="avatar"></td>
                             <td class="text-left" scope="row">{{ user.name }}</td>
+                            <td class="text-left" scope="row">{{user.provider}}</td>
                             <td class="text-left" scope="row">{{user.email}}</td>
-                            <td scope="row">{{user.email_verified_at}}</td>
+                            <td class="text-center" scope="row">{{user.department_short_name}}</td>
+                            <td class="text-center" scope="row">{{user.designation_alias}}</td>
                             <td scope="row">{{user.roleLabel}}</td>
+                            <td scope="row">{{user.email_verified_at}}</td>
                             <td scope="row">{{user.created_at}}</td>
                             <td scope="row">{{user.updated_at}}</td>
                             <td scope="row" style="white-space: nowrap">
-                                <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                                <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
-                                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
-                                    <span *ngIf="!user.isDeleting">Delete</span>
+                                <button 
+                                    class="btn btn-sm btn-rose btn-block" 
+                                    (click)="getActiveUserDetailsById(user.id)"
+                                    data-toggle="modal" 
+                                    data-target="#exampleModalLong"
+                                    >
+                                    Suspend
                                 </button>
                             </td>
                         </tr>
@@ -89,5 +100,36 @@
                 </div>
             </div>
         </div>
-    <div>
+
+        <div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="modalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-size: large; color: red;" id="modalLongTitle">Suspend User Account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form [formGroup]="userActiveForm">
+                        <div class="card-body" *ngIf="users">
+                            <div class="text-center" formControlName="photo"><img [src]="users.photo" class="avatar"></div>
+                            <div class="form-group col-6">
+                                <input type="text" formControlName="name">
+                            </div>
+                               
+                            <mat-form-field class="example-full-width">
+                                <input matInput >
+                            </mat-form-field>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" (click)="suspendUserAc()" >Lock</button>
+                        </div>
+                    </form>`    
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    
 <div>

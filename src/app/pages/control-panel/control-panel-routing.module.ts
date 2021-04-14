@@ -13,17 +13,26 @@ const pwdEngrsControlRoute: Routes = [
       {
         path: 'update-je',
         component: JuniorEngrsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        },
       },
       {
         path: 'update-ae',
         component: AssistantEngrsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        },
       },
       {
         path: 'update-se',
         component: SeniorEngrsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin"]
+        },
       },
     ]
   }

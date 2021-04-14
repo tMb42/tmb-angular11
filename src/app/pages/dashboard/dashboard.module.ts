@@ -14,7 +14,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -48,14 +47,13 @@ console.log('Test for Dashboard Module. Loaded Ok')
     FontAwesomeModule,
     PaginationModule,
     MatDatepickerModule,
-    MatNativeDateModule,
-   
-    // MatButtonModule,
-    // MatCardModule,
-    // MatCheckboxModule,
-    // MatFormFieldModule,
-    // MatIconModule,
-    
+    MatNativeDateModule,   
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
     DashboardRoutingModule,
     NavbarModule,
     NgMultiSelectDropDownModule.forRoot(),

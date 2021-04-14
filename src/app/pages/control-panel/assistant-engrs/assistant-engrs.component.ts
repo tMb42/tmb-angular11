@@ -66,7 +66,6 @@ export class AssistantEngrsComponent implements OnInit {
 
     this.aengrsService.getAeUpdateListener().subscribe( res => {
       this.loading = false;
-      console.log('2',res);
       this.aEngrs = res;
     });
      
@@ -99,24 +98,39 @@ export class AssistantEngrsComponent implements OnInit {
   }
 
   changeDob(value: Date): void {
-    this.aeDob = formatDate(value, 'yyyy-MM-dd', 'en');
+    if(value != null){
+      this.aeDob = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.aeDoc = null;
+    }
   }
   changeDoj(value: Date): void {
-    this.aeDoj = formatDate(value, 'yyyy-MM-dd', 'en');
+    if(value != null){
+      this.aeDoj = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.aeDoc = null;
+    } 
   }
   changeDoc(value: Date): void {
-    this.aeDoc = formatDate(value, 'yyyy-MM-dd', 'en');
-    console.log('2422', this.aeDoc);
+    if(value != null){
+      this.aeDoc = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.aeDoc = null;
+    } 
   }
   changeDor(value: Date): void {
-    this.aeDor = formatDate(value, 'yyyy-MM-dd', 'en');    
+    if(value != null){
+      this.aeDor = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.aeDoc = null;
+    }    
   }
   changeEehs(value: Date) {
-    this.eehs = formatDate(value, 'yyyy-MM-dd', 'en');
-    console.log('222', this.eehs);
-  }
-  changeGwef(value: Date): void {
-    this.gwef = formatDate(value, 'yyyy-MM-dd', 'en');
+    if(value != null){
+      this.eehs = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.aeDoc = null;
+    } 
   }
 
   updateAeData(){
@@ -137,13 +151,11 @@ export class AssistantEngrsComponent implements OnInit {
       doc: this.aeDoc,
       dor: this.aeDor,
       eeHgrScale: this.eehs,
-      wef: this.gwef,
     }
 
-    console.log('update',updateAeData);
-    
     this.aengrsService.aeUpdateDataById(updateAeData).subscribe(() => {
       this.loading = false;
+      this.formReset();
       Swal.fire({ position: 'top-end', icon: 'success', title: 'AE Data Updated successfully', showConfirmButton: false, timer: 2000 }); 
 
     }, err => {
@@ -159,7 +171,6 @@ export class AssistantEngrsComponent implements OnInit {
       itemsPerPage: this.pageSize,
       wef: this.gradationDate,
     }
-    console.log(requestObj);
     this.aengrsService.getAeLatestGradations(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.SelectedAeGradationWef = res.aeLatestTotal[0];
@@ -177,7 +188,6 @@ export class AssistantEngrsComponent implements OnInit {
     this.pageSize = event.target.value;
     this.currentPage = this.page;
     this.aeLatestGradations();
-    console.log('Current page: ' + this.currentPage, 'Items per page: ' + this.pageSize);
   }
   
   pageChanged(event: any): void {

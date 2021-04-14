@@ -52,6 +52,15 @@ export class UserBlackListComponent implements OnInit {
     });
   }
   
+  activeBlockedUserAc(event: string){
+    this.userService.activeUserAc(event).pipe(first()).subscribe((res:any) => {
+      this.loading = false;
+      this.users = res.users.data;
+      this.totalRecords = res.users.total;
+    });
+
+  }
+
   onTableSizeChange(event: any): void {
     this.pageSize = event.target.value;
     this.currentPage = this.page;

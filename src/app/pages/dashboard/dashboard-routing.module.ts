@@ -41,7 +41,7 @@ const DashboardRoutes: Routes = [
         component: UserRoleComponent,
         canActivate: [AuthGuard],
         data: {
-          roles: ["junior_engineer"]
+          roles: ["super_admin"]
         }        
       },
       {

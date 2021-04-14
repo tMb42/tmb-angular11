@@ -34,9 +34,9 @@
                         </div>
                     </div>
                 
-                    <div class="form-group col-3 offset-md-0 mt-4">
+                    <div class="form-group col-4 mt-4">
                         <button class="btn btn-sm btn-success" [disabled]="!userRoleForm.valid" (click)="addRole()">Add Role</button>
-                        <button class="btn btn-sm btn-primary" (click)="formReset()"> Reset </button>
+                        <button class="btn btn-sm btn-primary" (click)="formReset()">Reset</button>
                         <button class="btn btn-sm btn-danger" [disabled]="!userRoleForm.valid" (click)="deleteRole()">Delete</button>
                     </div>
                 </div>
@@ -63,8 +63,8 @@
                 <table class="table table-striped table-hover table-sm ">
                     <thead class="table-dark">
                         <tr>
-                            <th class="text-center text-truncate" scope="col" >Sl.</th>
                             <th class="text-center text-truncate" scope="col" >ID</th>
+                            <th class="text-center text-truncate" scope="col" >Avatar</th>
                             <th class="text-left" scope="col" >Name</th>
                             <th class="text-left" scope="col" >Email</th>
                             <th class="text-left" scope="col">Role</th>
@@ -73,8 +73,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let user of users; let sl = index;" >
-                            <td class="text-center" scope="row">{{ sl + 1 }}</td>
                             <td class="text-center" scope="row">{{ user.id }}</td>
+                            <td class="text-center" scope="row"><img [src]="user.photo" class="avatar"></td>
                             <td class="text-left" scope="row">{{ user.name }}</td>
                             <td class="text-left" scope="row">{{user.email}}</td>
                             <td class="text-left" scope="row">{{user.roleLabel}}</td>

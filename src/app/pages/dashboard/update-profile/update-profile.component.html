@@ -1,11 +1,11 @@
 <div class="content" *ngIf="authUser">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <h2 class="title">Update Profile</h2>
                 </div>
-                <form [formGroup]="profileUpdateForm" name="profileUpdateForm" (ngSubmit)="updateUserProfile()">
+                <form [formGroup]="profileUpdateForm" name="profileUpdateForm">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3 pr-md-1">
@@ -113,13 +113,12 @@
                         <div class="card-footer">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label> About Me </label>
                                     <textarea formControlName="aboutMe" class="form-control" placeholder="Write Somthing about yourself" cols="80" rows="1">
                                     </textarea>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-sm btnRed">Update Profile</button>
+                                <button class="btn btn-sm btnRed" (click)="updateUserProfile()">Update Profile</button>
                             </div>  
                         </div>
                     </div>

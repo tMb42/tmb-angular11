@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { Users } from '../../../models/user.model';
 import { UserService } from '../../../services/user.service';
@@ -9,7 +10,7 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./user-active.component.scss']
 })
 export class UserActiveComponent implements OnInit {
-
+  userActiveForm: FormGroup;
   users!: Users[];
   
   loading = false;  
@@ -23,7 +24,7 @@ export class UserActiveComponent implements OnInit {
   totalRecords: Number;
   skip: number; 
   
-  constructor(private userService: UserService) {  this.getAllUserList(); }
+  constructor(private fb: FormBuilder, private userService: UserService) {  this.getAllUserList(); }
 
   ngOnInit(): void {
     this.getAllUserList()
@@ -49,11 +50,33 @@ export class UserActiveComponent implements OnInit {
       this.loading = false;
       this.users = res.users.data;
       this.totalRecords = res.users.total;
-      console.log(this.users);
-      
     });
+
+    this.userActiveForm = this.fb.group({
+      id: [null, Validators.required],
+      name: null,
+      photo: null,     
+    });
+
   }
-  
+
+  getActiveUserDetailsById(event: string) {
+    this.loading = true;
+    this.userService.getById(event).pipe(first()).subscribe((x: any) => {
+      this.loading = false;
+      this.userActiveForm.patchValue(x.users);
+    }); 
+  }
+
+  suspendUserAc(){
+    this.userService.blockedUserAc(this.userActiveForm.value).pipe(first()).subscribe((res:any) => {
+      this.loading = false;
+      this.users = res.users.data;
+      this.totalRecords = res.users.total;
+    });
+
+  }
+
   onTableSizeChange(event: any): void {
     this.pageSize = event.target.value;
     this.currentPage = this.page;

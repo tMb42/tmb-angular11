@@ -24,10 +24,14 @@
                         <tr>
                             <th class="text-center text-truncate" scope="col" >Sl.</th>
                             <th class="text-center text-truncate" scope="col" >ID</th>
+                            <th class="text-center" data-sortable="true" scope="col" >Avatar</th>
                             <th class="text-left" data-sortable="true" scope="col" >Name</th>
+                            <th class="text-center" scope="col" >Socialite</th>
                             <th class="text-center" scope="col" >Email</th>
-                            <th class="text-center" scope="col">Email Verified</th>
+                            <th class="text-center" class="text-center" scope="col">Department</th>
+                            <th class="text-center" class="text-center" scope="col">Designation</th>
                             <th class="text-center" class="text-center" scope="col">Role</th>
+                             <th class="text-center" scope="col">Email Verified</th>
                             <th class="text-center" scope="col">Created</th>
                             <th class="text-center" scope="col">Last Update</th>
                             <th class="text-center" scope="col">Action</th>
@@ -37,18 +41,18 @@
                         <tr *ngFor="let user of users; let sl = index;" >
                             <td class="text-center" scope="row">{{ sl + 1 }}</td>
                             <td class="text-center" scope="row">{{ user.id }}</td>
+                            <td class="text-center" scope="row"><img [src]="user.photo" class="avatar"></td>
                             <td class="text-left" scope="row">{{ user.name }}</td>
+                            <td class="text-left" scope="row">{{user.provider}}</td>
                             <td class="text-left" scope="row">{{user.email}}</td>
-                            <td scope="row">{{user.email_verified_at}}</td>
+                            <td class="text-center" scope="row">{{user.department_short_name}}</td>
+                            <td class="text-center" scope="row">{{user.designation_alias}}</td>
                             <td scope="row">{{user.roleLabel}}</td>
+                            <td scope="row">{{user.email_verified_at}}</td>
                             <td scope="row">{{user.created_at}}</td>
                             <td scope="row">{{user.updated_at}}</td>
                             <td scope="row" style="white-space: nowrap">
-                                <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                                <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
-                                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
-                                    <span *ngIf="!user.isDeleting">Delete</span>
-                                </button>
+                                <button class="btn btn-sm btn-success btn-block" (click)="activeBlockedUserAc(user.id)">Active</button>
                             </td>
                         </tr>
                         <tr *ngIf="!users">

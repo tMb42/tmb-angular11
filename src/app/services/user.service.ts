@@ -67,6 +67,19 @@ export class UserService {
     );
   }
 
+  blockedUserAc(data: any) {
+    console.log('ff', data);
+    return this.http.put(`${serverUrl}/suspendUser/${data.id}`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+  activeUserAc(data: any) {
+    console.log('dd', data);
+    return this.http.put(`${serverUrl}/unlockUser/${data.id}`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

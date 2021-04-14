@@ -1,0 +1,119 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.5);
+  color: #D90E0E;
+  border-radius: 5px;
+  padding: 5px;
+  position: relative;
+  max-width: 100%;
+  height: 100%;
+  margin-bottom: 0px;
+}
+
+.form-check,
+label {
+  color: #D90E0E;
+  font-size: 12px;
+}
+
+.form-control {
+  border-color: #2b3553;
+  border-radius: 0.4285rem;
+  font-size: 11px;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.panel-body {
+  border-radius: 5px;
+}
+
+.custom-select {
+  display: inline-block;
+  width: 100%;
+  color: red;
+  height: 35px;
+  padding: 0.375rem 1.75rem 0.375rem 0rem;
+}
+
+.table-responsive {
+  width: 100%;
+  max-height: 230px;
+}
+
+#table-header {
+  position: sticky;
+  background: linear-gradient(to right, #afff1a, #f01212, #fac000);
+  vertical-align: center;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 0rem;
+  color: rgb(245, 240, 240);
+  padding: 5px;
+
+}
+
+#table-pagination {
+  position: sticky;
+  display: flex;
+  border-radius: 5px;
+  margin-top: -15px;
+  height: 35px;
+  background: linear-gradient(to right, #03b2e7, #48ff48, #4a05eb);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+
+.pagination-size {
+  display: flex;
+  justify-content: right;
+  padding-right: 0px;
+  border-radius: 0.25rem;
+}
+
+.table {
+  position: relative;
+  border-collapse: collapse;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 0rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px;
+}
+
+.table :hover {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 5px;
+}
+
+.table tr {
+  cursor: pointer;
+}
+
+.table td {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.table td:nth-child(3) {
+  white-space: nowrap;
+}
+
+.table th {
+  background-color: black;
+  top: 0px;
+  position: sticky;
+  white-space: nowrap;
+  font-size: 12px;
+  z-index: 5;
+  /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
