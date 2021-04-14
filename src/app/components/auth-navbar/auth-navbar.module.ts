@@ -28,7 +28,7 @@ import { MatListModule } from '@angular/material/list';
     MatIconModule,
     MatToolbarModule,    
     MatMenuModule,
-    MatListModule   
+    MatListModule     
   ],
   exports: [
     AuthNavbarComponent,

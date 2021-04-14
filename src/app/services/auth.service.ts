@@ -13,9 +13,9 @@ export interface AuthResponseData {
   userData: {
     token: string,
     // user: { 
-      firstname: string, 
-      middlename: string, 
-      lastname: string, 
+      first_name: string, 
+      middle_name: string, 
+      last_name: string, 
       name: string, 
       email: string, 
       password: string, 

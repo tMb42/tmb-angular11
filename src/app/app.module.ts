@@ -20,7 +20,6 @@ import { NavbarModule } from './components/navbar/navbar.module';
 import { PwdWorksNavbarModule } from './components/pwd-works-navbar/pwd-works-navbar.module';
 import { SidebarModule } from './components/sidebar/sidebar.module';
 import { FooterModule } from './components/footer/footer.module';
-import { AlertComponent } from './components/alert/alert.component';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { SendMailComponent } from './pages/send-mail/send-mail.component';
 import { CpanelLayoutComponent } from './layouts/cpanel-layout/cpanel-layout.component';
@@ -34,9 +33,8 @@ import { CpanelNavbarModule } from './components/cpanel-navbar/cpanel-navbar.mod
     AdminLayoutComponent,
     PwdEngrsLayoutComponent,
     PwdWorksLayoutComponent,
-    AlertComponent,
     SendMailComponent,
-    CpanelLayoutComponent,
+    CpanelLayoutComponent
   ],
   imports: [
     BrowserModule,

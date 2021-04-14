@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -8,10 +10,11 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuard implements CanActivate{
   
-  constructor(private authService: AuthService, private router: Router) {} 
+  constructor(private authService: AuthService, private router: Router, private alertService: AlertService) {} 
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {    
     const currentUser = this.authService.userValue;
+    console.log(currentUser);
     
     if (currentUser) {
       const Roles = currentUser.userData.roles;
@@ -28,9 +31,10 @@ export class AuthGuard implements CanActivate{
           }
          
         }
+        
         // role not authorised so redirect to home page
-        console.log('you are not authorised for this page');
         this.router.navigate(['/auth']);
+        Swal.fire({ position: 'center', icon: 'warning', title: 'Sorry! ' + currentUser.userData.first_name +' you are not authorised for this page', showConfirmButton: false, timer: 7000 });
         return false; 
               
       }

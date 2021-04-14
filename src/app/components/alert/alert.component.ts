@@ -41,7 +41,7 @@ export class AlertComponent implements OnInit, OnDestroy {
 
       // auto close alert if required
       if (alert.autoClose) {
-        setTimeout(() => this.removeAlert(alert), 3000);
+        setTimeout(() => this.removeAlert(alert), 300000);
       }
     });
 
@@ -80,7 +80,7 @@ export class AlertComponent implements OnInit, OnDestroy {
   cssClass(alert: Alert) {
     if (alert?.type === undefined) return;
 
-    const classes = ['alert', 'alert-dismissable', 'mt-4', 'container'];
+    const classes = ['alert', 'alert-dismissable', 'mt-4', 'col-6','container'];
             
     const alertTypeClass = {
       [AlertType.Success]: 'alert-success',
