@@ -40,7 +40,7 @@ label {
 
 .table-responsive {
   width: 100%;
-  max-height: 230px;
+  max-height: 270px;
 }
 
 #table-header {
@@ -61,7 +61,7 @@ label {
   border-radius: 5px;
   margin-top: -15px;
   height: 35px;
-  background: linear-gradient(to right, #03b2e7, #48ff48, #4a05eb);
+  background: linear-gradient(to right, #03b2e7, #48ff48, #05b5eb);
 }
 
 .pagination {
@@ -116,4 +116,8 @@ label {
   z-index: 5;
   /* Don't forget this, required for the stickiness */
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+.table td:nth-child(5) {
+  color: rgb(255, 251, 0);
 }

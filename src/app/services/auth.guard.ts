@@ -14,7 +14,6 @@ export class AuthGuard implements CanActivate{
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {    
     const currentUser = this.authService.userValue;
-    console.log(currentUser);
     
     if (currentUser) {
       const Roles = currentUser.userData.roles;
@@ -43,6 +42,7 @@ export class AuthGuard implements CanActivate{
     }    
     // not logged in so redirect to login page with the return url
     this.router.navigate(['/auth'], { queryParams: { returnUrl: state.url } });
+    Swal.fire({ position: 'center', icon: 'error', title: 'Please login first', showConfirmButton: false, timer: 4000 });
     return false;
   }
 

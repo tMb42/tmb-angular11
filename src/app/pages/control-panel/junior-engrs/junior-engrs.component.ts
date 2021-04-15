@@ -7,12 +7,16 @@ import { DropdownService } from '../../../services/dropdown.service';
 import { JEngrs } from '../../../models/jengrs.model';
 import Swal from 'sweetalert2';
 
-
-
 export interface Castes {
   id: number;
   caste_name: string;
   caste_alias: string;
+  remarks: any;
+}
+export interface Designations {
+  id: number;
+  designation_name: string;
+  designation_alias: string;
   remarks: any;
 }
 
@@ -34,6 +38,7 @@ export class JuniorEngrsComponent implements OnInit {
   
   jEngrs: JEngrs[];
   castes: Castes[] = [];
+  designations: Designations[] = [];
   JeGradationDateLists: any = [];
   SelectedJeGradationWef: any = '';
   gradationDate: any = '';
@@ -63,6 +68,10 @@ export class JuniorEngrsComponent implements OnInit {
       this.castes = response.castes;     
     });
 
+    this.dropdownService.getAeDesignations().subscribe((response: { designationData: Designations[]; }) => {      
+      this.designations = response.designationData;     
+    });
+
     this.jengrsService.getJeUpdateListener().subscribe( res => {
       this.loading = false;
       this.jEngrs = res;
@@ -74,6 +83,7 @@ export class JuniorEngrsComponent implements OnInit {
       engineer_name: [null, Validators.required],
       employee_caste_id: [null, Validators.required],
       engineer_dob: [null, Validators.required],
+      promo_designation_id: null,
       junior_engineers_doj: null,
       junior_engineers_doc: null,
       engineer_dor: [null, Validators.required],
@@ -124,6 +134,13 @@ export class JuniorEngrsComponent implements OnInit {
       this.jeDoc = null;
     }    
   }
+  changeWef(value: Date): void {
+    if(value != null){
+      this.gwef = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.gwef = null;
+    }    
+  }
   
 
   updateJeData(){
@@ -142,16 +159,16 @@ export class JuniorEngrsComponent implements OnInit {
       doj: this.jeDoj, 
       doc: this.jeDoc,
       dor: this.jeDor,
+      wef: this.gwef,
       pscAlotYr: formData.year_allot_psc,
       passYr: formData.year_passing_de,
+      promoDsgn: formData.promo_designation_id,
     }
     console.log(updateJeData);
 
     this.jengrsService.jeUpdateDataById(updateJeData).subscribe(() => {
       this.loading = false;
-      this.formReset();
       Swal.fire({ position: 'top-end', icon: 'success', title: 'JE Data Updated successfully', showConfirmButton: false, timer: 2000 }); 
-
     }, err => {
       this.loading = false;
       Swal.fire({ position: 'top-end', icon: 'error', title: err, showConfirmButton: false, timer: 4000 }); 

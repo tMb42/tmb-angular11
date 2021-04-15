@@ -107,7 +107,7 @@ export class AengrsService {
       const index = this.aEngrs.findIndex(x => x.id === data.id);
         this.aEngrs[index] = res.ae;
         this.aeSubject.next([...this.aEngrs]);
-        console.log('fff',res);
+         console.log('fff',index);
       })
     );
   }

@@ -31,6 +31,21 @@ export class DropdownService {
       catchError(this.handleError)
     );
   }
+  getAeDesignations() {
+    return this.http.get(`${this.serverUrl}/aePost`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getEeDesignations() {
+    return this.http.get(`${this.serverUrl}/eePost`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getSeDesignations() {
+    return this.http.get(`${this.serverUrl}/sePost`).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   getProfessions() {
     return this.http.get(`${this.serverUrl}/nonEngineerRoles`).pipe(

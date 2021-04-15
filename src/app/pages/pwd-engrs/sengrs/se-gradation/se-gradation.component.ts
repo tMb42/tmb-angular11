@@ -96,7 +96,6 @@ export class SeGradationComponent implements OnInit {
       wef: this.gradationDate,
     }
 
-    console.log(requestObj);
     this.sengrsService.getSeGradationListByWef(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.SelectedSeGradationWef = res.seLatestTotal[0];

@@ -15,6 +15,13 @@ export interface Castes {
   remarks: any;
 }
 
+export interface Designations {
+  id: number;
+  designation_name: string;
+  designation_alias: string;
+  remarks: any;
+}
+
 @Component({
   selector: 'app-assistant-engrs',
   templateUrl: './assistant-engrs.component.html',
@@ -34,9 +41,10 @@ export class AssistantEngrsComponent implements OnInit {
   
   aEngrs: AEngrs[];
   castes: Castes[] = [];
+  designations: Designations[] = [];
   AeGradationDateLists: any = [];
   SelectedAeGradationWef: any = '';
-  gradationDate: any = '';
+  gradation_list_wef: any = '';
   loading = false; 
 
   minDate: Date;
@@ -64,6 +72,10 @@ export class AssistantEngrsComponent implements OnInit {
       this.castes = response.castes;     
     });
 
+    this.dropdownService.getEeDesignations().subscribe((response: { designationData: Designations[]; }) => {      
+      this.designations = response.designationData;     
+    });
+
     this.aengrsService.getAeUpdateListener().subscribe( res => {
       this.loading = false;
       this.aEngrs = res;
@@ -75,6 +87,7 @@ export class AssistantEngrsComponent implements OnInit {
       engineer_name: [null, Validators.required],
       employee_caste_id: [null, Validators.required],
       engineer_dob: [null, Validators.required],
+      promo_designation_id: null,
       assistant_engineers_doj: null,
       assistant_engineers_doc: null,
       engineer_dor: [null, Validators.required],
@@ -133,6 +146,14 @@ export class AssistantEngrsComponent implements OnInit {
     } 
   }
 
+  changeWef(value: Date): void {
+    if(value != null){
+      this.gwef = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.gwef = null;
+    }    
+  }
+
   updateAeData(){
     this.loading = true;
     const formData = this.aeUpdateForm.getRawValue();
@@ -151,11 +172,11 @@ export class AssistantEngrsComponent implements OnInit {
       doc: this.aeDoc,
       dor: this.aeDor,
       eeHgrScale: this.eehs,
+      promoDsgn: formData.promo_designation_id,
     }
 
     this.aengrsService.aeUpdateDataById(updateAeData).subscribe(() => {
       this.loading = false;
-      this.formReset();
       Swal.fire({ position: 'top-end', icon: 'success', title: 'AE Data Updated successfully', showConfirmButton: false, timer: 2000 }); 
 
     }, err => {
@@ -169,7 +190,7 @@ export class AssistantEngrsComponent implements OnInit {
     const requestObj = {
       page: this.page,
       itemsPerPage: this.pageSize,
-      wef: this.gradationDate,
+      wef: this.gradation_list_wef,
     }
     this.aengrsService.getAeLatestGradations(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
@@ -196,12 +217,13 @@ export class AssistantEngrsComponent implements OnInit {
     this.aeLatestGradations(); 
   }
 
-  aeGradationListByWef(event: any): void {
+  aeGradationListByWef(event: Date): void {
     this.loading = true;
+    this.gradation_list_wef = formatDate(event, 'yyyy-MM-dd', 'en');
     const requestObj = {
       page: this.page,
       itemsPerPage: this.pageSize,
-      wef: event,
+      wef: this.gradation_list_wef,
     }
     this.aengrsService.getAeGradationListByWef(requestObj).pipe(first()).subscribe((res: any) => {
       this.loading = false;

@@ -19,7 +19,7 @@ export class JengrsService {
 
   constructor(private http: HttpClient) {
     this.http.get(`${serverUrl}/jEngrs`).subscribe((response: any) => {
-      this.jEngrs = response.junineerEngineer.data;
+      this.jEngrs = response.juniorEngineer.data;
       this.jeSubject.next([...this.jEngrs]);
     });
 
@@ -109,7 +109,6 @@ export class JengrsService {
       const index = this.jEngrs.findIndex(x => x.id === data.id);
         this.jEngrs[index] = res.je;
         this.jeSubject.next([...this.jEngrs]);
-        console.log('fff',index);
       })
     );
   }

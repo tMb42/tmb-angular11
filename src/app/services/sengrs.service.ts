@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { SEngrs } from '../models/sengrs.model';
@@ -13,7 +14,20 @@ const serverUrl = `${environment.baseURL}/sEngineers`;
 
 export class SengrsService {
 
-  constructor(private http: HttpClient) { }
+  sEngrs: SEngrs[] = [];
+  seSubject = new Subject<SEngrs[]>(); 
+
+  constructor(private http: HttpClient) {     
+    this.http.get(`${serverUrl}/sEngrs`).subscribe((response: any) => {
+      this.sEngrs = response.seniorEngineer.data;
+      this.seSubject.next([...this.sEngrs]);
+    });
+    
+  }
+
+  getSeUpdateListener() {
+    return this.seSubject.asObservable();    
+  }
 
   getSeLatestGradations(data: any) {
     return this.http.get<SEngrs[]>(`${serverUrl}/sEngrs?page=${data.page}`, { params: { per_page: data.itemsPerPage, gradation_list_wef: data.wef }});
@@ -75,9 +89,23 @@ export class SengrsService {
   getSearchSeRetireData(event: any) {
     return this.http.get<SEngrs[]>(`${serverUrl}/retirement/${event}`);
   }
-//-----------------------------------------------------------------------------------------------------------
 
-private handleError(error: HttpErrorResponse) {
+//-----------------------------------------------------------------------------------------------------------
+  getSeDetailsById(id: string) {
+    return this.http.get<SEngrs>(`${serverUrl}/sEngrs/${id}`);
+  }
+
+  seUpdateDataById(data: any) {
+    return this.http.put(`${serverUrl}/sEngrs/${data.id}`, data)
+    .pipe(catchError(this.handleError), tap((res: any) => {
+      const index = this.sEngrs.findIndex(x => x.id === data.id);
+        this.sEngrs[index] = res.se;
+        this.seSubject.next([...this.sEngrs]);
+      })
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);

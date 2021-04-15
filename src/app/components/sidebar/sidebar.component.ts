@@ -200,7 +200,7 @@ export class SidebarComponent implements OnInit {
 
     }else{
       if( menuitem.inforce === this.authUser.inforce || menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)){
-        return true;
+        return true;      
       } 
       return false;
     }   
@@ -208,12 +208,12 @@ export class SidebarComponent implements OnInit {
   }
 
   //  for a sub menu link
-  // activeSubMenu(menuitem): boolean{
-  //   if(menuitem.display === this.authUser.display || (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
-  //     return true;
-  //   }  
-  //   return false;
-  // }
+  activeSubMenu(menuitem): boolean{
+    if(menuitem.display === this.authUser.display || (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
+      return true;
+    }  
+    return false;
+  }
  
 
 }
