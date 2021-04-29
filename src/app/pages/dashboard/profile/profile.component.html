@@ -19,9 +19,11 @@
             <strong>{{ authUser.name }}</strong>
             <p>{{ authUser.email }}</p>
             <p>{{ authUser.designation_name }}</p>
-            <p>{{ authUser.permissionLabel }}</p>
+            <p><span style="color: rgb(0, 255, 98);">Role: </span>{{ authUser.roleLabel }}</p>
+            <p><span style="color: rgb(255, 187, 0);">Permision: </span>{{ authUser.permissionLabel }}</p>
             <p>Created: {{ authUser.created_at }}</p>
-            <p>Last Updated: {{ authUser.avatar_updated_at }}</p>
+            <p>Last Profile Image Updated: {{ authUser.avatar_updated_at }}</p>
+            <p>Last Profile Updated: {{ authUser.profile_updated_at }}</p>
           </div>
         </div>
         <div class="col-md-6">      

@@ -149,8 +149,7 @@ export class AuthService {
 
   getUpdateUserProfile(profileData) {
     return this.http.post<any>(`${this.serverUrl}/user/profile`, profileData).pipe(
-      catchError(this.handleError),
-      tap((res: any) => {
+      catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
       })
@@ -226,8 +225,11 @@ export class AuthService {
       console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
     }
     // Return an observable with a user-facing error message.
-    return throwError('Something bad happened; please try again later.');
+    return throwError(error);
   }
+
+ 
+  
 
 
 }

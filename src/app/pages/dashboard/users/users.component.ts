@@ -86,7 +86,8 @@ export class UsersComponent implements OnInit {
     if (!user) return;
     user.isDeleting = true;
     this.userService.delete(id).pipe(first()).subscribe(() => 
-    this.users = this.users.filter(x => x.id !== id));
+    this.users = this.users.filter(x => x.id !== id)
+    );
   }
 
 

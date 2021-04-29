@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { first } from 'rxjs/operators';
 
@@ -13,6 +14,7 @@ import { JEngrs } from 'src/app/models/jengrs.model';
   styleUrls: ['./je-gradation.component.scss']
 })
 export class JeGradationComponent implements OnInit {
+  jeGradationForm: FormGroup;
   showBoundaryLinks = true;
   page: number = 1;
   currentPage: number;
@@ -28,12 +30,16 @@ export class JeGradationComponent implements OnInit {
   gradationDate: string = null;
   loading = false; 
 
-  constructor( private jengrsService: JengrsService) {
+  constructor( private fb: FormBuilder, private jengrsService: JengrsService) {
   
   }
 
   ngOnInit(): void {
     this.jeLatestGradations();
+
+    this.jeGradationForm = this.fb.group({
+      gradationDate: new FormControl(null)
+    });
   }
 
   jeLatestGradations(){
@@ -52,6 +58,9 @@ export class JeGradationComponent implements OnInit {
       this.totalRecords = res.jeLatestTotal[0].total;
       this.totalPages = res.juniorEngineer.total_pages;
       this.currentPage = res.juniorEngineer.current_page;
+      this.jeGradationForm.patchValue({
+        gradationDate: this.SelectedJeGradationWef.gradation_list_wef,      
+      });
     });
 
   }

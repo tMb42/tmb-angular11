@@ -24,6 +24,7 @@ import { ProgressBarModule } from './components/progress-bar/progress-bar.module
 import { SendMailComponent } from './pages/send-mail/send-mail.component';
 import { CpanelLayoutComponent } from './layouts/cpanel-layout/cpanel-layout.component';
 import { CpanelNavbarModule } from './components/cpanel-navbar/cpanel-navbar.module';
+import { TweetyComponent } from './pages/tweety/tweety.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { CpanelNavbarModule } from './components/cpanel-navbar/cpanel-navbar.mod
     PwdEngrsLayoutComponent,
     PwdWorksLayoutComponent,
     SendMailComponent,
-    CpanelLayoutComponent
+    CpanelLayoutComponent,
+    TweetyComponent
   ],
   imports: [
     BrowserModule,

@@ -75,26 +75,25 @@ export class LoginComponent implements OnInit {
       device_name: 'mobile'      
     }
         
-    this.authService.login(loginData).pipe(first()).subscribe({ next: () => {
+    this.authService.login(loginData).pipe(first()).subscribe( response => {
+      this.isLoading = false;
       // get return url from query parameters or default to home page
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
       this.router.navigateByUrl(returnUrl);
-
-      Swal.fire({ position: 'top-end', icon: 'success', title: 'Thank you for signing in', showConfirmButton: false, timer: 2000 });
+      Swal.fire({ position: 'top-end', icon: 'success', title: 'Thank you for signing in', showConfirmButton: false, timer: 2000 });      
     },
-      error: err => {
-        this.error = err;
+      (err: any) => {
+        console.log(err.error.message);
         this.isLoading = false;
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          title: 'The provided credentials are incorrect OR E-mail Verification Not Completed',
-          showConfirmButton: false,
-          timer: 4000
-        });
+      if(err.error.message !=null){
+        Swal.fire({ position: 'top-end', icon: 'info', title: err.error.message, showConfirmButton: false, timer: 4000 }); 
+      }else{
+        
       }
+        Swal.fire({position: 'top-end', icon: 'error', title: err.error.errors.message, showConfirmButton: false, timer: 4000 });
+      }
+    );
 
-    });
   }
 
   socialiteLogin(data: any) {

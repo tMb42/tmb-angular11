@@ -30,12 +30,8 @@ export class SeGradationComponent implements OnInit {
   SelectedSeGradationWef: any = '';
   gradationDate: any = '';
   loading = false;
-  
-  
-  
-
+   
   constructor( private sengrsService: SengrsService, private fb: FormBuilder) { }
-
 
   ngOnInit(): void {
     this.seLatestGradations();
@@ -64,6 +60,10 @@ export class SeGradationComponent implements OnInit {
       this.totalRecords = res.seLatestTotal[0].total;
       this.totalPages = res.seniorEngineer.total_pages;
       this.currentPage = res.seniorEngineer.current_page;
+      this.SeForm.patchValue({
+        gradationDate: this.SelectedSeGradationWef.gradation_list_wef,      
+      });
+
     });
 
   }
@@ -72,16 +72,12 @@ export class SeGradationComponent implements OnInit {
     this.pageSize = event.target.value;
     this.currentPage = this.page;
     this.seLatestGradations();
-    console.log('Current page: ' + this.currentPage, 'Items per page: ' + this.pageSize);
   }
   
   pageChanged(event: PageChangedEvent): void {
     this.page = event.page;
-    this.pageSize = event.itemsPerPage;    
-    const startItem = (event.page - 1) * event.itemsPerPage + 1;
-    const endItem = event.page * event.itemsPerPage;
-    this.seLatestGradations();    
-    console.log('Current page: ' + event.page, 'Items per page: ' + event.itemsPerPage, 'Start item :' + startItem, 'End item :' + endItem);
+    this.pageSize = event.itemsPerPage;
+    this.seLatestGradations();  
   }
 
   
@@ -116,11 +112,9 @@ export class SeGradationComponent implements OnInit {
         this.loading = false;
 
         this.seniorEngineers = res.seniorEngineer.data;
-        // this.totalRecords = res.seLatestTotal[0].total;
-        // this.totalPages = res.seniorEngineer.total_pages;
-        // this.currentPage = res.seniorEngineer.current_page;
-        // this.SeGradationDateLists = res.seGradationDate;
-        // this.SelectedSeGradationWef = res.seLatestTotal[0];
+        this.totalRecords = res.seniorEngineer.total;
+        this.totalPages = res.seniorEngineer.total_pages;
+        this.currentPage = res.seniorEngineer.current_page;
       });
     }
     if(event.length <= 0){

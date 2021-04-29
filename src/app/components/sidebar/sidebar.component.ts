@@ -39,20 +39,6 @@ export const ROUTES: RouteInfo[] = [
     icontype: 'dashboard'
   },
   {
-    path: '/engrs',
-    title: 'WB PWD Engineers',
-    ablity: 1,
-    type: 'link',
-    icontype: 'architecture'
-  },
-  {
-    path: '/pwd-works',
-    title: 'PWD-Works',
-    is_departmental: 1,
-    type: 'link',
-    icontype: 'work'
-  },
-  {
     path: '/dashboard',
     title: 'User Management',
     role: 'super_admin',
@@ -80,7 +66,34 @@ export const ROUTES: RouteInfo[] = [
       {path: 'update-ae', title: 'Assistant Engineer', ab:'UAE'},
       {path: 'update-se', title: 'Senior Engineer', ab:'USE'},
     ]
-  },  
+  },
+  {
+    path: '/engrs',
+    title: 'WB PWD Engineers',
+    ablity: 1,
+    type: 'link',
+    icontype: 'architecture'
+  },
+  {
+    path: '/pwd-works',
+    title: 'PWD-Works',
+    is_departmental: 1,
+    type: 'link',
+    icontype: 'work'
+  },
+  {
+    path: 'dashboard/tweety',
+    title: 'Discussion Room',
+    ablity: 1,
+    type: 'link',
+    icontype: 'mail'
+    // collapse: 'chat',
+    // children: [
+    //   {path: 'chat', title: 'Chat', ab:'C'},
+    //   {path: 'inbox', title: 'Inbox', ab:'IB'},
+    // ]
+  },
+    
   {
     path: '/developers',
     title: 'Web Development',
@@ -106,18 +119,7 @@ export const ROUTES: RouteInfo[] = [
       {path: 'dev', title: 'Coding', ab:'C'},
     ]
   },
-  {
-    path: '/chat',
-    title: 'Discussion Room',
-    display: 1,
-    type: 'sub',
-    icontype: 'mail',
-    collapse: 'chat',
-    children: [
-      {path: 'chat', title: 'Chat', ab:'C'},
-      {path: 'inbox', title: 'Inbox', ab:'IB'},
-    ]
-  }
+  
   
 ];
 
@@ -141,7 +143,9 @@ export class SidebarComponent implements OnInit {
     return true;
   };
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    
+   }
 
   ngOnInit(): void {
     this.authService.getAuthUserUpdateListener().subscribe( (res:any) => {

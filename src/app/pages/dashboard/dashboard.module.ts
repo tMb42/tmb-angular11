@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatTableModule} from '@angular/material/table'; 
 import { MatNativeDateModule } from '@angular/material/core';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -54,6 +55,7 @@ console.log('Test for Dashboard Module. Loaded Ok')
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatTableModule,
     DashboardRoutingModule,
     NavbarModule,
     NgMultiSelectDropDownModule.forRoot(),

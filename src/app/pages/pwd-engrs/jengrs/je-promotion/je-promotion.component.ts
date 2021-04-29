@@ -51,8 +51,7 @@ export class JePromotionComponent implements OnInit {
       itemsPerPage: this.pageSize,
       skip: (this.page-1) * this.pageSize
     }
-    console.log(requestObj);
-
+   
     this.jengrsService.getJePromotionalDetails(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.JePromotionalTotal = res.jePromotionalTotal[0];

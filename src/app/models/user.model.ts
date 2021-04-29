@@ -36,47 +36,6 @@ export class Users {
     }
   }
 
-  get isAdminSuper(){
-    return this.roleId == 1;
-  }
-  get isAdmin(){
-    return this.roleId == 2;
-  }
-  get isUser(){
-    return this.roleId == 3;
-  }
-  get isJuniorEngineer(){
-    return this.roleId == 4;
-  }
-  get isAssistantEngineer(){
-    return this.roleId == 5;
-  }
-  get isExecutiveEngineer(){
-    return this.roleId == 6;
-  }
-  get isSuperindendingEngineer(){
-    return this.roleId == 7;
-  }
-  get isChiefEngineer(){
-    return this.roleId == 8;
-  }
-  get isProgrammer(){
-    return this.roleId == 9;
-  }
-  get isStudent(){
-    return this.roleId == 10;
-  }
-  get isEntrepreneur(){
-    return this.roleId == 11;
-  }
-  get isTechnologist(){
-    return this.roleId == 12;
-  }
-  get isAcademy(){
-    return this.roleId == 13;
-  }
-  get isGuest(){
-    return this.roleId == 14;
-  }
+  
 
 }

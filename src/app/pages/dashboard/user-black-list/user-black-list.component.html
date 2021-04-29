@@ -9,13 +9,16 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" style="color: white; font-size: medium; margin-top: 2px;">Search</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="You Can Search table data" >
+                    <input (keyup)="searchBlockedUser($event.target.value)" type="text" class="form-control" placeholder="Search table data" >
                 </div>
 
                 <div class="input-group-prepend col-lg-3">
                     <span class="input-group-text" style="color: white; font-size: medium;"> 
                         Total Blocked User :: {{ totalRecords }}
                     </span>
+                </div>
+                <div class="input-group-prepend col-lg-2">
+                    <a class="input-group-text" style="color: white; font-size: large;" [routerLink]="['../active-users']" routerLinkActive="active" >Active Users</a>
                 </div>
             </div>
             <div class="table-responsive">
@@ -52,7 +55,12 @@
                             <td scope="row">{{user.created_at}}</td>
                             <td scope="row">{{user.updated_at}}</td>
                             <td scope="row" style="white-space: nowrap">
-                                <button class="btn btn-sm btn-success btn-block" (click)="activeBlockedUserAc(user.id)">Active</button>
+                                <button 
+                                    class="btn btn-sm btn-rose btn-block" 
+                                    (click)="activeBlockedUserAc(user)"
+                                    >
+                                    Active
+                                </button>
                             </td>
                         </tr>
                         <tr *ngIf="!users">
@@ -97,4 +105,4 @@
             </div>
         </div>
     <div>
-<div>
+</div>

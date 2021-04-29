@@ -14,6 +14,7 @@ import { UserActiveComponent } from './user-active/user-active.component';
 import { UserBlackListComponent } from './user-black-list/user-black-list.component';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserPermissionComponent } from './user-permission/user-permission.component';
+import { TweetyComponent } from '../tweety/tweety.component';
 
 const DashboardRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -87,10 +88,16 @@ const DashboardRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
           roles: ["super_admin"]
-        }  
+        }
+      },
+      {
+        path: 'tweety',
+        component: TweetyComponent,
+        canActivate: [AuthGuard],
       }
-    ]
-  }
+    ]    
+  },
+  
 ];
 
 @NgModule({
