@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { first } from 'rxjs/operators';
 import {Md5} from 'ts-md5/dist/md5';
 import Swal from 'sweetalert2';
@@ -13,6 +14,8 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  deviceInfo = null;
+
   loginForm: FormGroup;
   hide = true;
   rememberMe = false;
@@ -34,20 +37,23 @@ export class LoginComponent implements OnInit {
       provider: 'github',
       icon: 'mdi-github',
       iconColor: 'black'
-    }
-    // {
-    //   provider: 'facebook',
-    //   icon: 'mdi-facebook',
-    //   iconColor: '#007bff'
-    // },
+    },
+    {
+      provider: 'facebook',
+      icon: 'mdi-facebook',
+      iconColor: '#007bff'
+    },
   ]
 
   constructor(
     private fb: FormBuilder, 
     private route: ActivatedRoute, 
     private router: Router,
-    private authService: AuthService, 
+    private authService: AuthService,
+    private deviceService: DeviceDetectorService 
   ) { 
+      this.epicFunction();
+
       // redirect to home if already logged in
       if (this.authService.userValue) {
         this.router.navigate(['/dashboard']);
@@ -62,6 +68,18 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  epicFunction() {
+    this.deviceInfo = this.deviceService.getDeviceInfo();
+    const isMobile = this.deviceService.isMobile();
+    const isTablet = this.deviceService.isTablet();
+    const isDesktopDevice = this.deviceService.isDesktop();
+    console.log(this.deviceInfo);
+    console.log(isMobile);  // returns if the device is a mobile device (android / iPhone / windows-phone etc)
+    console.log(isTablet);  // returns if the device us a tablet (iPad etc)
+    console.log(isDesktopDevice); // returns if the app is running on a Desktop browser.
+  }
+
+
   onSubmit() { 
     const formData = this.loginForm.getRawValue(); 
     
@@ -72,7 +90,7 @@ export class LoginComponent implements OnInit {
       email: formData.email,
       password: formData.password,
       remember: formData.rememberMe,
-      device_name: 'mobile'      
+      device_name: this.deviceInfo.deviceType + ' - ' + this.deviceInfo.os_version + ' - ' + this.deviceInfo.browser      
     }
         
     this.authService.login(loginData).pipe(first()).subscribe( response => {

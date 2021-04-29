@@ -33,7 +33,7 @@
                             <th class="text-center" scope="col" >Email</th>
                             <th class="text-center" class="text-center" scope="col">Department</th>
                             <th class="text-center" class="text-center" scope="col">Designation</th>
-                            <th class="text-center" class="text-center" scope="col">Role</th>
+                            <th class="text-center" class="text-center" scope="col">Login Device</th>
                              <th class="text-center" scope="col">Email Verified</th>
                             <th class="text-center" scope="col">Created</th>
                             <th class="text-center" scope="col">Last Login</th>
@@ -50,7 +50,7 @@
                             <td class="text-left" scope="row">{{user.email}}</td>
                             <td class="text-center" scope="row">{{user.department_short_name}}</td>
                             <td class="text-center" scope="row">{{user.designation_alias}}</td>
-                            <td scope="row">{{user.roleLabel}}</td>
+                            <td scope="row">{{user.deviceName}}</td>
                             <td scope="row">{{user.email_verified_at | date: 'dd-MM-yyyy'}}</td>
                             <td scope="row">{{user.created_at | date: 'dd-MM-yyyy'}}</td>
                             <td scope="row">{{user.last_used_at | date: 'MMM d, y, h:mm:ss a'}}</td>
