@@ -1,12 +1,12 @@
 <div class="row">
-    <div class="col-md-3 offset-md-1 mt-0">
-        <h2 style="color: greenyellow;">E-mail Verification Status</h2>
-        <div class="alert alert-success" *ngIf="emailVerified" role="alert">
-            {{ verifyStatus }}
-        </div>
-        
-        <div class="alert alert-danger" *ngIf="!emailVerified" role="alert">
-            {{ verifyStatus }}
-        </div>
+  <div class="col-md-3 offset-md-1 mt-0">
+    <h2 style="color: greenyellow;">E-mail Verification Status</h2>
+    <div class="alert alert-success" *ngIf="emailVerified" role="alert">
+      {{ verifyStatus }}
     </div>
+
+    <div class="alert alert-danger" *ngIf="!emailVerified" role="alert">
+      {{ verifyStatus }}
+    </div>
+  </div>
 </div>

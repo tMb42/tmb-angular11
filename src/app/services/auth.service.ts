@@ -12,22 +12,22 @@ export interface AuthResponseData {
   message: string,
   userData: {
     token: string,
-    // user: { 
-      first_name: string, 
-      middle_name: string, 
-      last_name: string, 
-      name: string, 
-      email: string, 
-      password: string, 
+    // user: {
+      first_name: string,
+      middle_name: string,
+      last_name: string,
+      name: string,
+      email: string,
+      password: string,
       password_confirmation: string,
-      device_name: string, 
+      device_name: string,
       roles: string,
       roleId: string,
       id: number,
       dob: Date,
       designation_id: number,
       department_id: number,
-    // };    
+    // };
   };
 
 }
@@ -42,18 +42,18 @@ export class AuthService {
 
   url: string;
   authUser: AuthUser = null;
-  authUserSubject = new Subject<AuthUser>();  
+  authUserSubject = new Subject<AuthUser>();
 
   private userSubject: BehaviorSubject<AuthResponseData>;
   public user: Observable<AuthResponseData>;
 
-  constructor(private http: HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router) {
     this.userSubject = new BehaviorSubject<AuthResponseData>(JSON.parse(localStorage.getItem('authToken')));
     this.user = this.userSubject.asObservable();
   }
-  
+
   public get userValue(): AuthResponseData {
-    return this.userSubject.value;    
+    return this.userSubject.value;
   }
 
   isAuthenticated(){
@@ -65,16 +65,15 @@ export class AuthService {
   }
 
   getAuthUserUpdateListener() {
-    return this.authUserSubject.asObservable();    
+    return this.authUserSubject.asObservable();
   }
 
   login(loginData) {
     return this.http.post<AuthResponseData>(`${this.serverUrl}/login`, loginData)
-      .pipe(map((resData: any) => {  
+      .pipe(map((resData: any) => {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('authToken', JSON.stringify(resData));
         this.userSubject.next({...resData});
-       
       }),
       catchError(this.handleError)
 
@@ -87,11 +86,11 @@ export class AuthService {
     }
       return false;
   }
-  
+
   getAuthorizationToken() {
     const token_key = JSON.parse(localStorage.getItem('authToken'));
     return token_key.token;
-  }  
+  }
 
   logout() {
     return this.http.post<any>(`${this.serverUrl}/logout`, {})
@@ -102,11 +101,11 @@ export class AuthService {
         this.router.navigate(['/auth']);
       })
     );
-    
+
   }
-  
+
   register(registerData) {
-    return this.http.post<any>(`${this.serverUrl}/register`, registerData);    
+    return this.http.post<any>(`${this.serverUrl}/register`, registerData);
   }
 
   getAuthUser() {
@@ -120,7 +119,7 @@ export class AuthService {
   getEmailVarification(model: any) {
     return this.http.get(`${this.serverUrl}/email/verify/${model.userId}/${model.token}`, { params: { id: model.userId, hash: model.token }});
   }
-  
+
   checkRegisteredMobile(mobile: number) {
     return this.http.get<any>(`${this.serverUrl}/checkMobile/${mobile}`);
   }
@@ -136,7 +135,7 @@ export class AuthService {
     catchError(this.handleError)
     );
   }
-  
+
   resetPassword(resetData: any) {
     return this.http.post(`${this.serverUrl}/password/reset`, resetData);
   }
@@ -165,8 +164,8 @@ export class AuthService {
     );
   }
 
-  loginWithSocialite(provider: any) {
-    return this.http.get(`${this.serverUrl}/auth/${provider}`).pipe(map((response: any) => {
+  loginWithSocialite(data: any) {
+    return this.http.get(`${this.serverUrl}/auth/${data.provider}`, data).pipe(map((response: any) => {
       if (response.url) {
         window.location.href = response.url
       }
@@ -189,7 +188,7 @@ export class AuthService {
       catchError(this.handleError)
     );
   }
-  
+
   loginGoogleCallback(data) {
     return this.http.get(`${this.serverUrl}/auth/google/callback`, { params: data })
       .pipe(map((res: any) => {
@@ -214,7 +213,28 @@ export class AuthService {
 
     );
   }
-  
+
+  deleteAccount(params: any) {
+    return this.http.delete(`${this.serverUrl}/users/${params.id}`)
+      .pipe(catchError(this.handleError), tap(() => {
+        this.userSubject.next(null);
+        localStorage.removeItem('authToken');
+        this.router.navigate(['/auth']);
+      })
+    );
+  }
+
+  lockMyAccount(data: any) {
+    return this.http.put(`${environment.baseURL}/suspendUser`, data).pipe(
+      catchError(this.handleError), tap(() => {
+        this.userSubject.next(null);
+        localStorage.removeItem('authToken');
+        this.router.navigate(['/auth']);
+      }),
+
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -228,8 +248,8 @@ export class AuthService {
     return throwError(error);
   }
 
- 
-  
+
+
 
 
 }

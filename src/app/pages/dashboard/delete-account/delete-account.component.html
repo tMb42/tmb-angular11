@@ -1,0 +1,25 @@
+<div class="row">
+  <div *ngIf="authUser" class="col-md-3 offset-md-1 mt-0">
+    <h2 style="color: rgb(47, 231, 255);" >Hi, {{ authUser.name}}, Are you sure you want to delete your account permanently from this website?</h2>
+    <div>
+     <button
+          class="btn btn-sm btn-primary btn-block"
+          (click)="cancleMyDecesion()"
+          >
+          Cancel
+      </button>
+      <button
+          class="btn btn-sm btn-warning btn-block"
+          (click)="suspendMyAccount(authUser.id)"
+          >
+          Suspend
+      </button>
+       <button
+          class="btn btn-sm btn-rose btn-block"
+          (click)="deleteMyAccount(authUser.id)"
+          >
+          Delete
+      </button>
+    </div>
+  </div>
+</div>

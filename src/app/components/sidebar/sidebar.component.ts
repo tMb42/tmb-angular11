@@ -93,7 +93,7 @@ export const ROUTES: RouteInfo[] = [
     //   {path: 'inbox', title: 'Inbox', ab:'IB'},
     // ]
   },
-    
+
   {
     path: '/developers',
     title: 'Web Development',
@@ -119,8 +119,8 @@ export const ROUTES: RouteInfo[] = [
       {path: 'dev', title: 'Coding', ab:'C'},
     ]
   },
-  
-  
+
+
 ];
 
 @Component({
@@ -144,11 +144,14 @@ export class SidebarComponent implements OnInit {
   };
 
   constructor(private authService: AuthService) {
-    
-   }
+    this.authService.getAuthUser().pipe(first()).subscribe( (response: any) => {
+      this.authUser = response.data;
+    });
+
+  }
 
   ngOnInit(): void {
-    this.authService.getAuthUserUpdateListener().subscribe( (res:any) => {
+    this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
       this.authUser = res.user;
     });
 
@@ -159,10 +162,8 @@ export class SidebarComponent implements OnInit {
       this.ps = new PerfectScrollbar(elemSidebar);
     }
 
-    this.authService.getAuthUser().pipe(first()).subscribe( (response: any) => {
-      this.authUser = response.data;
-    });
-    
+
+
   }
 
   updatePS(): void  {
@@ -182,15 +183,15 @@ export class SidebarComponent implements OnInit {
   //  for a single link menu
   isPwdEngineer(menuitem): boolean {
     if(this.authUser.is_departmental == 1){
-      if(menuitem.is_departmental === this.authUser.is_departmental || 
-          menuitem.ablity === this.authUser.is_pwd_engineer || 
-          (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)) || 
+      if(menuitem.is_departmental === this.authUser.is_departmental ||
+          menuitem.ablity === this.authUser.is_pwd_engineer ||
+          (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)) ||
           menuitem.inforce === this.authUser.inforce){
         return true;
       }
 
       if(this.authUser.is_pwd_engineer == 1){
-        if((menuitem.ablity === this.authUser.is_pwd_engineer) || 
+        if((menuitem.ablity === this.authUser.is_pwd_engineer) ||
           (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
           return true;
         }
@@ -198,26 +199,26 @@ export class SidebarComponent implements OnInit {
       }else{
         if(menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)){
           return true;
-        } 
+        }
         return false;
       }
 
     }else{
       if( menuitem.inforce === this.authUser.inforce || menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role)){
-        return true;      
-      } 
+        return true;
+      }
       return false;
-    }   
-  
+    }
+
   }
 
   //  for a sub menu link
   activeSubMenu(menuitem): boolean{
     if(menuitem.display === this.authUser.display || (menuitem.type === 'link' && this.authUser.roles.includes(menuitem.role))){
       return true;
-    }  
+    }
     return false;
   }
- 
+
 
 }

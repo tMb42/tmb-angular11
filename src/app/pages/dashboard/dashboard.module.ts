@@ -34,13 +34,14 @@ import { UserActiveComponent } from './user-active/user-active.component';
 import { UserBlackListComponent } from './user-black-list/user-black-list.component';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserPermissionComponent } from './user-permission/user-permission.component';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
 
 
 console.log('Test for Dashboard Module. Loaded Ok')
 
 @NgModule({
-  declarations: [ProfileComponent, UpdateProfileComponent, UserLayoutComponent, UsersComponent, UserManageComponent, RolesComponent, UserActiveComponent, UserBlackListComponent, UserRoleComponent, UserPermissionComponent],
+  declarations: [ProfileComponent, UpdateProfileComponent, UserLayoutComponent, UsersComponent, UserManageComponent, RolesComponent, UserActiveComponent, UserBlackListComponent, UserRoleComponent, UserPermissionComponent, DeleteAccountComponent],
   imports: [
     CommonModule,
     FormsModule,

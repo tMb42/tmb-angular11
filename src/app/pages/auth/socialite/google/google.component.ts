@@ -24,26 +24,40 @@ export class GoogleComponent implements OnInit {
 
   loginGoogleSocialite() {
     this.isLoading = true;
-    this.authService.loginGoogleCallback(this.urlParams).subscribe({ next: () => {
+    this.authService.loginGoogleCallback(this.urlParams).subscribe( response => {
       // get return url from query parameters or default to home page
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
       this.router.navigateByUrl(returnUrl);
       this.isLoading = false;
       Swal.fire({ position: 'top-end', icon: 'success', title: 'Google Logged In Successfully', showConfirmButton: false, timer: 4000 });
     },
-      error: err => {
-        this.error = err;
-        this.isLoading = false;
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          title: 'Email associated with Google has already been Registered',
-          showConfirmButton: false,
-          timer: 4000,
-        });
-      }
 
-    });
+    (err: any) => {
+      console.log('sdfgsgfs', err);
+      //   this.isLoading = false;
+      // if(err.error.message !=null){
+      //   Swal.fire({ position: 'top-end', icon: 'info', title: err.error.message, showConfirmButton: false, timer: 4000 });
+      // }else{
+
+      // }
+      //   Swal.fire({position: 'top-end', icon: 'error', title: err.error.errors.message, showConfirmButton: false, timer: 4000 });
+      // }
+      }
+    );
+
+      // error: err => {
+      //   this.error = err;
+      //   this.isLoading = false;
+      //   Swal.fire({
+      //     position: 'top-end',
+      //     icon: 'error',
+      //     title: 'Email associated with Google has already been Registered',
+      //     showConfirmButton: false,
+      //     timer: 4000,
+      //   });
+      // }
+
+    // });
   }
 
 }

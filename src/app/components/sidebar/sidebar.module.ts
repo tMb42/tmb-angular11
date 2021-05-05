@@ -12,23 +12,23 @@ import { SidebarComponent } from './sidebar.component';
 import { AppRoutingModule } from '../../app-routing.module';
 
 @NgModule({
-    declarations: [ 
-        SidebarComponent 
-    ],    
-    imports: [
-        CommonModule,
-        RouterModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        // HttpClientModule,
-        AppRoutingModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatListModule,
-        MatIconModule,
+    declarations: [
+      SidebarComponent
     ],
-    exports: [ 
-        SidebarComponent 
+    imports: [
+      CommonModule,
+      RouterModule,
+      BrowserModule,
+      BrowserAnimationsModule,
+      // HttpClientModule,
+      AppRoutingModule,
+      MatToolbarModule,
+      MatSidenavModule,
+      MatListModule,
+      MatIconModule,
+    ],
+    exports: [
+      SidebarComponent
     ]
 })
 

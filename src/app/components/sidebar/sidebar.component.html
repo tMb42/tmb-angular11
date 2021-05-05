@@ -41,6 +41,12 @@
               <span class="sidebar-normal">Change Password</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="dashboard/delete-account" class="nav-link">
+              <span class="sidebar-mini">DA</span>
+              <span class="sidebar-normal">Delete my Account</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -49,8 +55,8 @@
   <ul class="nav" *ngIf="authUser">
     <li routerLinkActive="active" *ngFor="let menuitem of menuItems" class="nav-item">
       <!--If is a single link-->
-      <a [routerLink]="[menuitem.path]" 
-        *ngIf="isPwdEngineer(menuitem) || (menuitem.type === 'link' && authUser.roles.includes(menuitem.role))" 
+      <a [routerLink]="[menuitem.path]"
+        *ngIf="isPwdEngineer(menuitem) || (menuitem.type === 'link' && authUser.roles.includes(menuitem.role))"
         class="nav-link">
         <i class="material-icons">{{menuitem.icontype}}</i>
         <p>{{menuitem.title}}</p>
@@ -72,20 +78,20 @@
             </a>
           </li>
         </ul>
-      </div>      
+      </div>
     </li>
-    
+
     <li *ngIf="authUser">
-      <ul *ngIf="authUser.gender == null">
+      <ul *ngIf="authUser.gender == '' ">
         <h2 id="message">
-            Please Update your profile. It is compulsory for new user to use this website. 
+            Please Update your profile. It is compulsory for new user to use this website.
         </h2>
         <h3 id="message2">
           Click on above dropdown menu   and then click on update Profile.
         </h3>
       </ul>
     </li>
-    
+
     <!-- <li class="nav-item">
       <a href="#https://trymybest.co.in" class="nav-link">
         <i class="material-icons">school</i>

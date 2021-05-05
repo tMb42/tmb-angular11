@@ -30,16 +30,16 @@ export class NavbarComponent implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
   private _router: Subscription;
-  
+
   @ViewChild('app-navbar', {static: false}) button: any;
-  
-   
+
+
   constructor(private authService: AuthService, location: Location, private renderer: Renderer2, private element: ElementRef, private router: Router,) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
   }
-  
+
   minimizeSidebar(){
     const body = document.getElementsByTagName('body')[0];
 
@@ -112,7 +112,6 @@ export class NavbarComponent implements OnInit {
     }
 
     this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
-      this.sidebarClose();
 
       const $layer = document.getElementsByClassName('close-layer')[0];
       if ($layer) {
@@ -188,10 +187,6 @@ export class NavbarComponent implements OnInit {
       $layer.remove();
     }
 
-    setTimeout(function() {
-      $toggle.classList.remove('toggled');
-    }, 400);
-
     this.mobile_menu_visible = 0;
   };
 
@@ -230,14 +225,14 @@ export class NavbarComponent implements OnInit {
   }
 
   get isLoggedIn() {
-    return this.authService.isLoggedIn(); 
+    return this.authService.isLoggedIn();
   }
 
   logout() {
     this.authService.logout().subscribe(data=>{
-      Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 }); 
+      Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 });
     });
-     
+
   }
 
 

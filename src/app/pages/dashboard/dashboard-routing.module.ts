@@ -15,12 +15,13 @@ import { UserBlackListComponent } from './user-black-list/user-black-list.compon
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UserPermissionComponent } from './user-permission/user-permission.component';
 import { TweetyComponent } from '../tweety/tweety.component';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
 const DashboardRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
     path: '',
-    children: [ 
+    children: [
       {
         path: 'profile',
         component: ProfileComponent,
@@ -36,14 +37,19 @@ const DashboardRoutes: Routes = [
         component: PasswordChangeComponent,
         canActivate: [AuthGuard]
       },
-      
+      {
+        path: 'delete-account',
+        component: DeleteAccountComponent,
+        canActivate: [AuthGuard]
+      },
+
       {
         path: 'user-role',
         component: UserRoleComponent,
         canActivate: [AuthGuard],
         data: {
           roles: ["super_admin"]
-        }        
+        }
       },
       {
         path: 'user-permission',
@@ -51,7 +57,7 @@ const DashboardRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
           roles: ["super_admin"]
-        }  
+        }
       },
       {
         path: 'users',
@@ -59,7 +65,7 @@ const DashboardRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
           roles: ["super_admin"]
-        },  
+        },
         children: [
           { path: '', component: UsersComponent },
           { path: 'add/:id', component: UserManageComponent },
@@ -72,7 +78,7 @@ const DashboardRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
           roles: ["super_admin"]
-        }  
+        }
       },
       {
         path: 'block-users',
@@ -80,7 +86,7 @@ const DashboardRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
           roles: ["super_admin"]
-        }  
+        }
       },
       {
         path: 'roles',
@@ -95,9 +101,9 @@ const DashboardRoutes: Routes = [
         component: TweetyComponent,
         canActivate: [AuthGuard],
       }
-    ]    
+    ]
   },
-  
+
 ];
 
 @NgModule({
