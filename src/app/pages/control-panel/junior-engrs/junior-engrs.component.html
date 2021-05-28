@@ -1,6 +1,6 @@
-<div class="col-12 ">   
+<div class="col-12 ">
     <div class="card container-fluid">
-        <form [formGroup]="jeUpdateForm" style="margin-bottom: 0px;">            
+        <form [formGroup]="jeUpdateForm" style="margin-bottom: 0px;">
             <div class="d-flex col-12" style="color: white;">
                 <div class="form-group col-1">
                     <label>ID</label>
@@ -10,7 +10,7 @@
                     <label>Grdn. Sl</label>
                     <input type="text" formControlName="gradation_sl_no" class="form-control" readonly required>
                 </div>
-            
+
                 <div class="form-group col-3">
                     <label>Name</label>
                     <input type="text" formControlName="engineer_name" class="form-control" required>
@@ -21,10 +21,10 @@
                         <option value="null">--Select Caste--</option>
                         <option *ngFor="let item of castes" [value]="item.id">
                             {{ item.caste_alias }}
-                        </option>                  
+                        </option>
                     </select>
                 </div>
-                <div class="col-md-2 px-md-1">                
+                <div class="col-md-2 px-md-1">
                     <div class="form-group">
                         <label>Date of Birth</label>
                         <input type="text"
@@ -36,11 +36,11 @@
                             (bsValueChange)="changeDob($event)"
                             [minDate]="minDate"
                             [maxDate]="maxDate"
-                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-red' }" 
+                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-red' }"
                         >
                     </div>
                 </div>
-                <div class="col-md-2 px-md-1">                
+                <div class="col-md-2 px-md-1">
                     <div class="form-group">
                         <label>Date of Retirement</label>
                         <input type="text"
@@ -52,7 +52,7 @@
                             (bsValueChange)="changeDor($event)"
                             [minDate]="minDate"
                             [maxDate]="maxDate"
-                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-red' }" 
+                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-red' }"
                         >
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="d-flex col-12" style="color: white;">
-                <div class="col-md-2 px-md-1">                
+                <div class="col-md-2 px-md-1">
                     <div class="form-group">
                         <label>Date of Joining</label>
                         <input type="text"
@@ -71,56 +71,56 @@
                             bsDatepicker
                             formControlName="junior_engineers_doj"
                             (bsValueChange)="changeDoj($event)"
-                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }" 
+                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
                             >
                     </div>
                 </div>
-                <div class="col-md-2 px-md-1">                
+                <div class="col-md-2 px-md-1">
                     <div class="form-group">
                         <label>Date of Confirmation</label>
                         <input type="text"
                             class="form-control"
                             placeholder="Select Date"
-                            bsDatepicker 
+                            bsDatepicker
                             formControlName="junior_engineers_doc"
                             (bsValueChange)="changeDoc($event)"
-                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }" 
+                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
                         >
                     </div>
                 </div>
-                <div class="col-md-1 px-md-1">                
+                <div class="col-md-1 px-md-1">
                     <div class="form-group">
                         <label>PSC Allotment</label>
                         <input type="text" formControlName="year_allot_psc" class="form-control" >
                     </div>
                 </div>
-                <div class="col-md-2 px-md-1">                
+                <div class="col-md-2 px-md-1">
                     <div class="form-group">
                         <label>Deprt. Passed</label>
                         <input type="text" formControlName="year_passing_de" class="form-control" >
                     </div>
                 </div>
-                <div class="col-md-2 px-md-1">                
+                <div class="col-md-2 px-md-1">
                     <div class="form-group">
                         <label>Present Post</label>
                         <select formControlName="promo_designation_id" class="form-control" required>
                             <option value="null">--Select Caste--</option>
                             <option *ngFor="let item of designations" [value]="item.id">
                                 {{ item.designation_name }}
-                            </option>                  
+                            </option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-2 px-md-1">                
+                <div class="col-md-2 px-md-1">
                     <div class="form-group">
                         <label>Published Date</label>
                         <input type="text"
                             class="form-control"
                             placeholder="Select Date"
-                            bsDatepicker 
+                            bsDatepicker
                             formControlName="gradation_list_wef"
                             (bsValueChange)="changeWef($event)"
-                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }" 
+                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
                         >
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                     <input type="text" formControlName="inforce" class="form-control" required>
                 </div>
             </div>
-       
+
             <div class="d-flex col-12" style="color: white;">
                 <div class="col-5">
                     <textarea type="text" rows="1" placeholder="Service Status" formControlName="service_status" class="form-control"></textarea>
@@ -157,7 +157,7 @@
                         <option [selected]="true">--Select Date --</option>
                         <option *ngFor="let grdnDate of JeGradationDateLists" [value]="grdnDate.gradation_list_wef">
                             {{ grdnDate.gradation_list_wef | date: 'dd-MM-yyyy'}}
-                        </option>                  
+                        </option>
                     </select>
                 </div>
             </div>
@@ -183,7 +183,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of jEngrs; let sl = index;" (click)="getEngrsDetailsById(item.id)">
+                    <tr *ngFor="let item of jEngrs; let sl = index;" (click)="tenderDetailsById(item.id)">
                         <td class="text-center" scope="row">{{ item.id }}</td>
                         <td class="text-center" scope="row">{{ item.gradation_sl_no }}</td>
                         <td class="text-left" scope="row">{{ item.engineer_name }}</td>
@@ -200,7 +200,7 @@
                         <td class="text-justify" scope="row">{{ item.notes }}</td>
                     </tr>
                 </tbody>
-                        
+
                 <tfoot style="overflow-x: auto;">
 
                 </tfoot>
@@ -212,21 +212,21 @@
 
             <div *ngIf="loading" class="d-flex align-items-center">
                 <strong>Loading...</strong>
-                <span class="spinner-border text-light"></span>  
-                <span class="spinner-border text-danger"></span>  
-                <span class="spinner-border text-dark"></span>  
+                <span class="spinner-border text-light"></span>
+                <span class="spinner-border text-danger"></span>
+                <span class="spinner-border text-dark"></span>
             </div>
             <span class="spacer"></span>
             <div class="pagination">
-                <pagination 
-                    [boundaryLinks]="showBoundaryLinks" 
+                <pagination
+                    [boundaryLinks]="showBoundaryLinks"
                     [totalItems]="totalRecords"
                     [maxSize]="maxSize"
                     [itemsPerPage]="pageSize"
-                    [(ngModel)]="currentPage" 
-                    (pageChanged)="pageChanged($event)" 
+                    [(ngModel)]="currentPage"
+                    (pageChanged)="pageChanged($event)"
                 ></pagination>
-            </div> 
+            </div>
             <span class="spacer"></span>
             <div class="d-flex justify-content-right">
                 <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
@@ -236,7 +236,7 @@
                     </option>
                 </select>
             </div>
-        </div>  
+        </div>
     </div>
 </div>
 <div *ngIf="false">

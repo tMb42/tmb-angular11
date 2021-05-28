@@ -1,0 +1,167 @@
+
+.card-user .avatar {
+  width: 80px;
+  height: 80px;
+  border: 5px solid #2b3553;
+  border-bottom-color: rgb(43, 53, 83);
+  background-color: transparent;
+  position: relative;
+}
+
+.avatar {
+  color: #ffffff;
+  background-color: #adb5bd;
+  display: inline-flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 1rem;
+  border-radius: 50%;
+  height: 68px;
+  width: 68px;
+}
+.avatar-details {
+  align-items: left;
+  justify-content: left;
+  font-size: 10px;
+
+}
+
+.card-user .author {
+  text-align: center;
+  text-transform: none;
+}
+
+.card-user .author .block {
+  position: absolute;
+  height: 100px;
+  width: 250px;
+}
+
+.card-user .author .block.block-one {
+  background: rgba(225, 78, 202, 0.6);
+  background: linear-gradient(to right, rgba(225, 78, 202, 0.6) 0%, rgba(225, 78, 202, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=10);
+  transform: rotate(150deg);
+  margin-top: -90px;
+  margin-left: -50px;
+}
+
+.card-user .author .block.block-two {
+  background: rgba(225, 78, 202, 0.6);
+  background: linear-gradient(to right, rgba(225, 78, 202, 0.6) 0%, rgba(225, 78, 202, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=10);
+  transform: rotate(30deg);
+  margin-top: -40px;
+  margin-left: -100px;
+}
+
+.card-user .author .block.block-three {
+  background: rgba(225, 78, 202, 0.6);
+  background: linear-gradient(to right, rgba(225, 78, 202, 0.6) 0%, rgba(225, 78, 202, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=10);
+  transform: rotate(170deg);
+  margin-top: -70px;
+  right: -45px;
+}
+
+.card-user .author .block.block-four {
+  background: rgba(225, 78, 202, 0.6);
+  background: linear-gradient(to right, rgba(225, 78, 202, 0.6) 0%, rgba(225, 78, 202, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=10);
+  transform: rotate(150deg);
+  margin-top: -25px;
+  right: -45px;
+}
+
+.card-user {
+  overflow: hidden;
+}
+.example-custom-date-class {
+  background: orange;
+  border-radius: 100%;
+}
+
+.card {
+  background: #494c6d;
+  border: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.card-header .title {
+  color: #00bcd4;
+}
+
+.title {
+  font-weight: 800;
+}
+
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+.card p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.card label {
+  font-size: 0.75rem;
+  margin-bottom: 0px;
+  color: rgb(255, 255, 255);
+}
+
+strong {
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: "Poppins", sans-serif;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+.form-control {
+  border-color: #2b3553;
+  border-radius: 0.4285rem;
+  font-size: 0.7500000025rem;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #525f7f;
+  text-align: left;
+}
+
+.btnCol {
+  color: black;
+  height: 25px;
+  margin: auto 0.8em auto 0.4em;
+  background: linear-gradient(#ffaf03, #f7f4f6, #03ff03, );
+}
+
+.btnGrn {
+  color: black;
+  background: linear-gradient(to right, #4afd62, #0fffb7, #5cff5c, );
+}
+.btnRed {
+  color: black;
+  background: linear-gradient(to right, #ff0c0c, #ff670f, #eb1010, );
+}

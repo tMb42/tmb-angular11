@@ -1,0 +1,252 @@
+<div class="content" *ngIf="authUser">
+  <div class="card card-user">
+    <div class="card-header">
+      <h2 class="title">Present Profile</h2>
+    </div>
+    <div class="card-body" >
+      <div class="row">
+        <div class="col-md-3">
+          <p class="card-text"></p>
+          <div class="author">
+            <span *ngIf="isLoading" class="spinner-border text-success"></span>
+          </div>
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <img [src]="imagePreview || authUser.photo" class="avatar"><br/>
+          </div>
+          <div class="author-details">
+            <p><span style="color: rgb(255, 217, 0);">Name: </span>{{ authUser.name }}</p>
+            <p><span style="color: rgb(251, 255, 0);">E-mail: </span>{{ authUser.email }}</p>
+            <p><span style="color: rgb(0, 255, 234);">DOB: </span>{{ authUser.dob }}</p>
+            <p><span style="color: rgb(238, 255, 0);">Mobile: </span>{{ authUser.mobile }}</p>
+            <p><span style="color: rgb(255, 187, 0);">Designation: </span>{{ authUser.designation_name }}</p>
+            <p><span style="color: rgb(0, 255, 98);">Department: </span>{{ authUser.department_short_name }}</p>
+            <p><span style="color: rgb(0, 255, 98);">Circle: </span>{{ authUser.circle_name }}</p>
+            <p><span style="color: rgb(0, 255, 98);">Division: </span>{{ authUser.division_name }}</p>
+            <p><span style="color: rgb(0, 255, 98);">Sub-Division: </span>{{ authUser.sub_division_name }}</p>
+            <p><span style="color: rgb(0, 255, 98);">Section: </span>{{ authUser.section_name }}</p>
+            <p><span style="color: rgb(255, 187, 0);">Stackyard: </span>{{ authUser.stackyard_name }}</p>
+            <p><span style="color: rgb(255, 187, 0);">Railway Yard: </span>{{ authUser.railway_yard_name }}</p>
+            <p><span style="color: rgb(255, 187, 0);">District: </span>{{ authUser.district_name }}</p>
+            <p>Created: {{ authUser.created_at }}</p>
+            <p>Last Profile Image Updated: {{ authUser.avatar_updated_at }}</p>
+            <p>Last Profile Updated: {{ authUser.profile_updated_at }}</p>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="card" style="text-align: left;">
+            <div class="content">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <form [formGroup]="pwdWorkingProfileForm" >
+                      <div class="card-body">
+                        <div class="d-flex col-12">
+                          <div class="form-group col-md-3 pr-md-1">
+                            <label>Department*</label>
+                            <select (change)="getCirclesByDepartmentId($event.target.value)" formControlName="department" class="form-control" required >
+                              <option value="null">--Select Department--</option>
+                              <option *ngFor="let item of depts" [value]="item.id">
+                                {{ item.department_short_name }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="d-flex col-12">
+                          <div class="form-group col-md-3 pr-md-1">
+                            <a class="btn btn-sm btnCol" (click)="showCircleInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                            <label>Circle*</label>
+                            <select (change)="getDivisionsByCircleId($event.target.value)" formControlName="circle_id" class="form-control" required>
+                              <option value="null">--Select Circle--</option>
+                              <option *ngFor="let item of circles" [value]="item.id">
+                                {{ item.circle_name }}
+                              </option>
+                            </select>
+                          </div>
+                          <form [formGroup]="circleForm" *ngIf="isCircleFormShow">
+                            <div class="d-flex col-12" >
+                              <div class="form-group col-2">
+                                <label>ID</label>
+                                <input type="text" formControlName="newCirId" class="form-control" readonly required>
+                              </div>
+                              <div class="form-group col-4">
+                                <label>Name of Circle*</label>
+                                <input type="text" formControlName="circle_name" placeholder="enter your circle name" class="form-control" required>
+                              </div>
+                              <div class="form-group col-3">
+                                <label>Remarks</label>
+                                <input type="text" formControlName="remarks" placeholder="enter remarks" class="form-control">
+                              </div>
+                              <div class="form-group col-2 mt-4">
+                                <button class="btn btn-sm btnGrn" [disabled]="!circleForm.valid" (click)="addNewCircle()">Submit</button>
+                              </div>
+                              <div class="form-group col-1 mt-4">
+                                <button class="btn btn-sm btn-rose" (click)="cancelCircle()" >Cancel</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="d-flex col-12">
+                          <div class="form-group col-md-3 pr-md-1">
+                            <a class="btn btn-sm btnCol" (click)="showDivisionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                            <label>Division*</label>
+                            <select (change)="getSubDivisionsByDivisionId($event.target.value); getDepartmentalStackyardByDivnId($event.target.value)" formControlName="division_id" class="form-control" required>
+                              <option value="null">--Select Division--</option>
+                              <option *ngFor="let item of divns" [value]="item.id">
+                                {{ item.division_name }}
+                              </option>
+                            </select>
+                          </div>
+                          <form [formGroup]="divisionForm" *ngIf="isDivisionFormShow" >
+                            <div class="d-flex col-12" >
+                              <div class="form-group col-2">
+                                <label>ID</label>
+                                <input type="text" formControlName="newDivId" class="form-control" readonly required>
+                              </div>
+                              <div class="form-group col-4">
+                                <label>Name of Division*</label>
+                                <input type="text" formControlName="divn_name" placeholder="your Division name" class="form-control" required>
+                              </div>
+                              <div class="form-group col-3">
+                                <label>Remarks</label>
+                                <input type="text" formControlName="remarks" placeholder="enter remarks" class="form-control">
+                                </div>
+                              <div class="col-2 mt-4">
+                                <button class="btn btn-sm btnGrn" [disabled]="!divisionForm.valid" (click)="addNewDivision()">Submit</button>
+                              </div>
+                              <div class="form-group col-1 mt-4">
+                                <button class="btn btn-sm btn-rose" (click)="cancelDivision()" >Cancel</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="d-flex col-12">
+                          <div class="form-group col-md-3 pr-md-1">
+                            <a class="btn btn-sm btnCol" (click)="showSubDivisionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                            <label>Sub-Division*</label>
+                            <select (change)="getSectionsBySubDivisionId($event.target.value)"  formControlName="sub_division_id" class="form-control" required>
+                              <option value="null">--Select Sub-Division--</option>
+                              <option *ngFor="let item of subDivns" [value]="item.id">
+                                {{ item.sub_division_name }}
+                              </option>
+                            </select>
+                          </div>
+                          <form [formGroup]="subDivisionForm" *ngIf="isSubdivisionFormShow">
+                            <div class="d-flex col-12" >
+                              <div class="form-group col-2">
+                                <label>ID</label>
+                                <input type="text" formControlName="newSubDivId" class="form-control" readonly required>
+                              </div>
+                              <div class="form-group col-4">
+                                <label>Name of Sub-Division*</label>
+                                <input type="text" formControlName="subDivn_name" placeholder="enter your Sub-Division name" class="form-control" required>
+                              </div>
+                              <div class="form-group col-3">
+                                <label>Remarks</label>
+                                <input type="text" formControlName="remarks" placeholder="enter remarks" class="form-control">
+                              </div>
+                              <div class="form-group col-2 mt-4">
+                                <button class="btn btn-sm btnGrn" [disabled]="!subDivisionForm.valid" (click)="addNewSubDivision()">Submit</button>
+                              </div>
+                              <div class="form-group col-1 mt-4">
+                                <button class="btn btn-sm btn-rose" (click)="cancelSubDivision()" >Cancel</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="d-flex col-12">
+                          <div class="form-group col-md-3 pr-md-1">
+                            <a class="btn btn-sm btnCol" (click)="showSectionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                            <label>Section*</label>
+                            <select formControlName="section_id" class="form-control" required>
+                              <option value="null">--Select Section--</option>
+                              <option *ngFor="let item of sections" [value]="item.id">
+                                {{ item.section_name }}
+                              </option>
+                            </select>
+                          </div>
+                          <form [formGroup]="sectionForm" *ngIf="isSectionFormShow">
+                            <div class="d-flex col-12" >
+                              <div class="form-group col-2">
+                                <label>ID</label>
+                                <input type="text" formControlName="newSecId" class="form-control" readonly required>
+                              </div>
+                              <div class="form-group col-3">
+                                <label>Name of Section*</label>
+                                <input type="text" formControlName="section_name" placeholder="your Section name" class="form-control" required>
+                              </div>
+                              <div class="form-group col-2">
+                                <label>CUG Mobile</label>
+                                <input type="text" formControlName="mobile" placeholder="CUG" class="form-control">
+                              </div>
+                              <div class="form-group col-2">
+                                <label>Remarks</label>
+                                <input type="text" formControlName="remarks" placeholder="remarks" class="form-control">
+                              </div>
+                              <div class="form-group col-2 mt-4">
+                                <button class="btn btn-sm btnGrn" [disabled]="!sectionForm.valid" (click)="addNewSection()">Submit</button>
+                              </div>
+                              <div class="form-group col-1 mt-4">
+                                <button class="btn btn-sm btn-rose" (click)="cancelSection()" >Cancel</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-3 pr-md-1">
+                            <label>Divisional Stack Yeard*</label>
+                            <select  formControlName="stackyard_id" class="form-control" required>
+                              <option value="null">--Select Stack Yard--</option>
+                              <option *ngFor="let item of stackYards" [value]="item.id">
+                                {{ item.stackyard_name }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-3 pr-md-1">
+                            <label>Your Posting District*</label>
+                            <select formControlName="district_id" class="form-control" required>
+                              <option value="null">--Select District--</option>
+                              <option *ngFor="let item of districts" [value]="item.id">
+                                {{ item.district_name }}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-3 pr-md-1">
+                            <label>Nearest Railway Yard*</label>
+                            <select formControlName="railway_id" class="form-control" required>
+                              <option value="null">--Select Railway Yard--</option>
+                              <option *ngFor="let item of Rlys" [value]="item.id">
+                                {{ item.railway_yard_name }}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-4 pr-md-1">
+                            <label>Remarks</label>
+                            <input class="form-control" formControlName="remarks" type="text" placeholder="Remarks (if any)"/>
+                          </div>
+                          <div class="form-group col-2 mt-4">
+                            <button class="btn btn-sm btnGrn" [disabled]="!pwdWorkingProfileForm.valid" (click)="updatePwdWorkingProfile()">Submit</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

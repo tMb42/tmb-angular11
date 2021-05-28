@@ -12,25 +12,28 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PwdWorkingProfileComponent } from './pwd-working-profile/pwd-working-profile.component';
 
 
 console.log('Test for pwd-works Module. Loaded Ok')
 
 @NgModule({
-  declarations: [TenderDetailsComponent],
+  declarations: [TenderDetailsComponent, PwdWorkingProfileComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     PaginationModule,
     PwdWorksRoutingModule,
+    FontAwesomeModule,
     AccordionModule.forRoot(),
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
-    CollapseModule.forRoot()   
+    CollapseModule.forRoot()
   ]
 })
 export class PwdWorksModule { }

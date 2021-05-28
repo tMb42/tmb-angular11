@@ -26,7 +26,7 @@ export class DeleteAccountComponent implements OnInit {
     this.loading = true;
     Swal.fire({
       title: 'Are you sure?',
-      text: this.authUser.name + ", you are further informed that your account would never be retrived again",
+      text: this.authUser.name + ", you are further informed that your account would never be retrived again.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -52,7 +52,7 @@ export class DeleteAccountComponent implements OnInit {
     this.loading = true;
     Swal.fire({
       title: 'Are you sure?',
-      text: this.authUser.name + "won't be able to login from now! ",
+      text: this.authUser.name + " won't be able to login from now! until you unlock your account.",
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

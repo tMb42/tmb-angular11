@@ -26,7 +26,7 @@ export interface Designations {
   styleUrls: ['./junior-engrs.component.scss']
 })
 export class JuniorEngrsComponent implements OnInit {
-  jeUpdateForm: FormGroup; 
+  jeUpdateForm: FormGroup;
   showBoundaryLinks = true;
   page: number = 1;
   currentPage: number;
@@ -35,14 +35,14 @@ export class JuniorEngrsComponent implements OnInit {
   pageSizes = [10, 20, 50, 100, 200];  //option for items per page
   totalPages: number;
   totalRecords: number;
-  
+
   jEngrs: JEngrs[];
   castes: Castes[] = [];
   designations: Designations[] = [];
   JeGradationDateLists: any = [];
   SelectedJeGradationWef: any = '';
   gradationDate: any = '';
-  loading = false; 
+  loading = false;
 
   minDate: Date;
   maxDate: Date;
@@ -51,9 +51,9 @@ export class JuniorEngrsComponent implements OnInit {
   jeDoc: string = null;
   jeDor: string = null;
   gwef: string = null;
-  
-  constructor(private fb: FormBuilder, private dropdownService : DropdownService, private jengrsService: JengrsService) 
-  { 
+
+  constructor(private fb: FormBuilder, private dropdownService : DropdownService, private jengrsService: JengrsService)
+  {
     this.minDate = new Date();
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 29200); //maximum age 80yrs
@@ -63,20 +63,20 @@ export class JuniorEngrsComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.jeLatestGradations();
-  
-    this.dropdownService.getCastes().subscribe((response: { castes: Castes[]; }) => {      
-      this.castes = response.castes;     
+
+    this.dropdownService.getCastes().subscribe((response: { castes: Castes[]; }) => {
+      this.castes = response.castes;
     });
 
-    this.dropdownService.getAeDesignations().subscribe((response: { designationData: Designations[]; }) => {      
-      this.designations = response.designationData;     
+    this.dropdownService.getAeDesignations().subscribe((response: { designationData: Designations[]; }) => {
+      this.designations = response.designationData;
     });
 
     this.jengrsService.getJeUpdateListener().subscribe( res => {
       this.loading = false;
       this.jEngrs = res;
     });
-     
+
     this.jeUpdateForm = this.fb.group({
       id: [null, Validators.required],
       gradation_sl_no: [null, Validators.required],
@@ -103,7 +103,7 @@ export class JuniorEngrsComponent implements OnInit {
     this.jengrsService.getJeDetailsById(event).pipe(first()).subscribe((x: any) => {
       this.loading = false;
       this.jeUpdateForm.patchValue(x.je);
-    }); 
+    });
   }
 
   changeDob(value: Date): void {
@@ -118,30 +118,30 @@ export class JuniorEngrsComponent implements OnInit {
       this.jeDoj = formatDate(value, 'yyyy-MM-dd', 'en');
     }else{
       this.jeDoc = null;
-    } 
+    }
   }
   changeDoc(value: Date): void {
     if(value != null){
       this.jeDoc = formatDate(value, 'yyyy-MM-dd', 'en');
     }else{
       this.jeDoc = null;
-    } 
+    }
   }
   changeDor(value: Date): void {
     if(value != null){
       this.jeDor = formatDate(value, 'yyyy-MM-dd', 'en');
     }else{
       this.jeDoc = null;
-    }    
+    }
   }
   changeWef(value: Date): void {
     if(value != null){
       this.gwef = formatDate(value, 'yyyy-MM-dd', 'en');
     }else{
       this.gwef = null;
-    }    
+    }
   }
-  
+
 
   updateJeData(){
     this.loading = true;
@@ -150,13 +150,13 @@ export class JuniorEngrsComponent implements OnInit {
       id: formData.id,
       grdnSl: formData.gradation_sl_no,
       engrName: formData.engineer_name,
-      caste: formData.employee_caste_id, 
-      serviceStatus: formData.service_status, 
+      caste: formData.employee_caste_id,
+      serviceStatus: formData.service_status,
       display: formData.display,
-      inforce: formData.inforce, 
+      inforce: formData.inforce,
       notes: formData.notes,
       birthDate: this.jeDob,
-      doj: this.jeDoj, 
+      doj: this.jeDoj,
       doc: this.jeDoc,
       dor: this.jeDor,
       wef: this.gwef,
@@ -168,11 +168,11 @@ export class JuniorEngrsComponent implements OnInit {
 
     this.jengrsService.jeUpdateDataById(updateJeData).subscribe(() => {
       this.loading = false;
-      Swal.fire({ position: 'top-end', icon: 'success', title: 'JE Data Updated successfully', showConfirmButton: false, timer: 2000 }); 
+      Swal.fire({ position: 'top-end', icon: 'success', title: 'JE Data Updated successfully', showConfirmButton: false, timer: 2000 });
     }, err => {
       this.loading = false;
-      Swal.fire({ position: 'top-end', icon: 'error', title: err, showConfirmButton: false, timer: 4000 }); 
-    }); 
+      Swal.fire({ position: 'top-end', icon: 'error', title: err, showConfirmButton: false, timer: 4000 });
+    });
   }
 
   jeLatestGradations(){
@@ -200,11 +200,11 @@ export class JuniorEngrsComponent implements OnInit {
     this.currentPage = this.page;
     this.jeLatestGradations();
   }
-  
+
   pageChanged(event: any): void {
     this.page = event.page;
-    this.pageSize = event.itemsPerPage; 
-    this.jeLatestGradations(); 
+    this.pageSize = event.itemsPerPage;
+    this.jeLatestGradations();
   }
 
   aeGradationListByWef(event: any): void {
@@ -219,13 +219,13 @@ export class JuniorEngrsComponent implements OnInit {
       this.SelectedJeGradationWef = res.jeSelectedTotal[0];
       this.jEngrs = res.juniorEngineer.data;
       this.JeGradationDateLists = res.jeGradationDate;
-      
+
       this.totalRecords = res.juniorEngineer.total;
       this.totalPages = res.juniorEngineer.total_pages;
-      this.currentPage = res.juniorEngineer.current_page;   
-      
+      this.currentPage = res.juniorEngineer.current_page;
+
       this.jeUpdateForm.patchValue({
-        gradation_list_wef: this.SelectedJeGradationWef.gradation_list_wef,      
+        gradation_list_wef: this.SelectedJeGradationWef.gradation_list_wef,
       });
 
     });
@@ -243,7 +243,7 @@ export class JuniorEngrsComponent implements OnInit {
         this.totalPages = res.juniorEngineer.total_pages;
         this.currentPage = res.juniorEngineer.current_page;
       });
-    }    
+    }
     if(event.length <= 0){
       this.jeLatestGradations();
     }

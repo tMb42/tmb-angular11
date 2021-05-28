@@ -155,6 +155,15 @@ export class AuthService {
     );
   }
 
+  getPwdWorkingUserProfile(pwdWorkingPro) {
+    return this.http.post<any>(`${this.serverUrl}/pwd/working-profile`, pwdWorkingPro).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.authUser = res;
+        this.authUserSubject.next({...this.authUser});
+      })
+    );
+  }
+
   uploadUserProfileImage(uploadImageData) {
     return this.http.post<any>(`${this.serverUrl}/user/photo`, uploadImageData).pipe(
       tap((res: any) => {

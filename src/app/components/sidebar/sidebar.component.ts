@@ -75,7 +75,7 @@ export const ROUTES: RouteInfo[] = [
     icontype: 'architecture'
   },
   {
-    path: '/pwd-works',
+    path: '/pwd-works/pwd-working-update-profile',
     title: 'PWD-Works',
     is_departmental: 1,
     type: 'link',

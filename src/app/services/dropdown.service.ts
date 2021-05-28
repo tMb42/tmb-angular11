@@ -1,8 +1,14 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Circle } from '../models/circle.model';
+import { Division } from '../models/division.model';
+import { Section } from '../models/section.model';
+import { SubDivision } from '../models/subDivision.model';
 import { Roles } from '../models/role.model';
 
 @Injectable({
@@ -12,6 +18,18 @@ import { Roles } from '../models/role.model';
 export class DropdownService {
 
   serverUrl = environment.baseURL;
+
+  circles: Circle = null;
+  circleSubject = new Subject<Circle>();
+
+  divns: Division = null;
+  divnSubject = new Subject<Division>();
+
+  subDivns: SubDivision = null;
+  subDivnSubject = new Subject<SubDivision>();
+
+  sections: Section = null;
+  sectionSubject = new Subject<Section>();
 
   constructor(private http: HttpClient) { }
 
@@ -33,6 +51,11 @@ export class DropdownService {
   }
   getAeDesignations() {
     return this.http.get(`${this.serverUrl}/aePost`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getTenderAuthority() {
+    return this.http.get(`${this.serverUrl}/tenderAuthority`).pipe(
       catchError(this.handleError)
     );
   }
@@ -62,12 +85,127 @@ export class DropdownService {
       catchError(this.handleError)
     );
   }
-  
-  // getDesignations(departmentId: number) {
-  //   return this.http.get(`${this.serverUrl}/designations/${departmentId}`).pipe(
-  //     catchError(this.handleError)
-  //   );
+
+  getDistricts() {
+    return this.http.get(`${this.serverUrl}/districts`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getRailwayYards() {
+    return this.http.get(`${this.serverUrl}/rlys`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getAllCirclesByDeprtId(deprtId: number) {
+    return this.http.get(`${this.serverUrl}/circles/${deprtId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getAllDivisionsByCircleId(circleId: number) {
+    return this.http.get(`${this.serverUrl}/divn/${circleId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getAllSubDivisionsByDivisionId(DivnId: number) {
+    return this.http.get(`${this.serverUrl}/subDivn/${DivnId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getAllSectionsBySubDivisionId(SubDivnId: number) {
+    return this.http.get(`${this.serverUrl}/section/${SubDivnId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getAllDepartmentalStackyardByDivnId(DivnId: number) {
+    return this.http.get(`${this.serverUrl}/stackyard/${DivnId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+//---------------------------------------------------------------------------------------------------
+  // getCircleUpdateListener() {
+  //   return this.circleSubject.asObservable();
   // }
+
+  // getDivisionUpdateListener() {
+  //   return this.divnSubject.asObservable();
+  // }
+
+  getLastCircleID() {
+    return this.http.get<any>(`${this.serverUrl}/lastCircleID`).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.circles = res;
+        this.circleSubject.next({...this.circles});
+      })
+    );
+  }
+
+  getNewCircleUnderDeprt(newData) {
+    return this.http.post<any>(`${this.serverUrl}/addCircle`, newData).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.circles = res;
+        this.circleSubject.next({...this.circles});
+      })
+    );
+  }
+
+//----------------------------------------------------------------------------------------------------------
+  getLastDivisionID() {
+    return this.http.get<any>(`${this.serverUrl}/lastDivID`).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.divns = res;
+        this.divnSubject.next({...this.divns});
+      })
+    );
+  }
+
+  getNewDivisionUnderCircle(newData) {
+    return this.http.post<any>(`${this.serverUrl}/addDivision`, newData).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.divns = res;
+        this.divnSubject.next({...this.divns});
+      })
+    );
+  }
+
+//----------------------------------------------------------------------------------------------------------
+  getLastSubDivisionID() {
+    return this.http.get<any>(`${this.serverUrl}/lastSubDivID`).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.subDivns = res;
+        this.subDivnSubject.next({...this.subDivns});
+      })
+    );
+  }
+
+  getNewSubDivisionUnderDivision(newData) {
+    return this.http.post<any>(`${this.serverUrl}/addSubDivision`, newData).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.subDivns = res;
+        this.subDivnSubject.next({...this.subDivns});
+      })
+    );
+  }
+
+//----------------------------------------------------------------------------------------------------------
+  getLastSectionID() {
+    return this.http.get<any>(`${this.serverUrl}/lastSecID`).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.sections = res;
+        this.sectionSubject.next({...this.sections});
+      })
+    );
+  }
+  getNewSectionUnderSubDivision(newData) {
+    return this.http.post<any>(`${this.serverUrl}/addSection`, newData).pipe(
+      catchError(this.handleError), tap((res: any) => {
+        this.sections = res;
+        this.sectionSubject.next({...this.sections});
+      })
+    );
+  }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

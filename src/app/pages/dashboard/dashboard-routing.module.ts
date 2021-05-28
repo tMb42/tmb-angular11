@@ -17,6 +17,7 @@ import { UserPermissionComponent } from './user-permission/user-permission.compo
 import { TweetyComponent } from '../tweety/tweety.component';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
+
 const DashboardRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {

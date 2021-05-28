@@ -33,11 +33,11 @@ export class LoginComponent implements OnInit {
       icon: 'mdi-google',
       iconColor: '#e91e63'
     },
-    {
-      provider: 'facebook',
-      icon: 'mdi-facebook',
-      iconColor: '#007bff'
-    },
+    // {
+    //   provider: 'facebook',
+    //   icon: 'mdi-facebook',
+    //   iconColor: '#007bff'
+    // },
     {
       provider: 'github',
       icon: 'mdi-github',
