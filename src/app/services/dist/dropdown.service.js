@@ -88,6 +88,9 @@ var DropdownService = /** @class */ (function () {
     DropdownService.prototype.getAllDepartmentalStackyardByDivnId = function (DivnId) {
         return this.http.get(this.serverUrl + "/stackyard/" + DivnId).pipe(operators_2.catchError(this.handleError));
     };
+    DropdownService.prototype.getAllDepartmentalStackyard = function () {
+        return this.http.get(this.serverUrl + "/allStackyard").pipe(operators_2.catchError(this.handleError));
+    };
     //---------------------------------------------------------------------------------------------------
     // getCircleUpdateListener() {
     //   return this.circleSubject.asObservable();

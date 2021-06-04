@@ -25,8 +25,7 @@ export class PwdWorkingProfileComponent implements OnInit {
   authUser: AuthUser = null;
 
   faPlus = faPlus;
-  faUserEdit = faUserEdit;
-  // faUserEdit = faUserEdit;
+  faEdit = faUserEdit;
   isLoading = false;
   isCircleFormShow: boolean = false;
   isDivisionFormShow: boolean = false;
@@ -45,14 +44,15 @@ export class PwdWorkingProfileComponent implements OnInit {
   divns: Division[] = [];
   subDivns: SubDivision[] = [];
   sections: Section[] = [];
-  Rlys: RailwayYard[] = [];
+  rlys: RailwayYard[] = [];
   stackYards: StackYard[] = [];
 
   newCirId: number = null;
   newDivId: number = null;
   newSubDivId: number = null;
   newSecId: number = null;
-  officeId: string = null;
+  postingOfficeId: number = null;
+  officeId: number = null;
 
   constructor(
     private fb: FormBuilder,
@@ -67,11 +67,41 @@ export class PwdWorkingProfileComponent implements OnInit {
         this.authUser = response.data;
         this.pwdWorkingProfileForm.patchValue({
           department: this.authUser.department_id,
-          remarks: this.authUser.pwdProRemarks,
-          railway_id: this.authUser.RlyId,
+          circle_id: this.authUser.circleId,
+          division_id: this.authUser.divisionId,
+          sub_division_id: this.authUser.subDivisionId,
+          section_id: this.authUser.sectionId,
+          stackyard_id: this.authUser.stackId,
+          railway_id: this.authUser.rlyId,
           district_id: this.authUser.distId,
-          stackyard_id: this.authUser.StackId,
+          remarks: this.authUser.pwdProRemarks,
         });
+
+      //get circle list by default selection of department
+      this.dropdownService.getAllCirclesByDeprtId(this.authUser.department_id).subscribe((response: { circleData: Circle[]; }) => {
+        this.circles = response.circleData;
+      });
+
+      //get division by auto selection of circle
+      this.dropdownService.getAllDivisionsByCircleId(this.authUser.circleId).subscribe((response: { divnData: Division[]; }) => {
+        this.divns = response.divnData;
+      });
+
+      //get sub-division by auto selection of division
+      this.dropdownService.getAllSubDivisionsByDivisionId(this.authUser.divisionId).subscribe((response: { subDivnData: SubDivision[]; }) => {
+        this.subDivns = response.subDivnData;
+      });
+
+      //get section by auto selection of sub-division
+      this.dropdownService.getAllSectionsBySubDivisionId(this.authUser.subDivisionId).subscribe((response: { SecData: Section[]; }) => {
+        this.sections = response.SecData;
+      });
+
+      //get Stackyard list by default selection of division
+      this.dropdownService.getAllDepartmentalStackyardByDivnId(this.authUser.divisionId).subscribe((response: { stackYardData: StackYard[]; }) => {
+        this.stackYards = response.stackYardData;
+      });
+
 
       });
     }
@@ -83,11 +113,6 @@ export class PwdWorkingProfileComponent implements OnInit {
       this.authUser = res.user;
       this.isLoading = false;
     });
-
-
-    // this.dropdownService.getCircleUpdateListener().subscribe( (res: any) => {
-    //   this.circles = res.circleData;
-    // });
 
     this.pwdWorkingProfileForm = this.fb.group({
       department: new FormControl(null, [Validators.required]),
@@ -134,54 +159,60 @@ export class PwdWorkingProfileComponent implements OnInit {
     });
 
     this.dropdownService.getRailwayYards().subscribe((response: { rlyData: RailwayYard[]; }) => {
-      this.Rlys = response.rlyData;
+      this.rlys = response.rlyData;
     });
 
   }
 
-  getCirclesByDepartmentId(event: any){
-    if(event === 'null'){
+  getCirclesByDepartmentId(departId: number){
+    if(!departId){
       this.isCircleFormShow = false;
     }else{
-      this.dropdownService.getAllCirclesByDeprtId(event).subscribe((response: { circleData: Circle[]; }) => {
+      this.dropdownService.getAllCirclesByDeprtId(departId).subscribe((response: { circleData: Circle[]; }) => {
         this.circles = response.circleData;
       });
     }
   }
 
-  getDivisionsByCircleId(event: any){
-    if(event === 'null'){
+  getDivisionsByCircleId(circleId: number){
+    if(!circleId){
       this.isDivisionFormShow = false;
     }else{
-      this.dropdownService.getAllDivisionsByCircleId(event).subscribe((response: { DivnData: Division[]; }) => {
-        this.divns = response.DivnData;
+      this.dropdownService.getAllDivisionsByCircleId(circleId).subscribe((response: { divnData: Division[]; }) => {
+        this.divns = response.divnData;
       });
     }
   }
 
-  getSubDivisionsByDivisionId(event: any){
-    if(event === 'null'){
+  getSubDivisionsByDivisionId(divnId: number){
+    if(!divnId){
       this.isSubdivisionFormShow = false;
     }else{
-      this.dropdownService.getAllSubDivisionsByDivisionId(event).subscribe((response: { subDivnData: SubDivision[]; }) => {
+      this.dropdownService.getAllSubDivisionsByDivisionId(divnId).subscribe((response: { subDivnData: SubDivision[]; }) => {
         this.subDivns = response.subDivnData;
       });
     }
   }
 
-  getSectionsBySubDivisionId(event: any){
-    if(event === 'null'){
+  getSectionsBySubDivisionId(subDivnId: number){
+    if(!subDivnId){
       this.isSectionFormShow = false;
     }else{
-      this.dropdownService.getAllSectionsBySubDivisionId(event).subscribe((response: { SecData: Section[]; }) => {
+      this.dropdownService.getAllSectionsBySubDivisionId(subDivnId).subscribe((response: { SecData: Section[]; }) => {
         this.sections = response.SecData;
       });
     }
   }
 
-  getDepartmentalStackyardByDivnId(event: number){
-    this.dropdownService.getAllDepartmentalStackyardByDivnId(event).subscribe((response: { stackYardData: StackYard[]; }) => {
+  getDepartmentalStackyardByDivnId(divnId: number){
+    this.dropdownService.getAllDepartmentalStackyardByDivnId(divnId).subscribe((response: { stackYardData: StackYard[]; }) => {
       this.stackYards = response.stackYardData;
+    });
+  }
+
+  getAllDepartmentalStackyard(){
+    this.dropdownService.getAllDepartmentalStackyard().subscribe((response: { stackYardAllData: StackYard[]; }) => {
+      this.stackYards = response.stackYardAllData;
     });
   }
 
@@ -269,16 +300,27 @@ export class PwdWorkingProfileComponent implements OnInit {
     const addedData = {
       circle_id: formData.newCirId,
       circleName: formData.circle_name,
+      oldCircleName: formData.old_circle_name,
       remarks: formData.remarks,
       deprt_id: mainFormData.department
     }
 
     this.dropdownService.getNewCircleUnderDeprt(addedData).pipe(first()).subscribe(response => {
-      Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+      if (response.success === 1){
+
+        this.circles.unshift({id: response.circle.id, circle_name: response.circle.circle_name, department_id: response.circle.department_id});
+        this.pwdWorkingProfileForm.patchValue({ circle_id: this.circles[0].id });
+        this.isSectionFormShow = false;
+        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+      }else if(response.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+      }else{
+
+      }
     },
     (err: any) => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.errors, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });
@@ -297,6 +339,8 @@ export class PwdWorkingProfileComponent implements OnInit {
     }
 
     this.dropdownService.getNewDivisionUnderCircle(addedData).pipe(first()).subscribe(response => {
+      this.divns.unshift({id: response.division.id, division_name: response.division.division_name, circle_id: response.division.circle_id});
+      this.pwdWorkingProfileForm.patchValue({ division_id: this.divns[0].id });
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
     },
     (err: any) => {
@@ -320,6 +364,9 @@ export class PwdWorkingProfileComponent implements OnInit {
     }
 
     this.dropdownService.getNewSubDivisionUnderDivision(addedData).pipe(first()).subscribe(response => {
+      this.subDivns.unshift({id: response.subDivision.id, sub_division_name: response.subDivision.sub_division_name, division_id: response.subDivision.division_id});
+      this.pwdWorkingProfileForm.patchValue({ sub_division_id: this.subDivns[0].id });
+
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
     },
     (err: any) => {
@@ -344,9 +391,8 @@ export class PwdWorkingProfileComponent implements OnInit {
     }
 
     this.dropdownService.getNewSectionUnderSubDivision(addedData).pipe(first()).subscribe(response => {
-      if(response.success == 0){
-        Swal.fire({ position: 'top-end', icon: 'error', showConfirmButton: false, timer: 3000, title: response });
-      }
+      this.sections.unshift({id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id});
+      this.pwdWorkingProfileForm.patchValue({ section_id: this.sections[0].id });
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
     },
     (err: any) => {
@@ -357,6 +403,32 @@ export class PwdWorkingProfileComponent implements OnInit {
 
     });
   }
+  //-------------------------------------------------------------------------------------------------------------
+  // updateStackyardUnderDivision(){
+  //   this.isLoading = true;
+  //   const mainFormData = this.pwdWorkingProfileForm.getRawValue();
+  //   const formData = this.sectionForm.getRawValue();
+  //   const addedData = {
+  //     sectionId: formData.newSecId,
+  //     sectionName: formData.section_name,
+  //     remarks: formData.remarks,
+  //     mobileCUG: formData.mobile,
+  //     subDivId: mainFormData.sub_division_id
+  //   }
+
+  //   this.dropdownService.getNewSectionUnderSubDivision(addedData).pipe(first()).subscribe(response => {
+  //     this.sections.unshift({id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id});
+  //     this.pwdWorkingProfileForm.patchValue({ section_id: this.sections[0].id });
+  //     Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+  //   },
+  //   (err: any) => {
+  //     console.log(err);
+  //     this.isLoading = false;
+  //     Swal.fire({ position: 'top-end', icon: 'error',  title: err.error, showConfirmButton: false, timer: 4000
+  //     })
+
+  //   });
+  // }
 
   //--------------------------------------------------------------------------------
 
@@ -364,18 +436,25 @@ export class PwdWorkingProfileComponent implements OnInit {
     this.isLoading = true;
     const formData = this.pwdWorkingProfileForm.getRawValue();
 
-    if(formData.section_id != 'null'){
-      this.officeId = formData.section_id;
-    }else if(formData.sub_division_id != 'null'){
-      this.officeId = formData.sub_division_id;
-    }else if(formData.division_id != 'null'){
-      this.officeId = formData.division_id;
+    if(this.authUser.designation_id == 2){
+      this.officeId = 5;
+      this.postingOfficeId = formData.section_id;
+    }else if(this.authUser.designation_id == 3){
+      this.officeId = 4;
+      this.postingOfficeId = formData.sub_division_id;
+    }else if(this.authUser.designation_id == 4){
+      this.officeId = 3;
+      this.postingOfficeId = formData.division_id;
+    }else if(this.authUser.designation_id == 5){
+      this.officeId = 2;
+      this.postingOfficeId = formData.circle_id;
     }else{
 
     }
 
     const pwdWorkingProfileData = {
       officeId: this.officeId,
+      postingOfficeId: this.postingOfficeId,
       stackYardId: formData.stackyard_id,
       districtId: formData.district_id,
       rlyId: formData.railway_id,

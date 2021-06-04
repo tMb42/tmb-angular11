@@ -103,6 +103,7 @@ export class DropdownService {
       catchError(this.handleError)
     );
   }
+
   getAllDivisionsByCircleId(circleId: number) {
     return this.http.get(`${this.serverUrl}/divn/${circleId}`).pipe(
       catchError(this.handleError)
@@ -120,6 +121,11 @@ export class DropdownService {
   }
   getAllDepartmentalStackyardByDivnId(DivnId: number) {
     return this.http.get(`${this.serverUrl}/stackyard/${DivnId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getAllDepartmentalStackyard() {
+    return this.http.get(`${this.serverUrl}/allStackyard`).pipe(
       catchError(this.handleError)
     );
   }

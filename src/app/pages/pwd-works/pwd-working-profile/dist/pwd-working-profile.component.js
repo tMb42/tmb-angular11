@@ -22,8 +22,7 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
         this.authService = authService;
         this.authUser = null;
         this.faPlus = free_solid_svg_icons_1.faPlus;
-        this.faUserEdit = free_solid_svg_icons_1.faUserEdit;
-        // faUserEdit = faUserEdit;
+        this.faEdit = free_solid_svg_icons_1.faUserEdit;
         this.isLoading = false;
         this.isCircleFormShow = false;
         this.isDivisionFormShow = false;
@@ -35,22 +34,47 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
         this.divns = [];
         this.subDivns = [];
         this.sections = [];
-        this.Rlys = [];
+        this.rlys = [];
         this.stackYards = [];
         this.newCirId = null;
         this.newDivId = null;
         this.newSubDivId = null;
         this.newSecId = null;
+        this.postingOfficeId = null;
         this.officeId = null;
         this.authService.getAuthUser().pipe(operators_1.first()).subscribe(function (response) {
             _this.isLoading = false;
             _this.authUser = response.data;
             _this.pwdWorkingProfileForm.patchValue({
                 department: _this.authUser.department_id,
-                remarks: _this.authUser.pwdProRemarks,
-                railway_id: _this.authUser.RlyId,
+                circle_id: _this.authUser.circleId,
+                division_id: _this.authUser.divisionId,
+                sub_division_id: _this.authUser.subDivisionId,
+                section_id: _this.authUser.sectionId,
+                stackyard_id: _this.authUser.stackId,
+                railway_id: _this.authUser.rlyId,
                 district_id: _this.authUser.distId,
-                stackyard_id: _this.authUser.StackId
+                remarks: _this.authUser.pwdProRemarks
+            });
+            //get circle list by default selection of department
+            _this.dropdownService.getAllCirclesByDeprtId(_this.authUser.department_id).subscribe(function (response) {
+                _this.circles = response.circleData;
+            });
+            //get division by auto selection of circle
+            _this.dropdownService.getAllDivisionsByCircleId(_this.authUser.circleId).subscribe(function (response) {
+                _this.divns = response.divnData;
+            });
+            //get sub-division by auto selection of division
+            _this.dropdownService.getAllSubDivisionsByDivisionId(_this.authUser.divisionId).subscribe(function (response) {
+                _this.subDivns = response.subDivnData;
+            });
+            //get section by auto selection of sub-division
+            _this.dropdownService.getAllSectionsBySubDivisionId(_this.authUser.subDivisionId).subscribe(function (response) {
+                _this.sections = response.SecData;
+            });
+            //get Stackyard list by default selection of division
+            _this.dropdownService.getAllDepartmentalStackyardByDivnId(_this.authUser.divisionId).subscribe(function (response) {
+                _this.stackYards = response.stackYardData;
             });
         });
     }
@@ -61,9 +85,6 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
             _this.authUser = res.user;
             _this.isLoading = false;
         });
-        // this.dropdownService.getCircleUpdateListener().subscribe( (res: any) => {
-        //   this.circles = res.circleData;
-        // });
         this.pwdWorkingProfileForm = this.fb.group({
             department: new forms_1.FormControl(null, [forms_1.Validators.required]),
             circle_id: new forms_1.FormControl(null, [forms_1.Validators.required]),
@@ -102,57 +123,63 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
             _this.districts = response.districtData;
         });
         this.dropdownService.getRailwayYards().subscribe(function (response) {
-            _this.Rlys = response.rlyData;
+            _this.rlys = response.rlyData;
         });
     };
-    PwdWorkingProfileComponent.prototype.getCirclesByDepartmentId = function (event) {
+    PwdWorkingProfileComponent.prototype.getCirclesByDepartmentId = function (departId) {
         var _this = this;
-        if (event === 'null') {
+        if (!departId) {
             this.isCircleFormShow = false;
         }
         else {
-            this.dropdownService.getAllCirclesByDeprtId(event).subscribe(function (response) {
+            this.dropdownService.getAllCirclesByDeprtId(departId).subscribe(function (response) {
                 _this.circles = response.circleData;
             });
         }
     };
-    PwdWorkingProfileComponent.prototype.getDivisionsByCircleId = function (event) {
+    PwdWorkingProfileComponent.prototype.getDivisionsByCircleId = function (circleId) {
         var _this = this;
-        if (event === 'null') {
+        if (!circleId) {
             this.isDivisionFormShow = false;
         }
         else {
-            this.dropdownService.getAllDivisionsByCircleId(event).subscribe(function (response) {
-                _this.divns = response.DivnData;
+            this.dropdownService.getAllDivisionsByCircleId(circleId).subscribe(function (response) {
+                _this.divns = response.divnData;
             });
         }
     };
-    PwdWorkingProfileComponent.prototype.getSubDivisionsByDivisionId = function (event) {
+    PwdWorkingProfileComponent.prototype.getSubDivisionsByDivisionId = function (divnId) {
         var _this = this;
-        if (event === 'null') {
+        if (!divnId) {
             this.isSubdivisionFormShow = false;
         }
         else {
-            this.dropdownService.getAllSubDivisionsByDivisionId(event).subscribe(function (response) {
+            this.dropdownService.getAllSubDivisionsByDivisionId(divnId).subscribe(function (response) {
                 _this.subDivns = response.subDivnData;
             });
         }
     };
-    PwdWorkingProfileComponent.prototype.getSectionsBySubDivisionId = function (event) {
+    PwdWorkingProfileComponent.prototype.getSectionsBySubDivisionId = function (subDivnId) {
         var _this = this;
-        if (event === 'null') {
+        if (!subDivnId) {
             this.isSectionFormShow = false;
         }
         else {
-            this.dropdownService.getAllSectionsBySubDivisionId(event).subscribe(function (response) {
+            this.dropdownService.getAllSectionsBySubDivisionId(subDivnId).subscribe(function (response) {
                 _this.sections = response.SecData;
             });
         }
     };
-    PwdWorkingProfileComponent.prototype.getDepartmentalStackyardByDivnId = function (event) {
+    PwdWorkingProfileComponent.prototype.getDepartmentalStackyardByDivnId = function (divnId) {
         var _this = this;
-        this.dropdownService.getAllDepartmentalStackyardByDivnId(event).subscribe(function (response) {
+        this.dropdownService.getAllDepartmentalStackyardByDivnId(divnId).subscribe(function (response) {
             _this.stackYards = response.stackYardData;
+        });
+    };
+    PwdWorkingProfileComponent.prototype.getAllDepartmentalStackyard = function () {
+        var _this = this;
+        this.dropdownService.getAllDepartmentalStackyard().subscribe(function (response) {
+            _this.stackYards = response.stackYardAllData;
         });
     };
     //--------------------------------------------------------------------------------------------
@@ -242,14 +269,25 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
         var addedData = {
             circle_id: formData.newCirId,
             circleName: formData.circle_name,
+            oldCircleName: formData.old_circle_name,
             remarks: formData.remarks,
             deprt_id: mainFormData.department
         };
         this.dropdownService.getNewCircleUnderDeprt(addedData).pipe(operators_1.first()).subscribe(function (response) {
-            sweetalert2_1["default"].fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+            if (response.success === 1) {
+                _this.circles.unshift({ id: response.circle.id, circle_name: response.circle.circle_name, department_id: response.circle.department_id });
+                _this.pwdWorkingProfileForm.patchValue({ circle_id: _this.circles[0].id });
+                _this.isSectionFormShow = false;
+                sweetalert2_1["default"].fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+            }
+            else if (response.success === 0) {
+                sweetalert2_1["default"].fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+            }
+            else {
+            }
         }, function (err) {
             _this.isLoading = false;
-            sweetalert2_1["default"].fire({ position: 'top-end', icon: 'error', title: err.error.errors, showConfirmButton: false, timer: 4000
+            sweetalert2_1["default"].fire({ position: 'top-end', icon: 'error', title: err, showConfirmButton: false, timer: 4000
             });
         });
     };
@@ -266,6 +304,8 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
             cirId: mainFormData.circle_id
         };
         this.dropdownService.getNewDivisionUnderCircle(addedData).pipe(operators_1.first()).subscribe(function (response) {
+            _this.divns.unshift({ id: response.division.id, division_name: response.division.division_name, circle_id: response.division.circle_id });
+            _this.pwdWorkingProfileForm.patchValue({ division_id: _this.divns[0].id });
             sweetalert2_1["default"].fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
         }, function (err) {
             _this.isLoading = false;
@@ -286,6 +326,8 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
             division_id: mainFormData.division_id
         };
         this.dropdownService.getNewSubDivisionUnderDivision(addedData).pipe(operators_1.first()).subscribe(function (response) {
+            _this.subDivns.unshift({ id: response.subDivision.id, sub_division_name: response.subDivision.sub_division_name, division_id: response.subDivision.division_id });
+            _this.pwdWorkingProfileForm.patchValue({ sub_division_id: _this.subDivns[0].id });
             sweetalert2_1["default"].fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
         }, function (err) {
             _this.isLoading = false;
@@ -307,9 +349,8 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
             subDivId: mainFormData.sub_division_id
         };
         this.dropdownService.getNewSectionUnderSubDivision(addedData).pipe(operators_1.first()).subscribe(function (response) {
-            if (response.success == 0) {
-                sweetalert2_1["default"].fire({ position: 'top-end', icon: 'error', showConfirmButton: false, timer: 3000, title: response });
-            }
+            _this.sections.unshift({ id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id });
+            _this.pwdWorkingProfileForm.patchValue({ section_id: _this.sections[0].id });
             sweetalert2_1["default"].fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
         }, function (err) {
             console.log(err);
@@ -318,24 +359,56 @@ var PwdWorkingProfileComponent = /** @class */ (function () {
             });
         });
     };
+    //-------------------------------------------------------------------------------------------------------------
+    // updateStackyardUnderDivision(){
+    //   this.isLoading = true;
+    //   const mainFormData = this.pwdWorkingProfileForm.getRawValue();
+    //   const formData = this.sectionForm.getRawValue();
+    //   const addedData = {
+    //     sectionId: formData.newSecId,
+    //     sectionName: formData.section_name,
+    //     remarks: formData.remarks,
+    //     mobileCUG: formData.mobile,
+    //     subDivId: mainFormData.sub_division_id
+    //   }
+    //   this.dropdownService.getNewSectionUnderSubDivision(addedData).pipe(first()).subscribe(response => {
+    //     this.sections.unshift({id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id});
+    //     this.pwdWorkingProfileForm.patchValue({ section_id: this.sections[0].id });
+    //     Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+    //   },
+    //   (err: any) => {
+    //     console.log(err);
+    //     this.isLoading = false;
+    //     Swal.fire({ position: 'top-end', icon: 'error',  title: err.error, showConfirmButton: false, timer: 4000
+    //     })
+    //   });
+    // }
     //--------------------------------------------------------------------------------
     PwdWorkingProfileComponent.prototype.updatePwdWorkingProfile = function () {
         var _this = this;
         this.isLoading = true;
         var formData = this.pwdWorkingProfileForm.getRawValue();
-        if (formData.section_id != 'null') {
-            this.officeId = formData.section_id;
+        if (this.authUser.designation_id == 2) {
+            this.officeId = 5;
+            this.postingOfficeId = formData.section_id;
         }
-        else if (formData.sub_division_id != 'null') {
-            this.officeId = formData.sub_division_id;
+        else if (this.authUser.designation_id == 3) {
+            this.officeId = 4;
+            this.postingOfficeId = formData.sub_division_id;
         }
-        else if (formData.division_id != 'null') {
-            this.officeId = formData.division_id;
+        else if (this.authUser.designation_id == 4) {
+            this.officeId = 3;
+            this.postingOfficeId = formData.division_id;
+        }
+        else if (this.authUser.designation_id == 5) {
+            this.officeId = 2;
+            this.postingOfficeId = formData.circle_id;
         }
         else {
         }
         var pwdWorkingProfileData = {
             officeId: this.officeId,
+            postingOfficeId: this.postingOfficeId,
             stackYardId: formData.stackyard_id,
             districtId: formData.district_id,
             rlyId: formData.railway_id,

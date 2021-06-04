@@ -1,7 +1,18 @@
 <div class="content" *ngIf="authUser">
   <div class="card card-user">
-    <div class="card-header">
-      <h2 class="title">Present Profile</h2>
+    <div class="d-flex card-header">
+      <span class="spacer"></span>
+      <div class="col-md-3">
+        <h2 class="title" *ngIf="authUser.pwdWrkProfileCreated == null">Present Profile</h2>
+        <h2 class="title" *ngIf="authUser.pwdWrkProfileCreated != null">Updated Profile</h2>
+      </div>
+
+      <span class="spacer"></span>
+
+      <div class="col-md-9">
+        <h2 class="title">PWD Working Profile Update Form</h2>
+      </div>
+      <span class="spacer"></span>
     </div>
     <div class="card-body" >
       <div class="row">
@@ -24,16 +35,33 @@
             <p><span style="color: rgb(238, 255, 0);">Mobile: </span>{{ authUser.mobile }}</p>
             <p><span style="color: rgb(255, 187, 0);">Designation: </span>{{ authUser.designation_name }}</p>
             <p><span style="color: rgb(0, 255, 98);">Department: </span>{{ authUser.department_short_name }}</p>
-            <p><span style="color: rgb(0, 255, 98);">Circle: </span>{{ authUser.circle_name }}</p>
-            <p><span style="color: rgb(0, 255, 98);">Division: </span>{{ authUser.division_name }}</p>
-            <p><span style="color: rgb(0, 255, 98);">Sub-Division: </span>{{ authUser.sub_division_name }}</p>
-            <p><span style="color: rgb(0, 255, 98);">Section: </span>{{ authUser.section_name }}</p>
-            <p><span style="color: rgb(255, 187, 0);">Stackyard: </span>{{ authUser.stackyard_name }}</p>
-            <p><span style="color: rgb(255, 187, 0);">Railway Yard: </span>{{ authUser.railway_yard_name }}</p>
-            <p><span style="color: rgb(255, 187, 0);">District: </span>{{ authUser.district_name }}</p>
-            <p>Created: {{ authUser.created_at }}</p>
-            <p>Last Profile Image Updated: {{ authUser.avatar_updated_at }}</p>
-            <p>Last Profile Updated: {{ authUser.profile_updated_at }}</p>
+            <p *ngIf="authUser.circleName != null">
+              <span style="color: rgb(0, 255, 98);">Circle: </span>{{ authUser.circleName }}
+            </p>
+            <p *ngIf="authUser.divnName != null">
+              <span style="color: rgb(0, 255, 98);">Division: </span>{{ authUser.divnName }}
+            </p>
+            <p *ngIf="authUser.subDivnName != null">
+              <span style="color: rgb(0, 255, 98);">Sub-Division: </span>{{ authUser.subDivnName }}
+            </p>
+            <p *ngIf="authUser.sectionName != null">
+              <span style="color: rgb(0, 255, 98);" >Section: </span>{{ authUser.sectionName }}
+            </p>
+            <p *ngIf="authUser.stackyardName != null">
+              <span style="color: rgb(255, 187, 0);">Stackyard: </span>{{ authUser.stackyardName }}
+            </p>
+            <p *ngIf="authUser.rlyName != null">
+              <span style="color: rgb(255, 187, 0);">Railway Yard: </span>{{ authUser.rlyName }}
+            </p>
+            <p *ngIf="authUser.distName != null">
+              <span style="color: rgb(255, 187, 0);">District: </span>{{ authUser.distName }}
+            </p>
+            <p *ngIf="authUser.pwdWrkProfileCreated != null">
+              Working Profile Created: {{ authUser.pwdWrkProfileCreated }}
+            </p>
+            <p *ngIf="authUser.pwdWrkProfileUpdated != null">
+              Last Profile Updated: {{ authUser.pwdWrkProfileUpdated }}
+            </p>
           </div>
         </div>
         <div class="col-md-9">
@@ -56,17 +84,17 @@
                           </div>
                         </div>
                         <div class="d-flex col-12">
-                          <div class="form-group col-md-3 pr-md-1">
-                            <a class="btn btn-sm btnCol" (click)="showCircleInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                          <div class="form-group col-md-3">
+                            <a class="btn btn-sm btnCol" *ngIf="pwdWorkingProfileForm.value.department" (click)="showCircleInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
                             <label>Circle*</label>
-                            <select (change)="getDivisionsByCircleId($event.target.value)" formControlName="circle_id" class="form-control" required>
+                            <select tooltip ="if your Circle not in dropdown menu. Click on + sign to add your Circle" placement="left" (change)="getDivisionsByCircleId($event.target.value)" formControlName="circle_id" class="form-control" required>
                               <option value="null">--Select Circle--</option>
                               <option *ngFor="let item of circles" [value]="item.id">
                                 {{ item.circle_name }}
                               </option>
                             </select>
                           </div>
-                          <form [formGroup]="circleForm" *ngIf="isCircleFormShow">
+                          <form [formGroup]="circleForm" *ngIf="isCircleFormShow ">
                             <div class="d-flex col-12" >
                               <div class="form-group col-2">
                                 <label>ID</label>
@@ -75,6 +103,10 @@
                               <div class="form-group col-4">
                                 <label>Name of Circle*</label>
                                 <input type="text" formControlName="circle_name" placeholder="enter your circle name" class="form-control" required>
+                              </div>
+                              <div class="form-group col-4">
+                                <label>Old Circle Name</label>
+                                <input type="text" formControlName="old_circle_name" placeholder="(if any)" class="form-control" required>
                               </div>
                               <div class="form-group col-3">
                                 <label>Remarks</label>
@@ -89,11 +121,11 @@
                             </div>
                           </form>
                         </div>
-                        <div class="d-flex col-12">
+                        <div class="d-flex col-12" *ngIf="authUser.designation_id < 5">
                           <div class="form-group col-md-3 pr-md-1">
-                            <a class="btn btn-sm btnCol" (click)="showDivisionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                            <a class="btn btn-sm btnCol" *ngIf="pwdWorkingProfileForm.value.circle_id" (click)="showDivisionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
                             <label>Division*</label>
-                            <select (change)="getSubDivisionsByDivisionId($event.target.value); getDepartmentalStackyardByDivnId($event.target.value)" formControlName="division_id" class="form-control" required>
+                            <select tooltip ="if your Division not in dropdown menu. Click on + sign to add your Division" placement="left"  (change)="getSubDivisionsByDivisionId($event.target.value); getDepartmentalStackyardByDivnId($event.target.value)" formControlName="division_id" class="form-control" required>
                               <option value="null">--Select Division--</option>
                               <option *ngFor="let item of divns" [value]="item.id">
                                 {{ item.division_name }}
@@ -123,11 +155,11 @@
                             </div>
                           </form>
                         </div>
-                        <div class="d-flex col-12">
+                        <div class="d-flex col-12" *ngIf="authUser.designation_id < 4">
                           <div class="form-group col-md-3 pr-md-1">
-                            <a class="btn btn-sm btnCol" (click)="showSubDivisionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                            <a class="btn btn-sm btnCol" *ngIf="pwdWorkingProfileForm.value.division_id" (click)="showSubDivisionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
                             <label>Sub-Division*</label>
-                            <select (change)="getSectionsBySubDivisionId($event.target.value)"  formControlName="sub_division_id" class="form-control" required>
+                            <select tooltip ="if your Sub-Division not in dropdown menu. Click on + sign to add your Sub-Division" placement="left"  (change)="getSectionsBySubDivisionId($event.target.value)"  formControlName="sub_division_id" class="form-control" required>
                               <option value="null">--Select Sub-Division--</option>
                               <option *ngFor="let item of subDivns" [value]="item.id">
                                 {{ item.sub_division_name }}
@@ -157,11 +189,11 @@
                             </div>
                           </form>
                         </div>
-                        <div class="d-flex col-12">
+                        <div class="d-flex col-12" *ngIf="authUser.designation_id === 2">
                           <div class="form-group col-md-3 pr-md-1">
-                            <a class="btn btn-sm btnCol" (click)="showSectionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                            <a class="btn btn-sm btnCol" *ngIf="pwdWorkingProfileForm.value.sub_division_id" (click)="showSectionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
                             <label>Section*</label>
-                            <select formControlName="section_id" class="form-control" required>
+                            <select tooltip ="if your Section not in dropdown menu. Click on + sign to add your Section" placement="left"  formControlName="section_id" class="form-control" required>
                               <option value="null">--Select Section--</option>
                               <option *ngFor="let item of sections" [value]="item.id">
                                 {{ item.section_name }}
@@ -197,8 +229,9 @@
                         </div>
                         <div class="row">
                           <div class="form-group col-md-3 pr-md-1">
-                            <label>Divisional Stack Yeard*</label>
-                            <select  formControlName="stackyard_id" class="form-control" required>
+                            <a class="btn btn-sm btnCol" (click)="getAllDepartmentalStackyard($event.target.value)"><fa-icon [icon]="faEdit"></fa-icon>&nbsp;edit</a>
+                            <label>Divisional Stack Yard*</label>
+                            <select tooltip ="if your Departmental Stackyard / Godown is not in dropdown menu. Click on edit to select your choice" placement="right" formControlName="stackyard_id" class="form-control" required>
                               <option value="null">--Select Stack Yard--</option>
                               <option *ngFor="let item of stackYards" [value]="item.id">
                                 {{ item.stackyard_name }}
@@ -220,7 +253,7 @@
                             <label>Nearest Railway Yard*</label>
                             <select formControlName="railway_id" class="form-control" required>
                               <option value="null">--Select Railway Yard--</option>
-                              <option *ngFor="let item of Rlys" [value]="item.id">
+                              <option *ngFor="let item of rlys" [value]="item.id">
                                 {{ item.railway_yard_name }}
                               </option>
                             </select>
@@ -230,7 +263,7 @@
                             <input class="form-control" formControlName="remarks" type="text" placeholder="Remarks (if any)"/>
                           </div>
                           <div class="form-group col-2 mt-4">
-                            <button class="btn btn-sm btnGrn" [disabled]="!pwdWorkingProfileForm.valid" (click)="updatePwdWorkingProfile()">Submit</button>
+                            <button class="btn btn-sm btnGrn" (click)="updatePwdWorkingProfile()">Submit</button>
                           </div>
                         </div>
                       </div>
@@ -245,6 +278,12 @@
     </div>
   </div>
 </div>
+
+<!-- <div>
+  <pre>
+    {{ pwdWorkingProfileForm.value | json}}
+  </pre>
+</div> -->
 
 
 

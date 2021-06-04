@@ -20,6 +20,10 @@ export class AuthUser {
   department_short_name: string;
   designation_id: number;
   department_id: number;
+  circleId: number;
+  divisionId: number;
+  subDivisionId: number;
+  sectionId: number;
   designation_name: string;
   designation_alias: string;
   email_verified_at: Date;
@@ -30,7 +34,7 @@ export class AuthUser {
   inforce: number;
   display: number;
   distId?: number;
-  StackId?: number;
-  RlyId?: number;
+  stackId?: number;
+  rlyId?: number;
   pwdProRemarks?: number;
 }
