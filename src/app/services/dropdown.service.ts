@@ -129,6 +129,12 @@ export class DropdownService {
       catchError(this.handleError)
     );
   }
+  //------------------------------------------------------------------------------------------------------
+  getSectionUnderWorkExecuted() {
+    return this.http.get(`${this.serverUrl}/workingSection`).pipe(
+      catchError(this.handleError)
+    );
+  }
 
 //---------------------------------------------------------------------------------------------------
   // getCircleUpdateListener() {

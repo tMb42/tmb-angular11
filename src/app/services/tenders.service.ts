@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { map, catchError, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs'
+import { catchError, tap } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs'
 import { environment } from 'src/environments/environment';
 import { TenderDetails } from '../models/tenderDetails.model';
 
@@ -16,22 +16,33 @@ export class TendersService {
   tenderDetails: TenderDetails[] = [];
   tenderDetailsSubject = new Subject<TenderDetails[]>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+   this.http.get(`${serverUrl}/tendDetails`).subscribe((response: any) => {
+      this.tenderDetails = response.authTenderDetails.data;
+      this.tenderDetailsSubject.next([...this.tenderDetails]);
+    });
 
-  getAllTenderDetails(data: any) {
-    return this.http.get<TenderDetails[]>(`${serverUrl}/tenderDetails?page=${data.page}`, { params: { per_page: data.itemsPerPage, skip: data.skip}});
   }
 
-  getTenderDetailsById(id: string) {
-    return this.http.get<TenderDetails>(`${serverUrl}/tenderDetails/${id}`);
+  getTenderDetailsUpdateListener() {
+    return this.tenderDetailsSubject.asObservable();
+  }
+
+  getAllTenderDetails(data: any) {
+    return this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails?page=${data.page}`, { params: { per_page: data.itemsPerPage, skip: data.skip}});
+  }
+
+  getTenderDetailsById(id: number) {
+    return this.http.get<TenderDetails>(`${serverUrl}/tendDetails/${id}`);
   }
 
   updateTenderDetails(tenderData: any) {
-    return this.http.put(`${serverUrl}/tenderDetails/${tenderData.id}`, tenderData)
+    return this.http.put(`${serverUrl}/tendDetails/${tenderData.id}`, tenderData)
     .pipe(catchError(this.handleError), tap((res: any) => {
       const index = this.tenderDetails.findIndex(x => x.id === tenderData.id);
         this.tenderDetails[index] = res.td;
         this.tenderDetailsSubject.next({...this.tenderDetails});
+        console.log(index);
       })
     );
   }
@@ -39,6 +50,12 @@ export class TendersService {
 
   getSearchTenderDetailsData(event: any) {
     return this.http.get<TenderDetails[]>(`${serverUrl}/search/${event}`);
+  }
+
+  getAllSectionAsPerAuthUserForTenderDetails() {
+    return this.http.get(`${serverUrl}/workingSections`).pipe(
+      catchError(this.handleError)
+    );
   }
 
 

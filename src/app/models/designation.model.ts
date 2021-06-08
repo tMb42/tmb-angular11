@@ -1,8 +1,7 @@
-export interface Circle {
+export interface Designation {
   id: number,
-  circle_name?: string,
-  old_circle_name?: string,
-  department_id?: number,
+  designation_name: string,
+  designation_alias?: string,
   remarks?: string,
   display?: number,
   inforce?: number,

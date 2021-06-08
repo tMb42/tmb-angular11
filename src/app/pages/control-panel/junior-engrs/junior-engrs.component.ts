@@ -164,7 +164,6 @@ export class JuniorEngrsComponent implements OnInit {
       passYr: formData.year_passing_de,
       promoDsgn: formData.promo_designation_id,
     }
-    console.log(updateJeData);
 
     this.jengrsService.jeUpdateDataById(updateJeData).subscribe(() => {
       this.loading = false;

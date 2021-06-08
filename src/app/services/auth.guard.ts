@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate{
       const Roles = currentUser.userData.roles;
       const permissibleRoles = route.data.roles;
       // console.log("User's Roles =>", Roles);
-      console.log("permissibleRoles =>", permissibleRoles);
+      // console.log("permissibleRoles =>", permissibleRoles);
       if(permissibleRoles){
         for (let i = 0; i < Roles.length; i++) {
           // const matchedRole = permissibleRoles.indexOf(Roles[i])

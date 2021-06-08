@@ -1,53 +1,83 @@
 <div class="container-fluid">
   <div class="wrapper">
-    <div class="navbar-top"> 
+    <div class="navbar-top">
       <mat-toolbar id="toolbar" class="transparent">
         <a class="navbar-brand">
           <span style="font-size: 24px;">tMb</span>
           <img class="image-responsive" src="../assets/img/tmb/logo_tmb.png"  style="max-height: 60px;" />
         </a>
         <div class="dropdown">
-          <button class="dashboardbtn" [routerLink]="['dashboard']" routerLinkActive="active"> Dashboard </button>      
+          <button class="dashboardbtn" [routerLink]="['dashboard']" routerLinkActive="active"> Dashboard </button>
+        </div>
+        <span class="spacer"></span>
+
+        <div *ngIf="authUser" class="d-flex mt-5" style="font-size: small; color: rgb(254, 249, 255);">
+          <p>{{ authUser.name }},</p>&nbsp;
+          <p>{{ authUser.designation_alias }},</p>&nbsp;
+          <p>{{ authUser.userPosting }},</p>&nbsp;
+          <p>{{ authUser.department_short_name }}</p>
         </div>
 
         <span class="spacer"></span>
 
-        <div class="dropdown">
-          <button class="dropbtn"> Estimate</button>
-          <div class="dropdown-content">
-            <a href="#!estimateMaster">RCC Box Culvert</a>
-            <a href="#">Quick Estimate</a>
-            <a href="#">Estimate for Individual Work</a>
-            <a href="#!scheduleRates">Schedule of Rates</a>
+        <div class="d-flex" *ngIf="workingOfficeId">
+          <div class="dropdown">
+            <button class="dropbtn"> Estimate</button>
+            <div class="dropdown-content">
+              <a href="#!estimateMaster">RCC Box Culvert</a>
+              <a href="#">Quick Estimate</a>
+              <a href="#">Estimate for Individual Work</a>
+              <a href="#!scheduleRates">Schedule of Rates</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"> Rate Analysis </button>
+            <div class="dropdown-content">
+              <a href="#!scheduleRates">Schedule of Rates</a>
+              <a href="#!rateAnalysis">Rate Analysis</a>
+              <a href="#">Rate Analysis for Project Work</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"> Billing Section </button>
+            <div class="dropdown-content">
+              <a href="#!priceSchedule">Price Schedule</a>
+              <a href="#!billSection">Bill Preparation</a>
+              <a href="#">Supplymentary Statement</a>
+              <a href="#">Financial Statement</a>
+              <a href="#">Excess Statement</a>
+              <a href="#">Material Consumption</a>
+              <a href="#">Roller consumtion</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"> Record Section </button>
+            <div class="dropdown-content">
+              <a href="pwd-works/tender-details">Tender Details</a>
+              <a href="#">Billing Section</a>
+              <a href="#">Road List</a>
+            </div>
           </div>
         </div>
-        <div class="dropdown">
-          <button class="dropbtn"> Rate Analysis </button>
-          <div class="dropdown-content">
-            <a href="#!scheduleRates">Schedule of Rates</a>
-            <a href="#!rateAnalysis">Rate Analysis</a>
-            <a href="#">Rate Analysis for Project Work</a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn"> Billing Section </button>
-          <div class="dropdown-content">
-            <a href="#!priceSchedule">Price Schedule</a>
-            <a href="#!billSection">Bill Preparation</a>
-            <a href="#">Supplymentary Statement</a>
-            <a href="#">Financial Statement</a>
-            <a href="#">Excess Statement</a>
-            <a href="#">Material Consumption</a>
-            <a href="#">Roller consumtion</a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn"> Record Section </button>
-          <div class="dropdown-content">
-            <a href="pwd-works/tender-details">Tender Details</a>
-            <a href="#">Billing Section</a>
-            <a href="#">Road List</a>
-          </div>
+
+        <div class="d-flex" *ngIf="authUser">
+          <button mat-icon-button [matMenuTriggerFor]="menu" class="mt-1" style="color: red;" >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngIf="isLoggedIn" (click)="logoutCurrentUser()" >
+              <mat-icon>exit_to_app</mat-icon>
+              <span>Logout</span>
+            </button>
+            <button mat-menu-item [routerLink]="['/pwd-works/pwd-working-profile']" routerLinkActive="active">
+              <mat-icon>person_add_alt</mat-icon>
+              <span>PWD Working Profile Update</span>
+            </button>
+            <button mat-menu-item disable>
+              <mat-icon>notifications_off</mat-icon>
+              <span>Disable alerts</span>
+            </button>
+          </mat-menu>
         </div>
       </mat-toolbar>
     </div>
@@ -59,6 +89,6 @@
 
 
 
- 
 
- 
+
+

@@ -91,6 +91,10 @@ var DropdownService = /** @class */ (function () {
     DropdownService.prototype.getAllDepartmentalStackyard = function () {
         return this.http.get(this.serverUrl + "/allStackyard").pipe(operators_2.catchError(this.handleError));
     };
+    //------------------------------------------------------------------------------------------------------
+    DropdownService.prototype.getSectionUnderWorkExecuted = function () {
+        return this.http.get(this.serverUrl + "/workingSection").pipe(operators_2.catchError(this.handleError));
+    };
     //---------------------------------------------------------------------------------------------------
     // getCircleUpdateListener() {
     //   return this.circleSubject.asObservable();

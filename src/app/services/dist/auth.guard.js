@@ -21,7 +21,7 @@ var AuthGuard = /** @class */ (function () {
             var Roles = currentUser.userData.roles;
             var permissibleRoles = route.data.roles;
             // console.log("User's Roles =>", Roles);
-            console.log("permissibleRoles =>", permissibleRoles);
+            // console.log("permissibleRoles =>", permissibleRoles);
             if (permissibleRoles) {
                 for (var i = 0; i < Roles.length; i++) {
                     // const matchedRole = permissibleRoles.indexOf(Roles[i])

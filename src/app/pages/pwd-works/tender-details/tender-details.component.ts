@@ -6,19 +6,17 @@ import { DropdownService } from '../../../services/dropdown.service';
 import { TenderDetails } from '../../../models/tenderDetails.model';
 import { TendersService } from '../../../services/tenders.service';
 import Swal from 'sweetalert2';
+import { AuthUser } from '../../../models/auth-user.model';
+import { Department } from '../../..//models/department.model';
+import { Designation } from '../../../models/designation.model';
+import { AuthService } from '../../../services/auth.service';
+import { Section } from '../../../models/section.model';
+import { Circle } from 'src/app/models/circle.model';
+import { Division } from 'src/app/models/division.model';
+import { SubDivision } from 'src/app/models/subDivision.model';
+import { ThisReceiver } from '@angular/compiler';
 
 
-export interface Department {
-  id: number;
-  department_name: string;
-  alias_name: string;
-  department_short_name: string;
-}
-export interface Designation {
-  id: number;
-  designation_name: string;
-  designation_alias: any;
-}
 
 @Component({
   selector: 'app-tender-details',
@@ -27,8 +25,22 @@ export interface Designation {
 })
 
 export class TenderDetailsComponent implements OnInit {
-  tenderDetailsForm : FormGroup;
-  tenderDetails: TenderDetails[];
+  authUser: AuthUser = null;
+  tenderDetails: TenderDetails[] = null;
+
+  pwdTenderDetailsForm : FormGroup;
+  circleForm: FormGroup;
+  divisionForm: FormGroup;
+  subDivisionForm: FormGroup;
+  sectionForm: FormGroup;
+
+  depts: Department[] = [];
+  designs: Designation[] = [];
+  circles: Circle[] = [];
+  divns: Division[] = [];
+  subDivns: SubDivision[] = [];
+  sections: Section[] = [];
+
   loading = false;
   showBoundaryLinks = true;
   page: number = 1;
@@ -40,28 +52,97 @@ export class TenderDetailsComponent implements OnInit {
   totalRecords: Number;
   skip: number;
 
-  depts: Department[] = [];
-  designs: Designation[] = [];
-
   minDate: Date;
   maxDate: Date;
-  woDate: string = null;
-  doc: string = null;
-  // tendersYear: any = [];
-  // tenderMonths: string = null;
 
+  woDate: any = null;
+  doc: any = null;
 
-  constructor(private fb: FormBuilder, private tendersService: TendersService, private dropdownService : DropdownService,)
-    {
-      this.getAllTenderDetails();
-      this.minDate = new Date();
-      this.maxDate = new Date();
-      this.minDate.setDate(this.minDate.getDate() - 29200); //maximum age 80yrs
-      this.maxDate.setDate(this.maxDate.getDate() - 6570);  //minimum age 18yrs
-    }
+  tenderAuthority: string = null;
+  officeName: string = null;
+  deptShortName: string = null;
+  workingOfficeId: number = null;
+  sectionId: number = null;
+  subDivisionId: number = null;
+  divnId: number = null;
+  cirId: number = null;
+  designationId: number = null;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private tendersService: TendersService,
+    private dropdownService : DropdownService,
+    ) {
+        this.minDate = new Date();
+        this.maxDate = new Date();
+        this.minDate.setDate(this.minDate.getDate() - 29200); //maximum age 80yrs
+        this.maxDate.setDate(this.maxDate.getDate() - 6570);  //minimum age 18yrs
+
+        this.authService.getAuthUser().pipe(first()).subscribe((response: any) => {
+          this.authUser = response.data;
+          this.designationId = response.data.designation_id;
+          this.workingOfficeId = response.data.officeId;
+          this.sectionId = response.data.sectionId;
+          this.subDivisionId = response.data.subDivisionId;
+          this.divnId = response.data.divisionId;
+          this.cirId = response.data.circleId;
+          this.loading = false;
+
+          if(this.designationId == 5){
+            //get circle when auth designation is SE
+            this.pwdTenderDetailsForm.patchValue({
+              circle_id: this.authUser.circleId,
+            });
+            this.dropdownService.getAllDivisionsByCircleId(this.authUser.circleId).subscribe((response: { divnData: Division[]; }) => {
+              this.divns = response.divnData;
+            });
+
+          }else if(this.designationId === 4){
+            //get Division when auth designation is EE
+            this.pwdTenderDetailsForm.patchValue({
+              division_id: this.authUser.divisionId
+            });
+
+            this.dropdownService.getAllSubDivisionsByDivisionId(this.authUser.divisionId).subscribe((response: { subDivnData: SubDivision[]; }) => {
+              this.subDivns = response.subDivnData;
+            });
+
+          }else if(this.designationId == 3){
+            //get Sub-Division when auth designation is AE
+            this.pwdTenderDetailsForm.patchValue({
+              sub_division_id: this.authUser.subDivisionId,
+            });
+            this.dropdownService.getAllSectionsBySubDivisionId(this.authUser.subDivisionId).subscribe((response: { SecData: Section[]; }) => {
+              this.sections = response.SecData;
+            });
+
+          }else if(this.designationId == 2){
+            //get Section when auth designation is JE
+            this.pwdTenderDetailsForm.patchValue({
+              section_id: this.authUser.sectionId
+            });
+
+          }else{
+            //
+          }
+
+        })
+
+      }
 
   ngOnInit(): void {
     this.getAllTenderDetails();
+
+    this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
+      this.authUser = res.user;
+      this.loading = false;
+    });
+
+    this.tendersService.getTenderDetailsUpdateListener().subscribe( res => {
+      this.tenderDetails = res;
+      this.loading = false;
+    });
 
     this.dropdownService.getDepartments().subscribe((response: { departmentData: Department[]; }) => {
       this.depts = response.departmentData;
@@ -69,32 +150,34 @@ export class TenderDetailsComponent implements OnInit {
 
     this.dropdownService.getTenderAuthority().subscribe((response: { designationData: Designation[]; }) => {
       this.designs = response.designationData;
-      console.log(response.designationData);
-      // this.designs = response.designationData;
     });
 
-
-    this.tenderDetailsForm = this.fb.group({
-      id: new FormControl({value:null, disabled: true}),
-      work_name: new FormControl(null, [Validators.required]),
-      agency: new FormControl(null, [Validators.required]),
-      amount_put_tender: new FormControl(null, [Validators.required]),
-      department_id: new FormControl(null, [Validators.required]),
-      authority_designation_id: new FormControl(null, [Validators.required]),
-      tenderNo: new FormControl(null, [Validators.required]),
-      workOrderNo: new FormControl(null, [Validators.required]),
-      work_order_date: new FormControl(null, [Validators.required]),
-      contactual: new FormControl('', [Validators.required]),
-      tendered_amount: new FormControl(null, [Validators.required]),
-      commencement_date: new FormControl(null, [Validators.required]),
-      dlp: new FormControl(null, [Validators.required]),
-      financial_year: new FormControl(null, [Validators.required]),
-      complition_time: new FormControl(null, [Validators.required]),
-      display: new FormControl(1, [Validators.required]),
-      inforce: new FormControl(1, [Validators.required]),
-      remarks: new FormControl(null),
+    this.pwdTenderDetailsForm = this.fb.group({
+      department_id: new FormControl(null),
+      circle_id: new FormControl(null),
+      division_id: new FormControl(null),
+      sub_division_id: new FormControl(null),
+      section_id: new FormControl(null),
     });
 
+  }
+
+  getDivisionsByCircle(circleId: number){
+    this.dropdownService.getAllDivisionsByCircleId(circleId).subscribe((response: { divnData: Division[]; }) => {
+      this.divns = response.divnData;
+    });
+  }
+
+  getSubDivisionsByDivision(divnId: number){
+    this.dropdownService.getAllSubDivisionsByDivisionId(divnId).subscribe((response: { subDivnData: SubDivision[]; }) => {
+      this.subDivns = response.subDivnData;
+    });
+  }
+
+  getSectionsBySubDivision(subDivnId: number){
+    this.dropdownService.getAllSectionsBySubDivisionId(subDivnId).subscribe((response: { SecData: Section[]; }) => {
+      this.sections = response.SecData;
+    });
   }
 
   getAllTenderDetails(){
@@ -102,86 +185,38 @@ export class TenderDetailsComponent implements OnInit {
     const requestObj = {
       page: this.page,
       itemsPerPage: this.pageSize,
-      skip: (this.page-1) * this.pageSize
+      skip: (this.page-1) * this.pageSize,
     }
 
     this.tendersService.getAllTenderDetails(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
-      this.tenderDetails = res.tenderDetails.data;
-      this.totalRecords = res.tenderDetails.total;
-      this.currentPage = res.tenderDetails.current_page;
-      this.totalPages = res.tenderDetails.total_pages;
-    });
-
-  }
-
-  changeDoc(value: Date): void {
-    if(value != null){
-      this.doc = formatDate(value, 'yyyy-MM-dd', 'en');
-    }else{
-      this.doc = null;
-    }
-  }
-
-  changeWod(value: Date): void {
-    if(value != null){
-      this.woDate = formatDate(value, 'yyyy-MM-dd', 'en');
-    }else{
-      this.woDate = null;
-    }
-  }
-
-  tenderDetailsById(event) {
-    this.loading = true;
-    this.tendersService.getTenderDetailsById(event).pipe(first()).subscribe((x: any) => {
-      this.loading = false;
-      this.tenderDetailsForm.patchValue(x.td);
+      this.tenderDetails = res.authTenderDetails.data;
+      this.totalRecords = res.authTenderDetails.total;
+      this.currentPage = res.authTenderDetails.current_page;
+      this.totalPages = res.authTenderDetails.total_pages;
     });
   }
 
-  getUpdateTenderDetails(){
-    this.loading = true;
 
-    const formData = this.tenderDetailsForm.getRawValue();
-    const updateTenderDetailseData = {
-      workName: formData.work_name,
-      agency: formData.agency,
-      tenderNo: formData.tenderNo + ' of ' + formData.financial_year + ' accepted by ' + formData.tenderAuthorityAlias + '/' + formData.authority_office + '/' + formData.deptName,
-      designation_id: formData.authority_designation_id,
-      authorityOffice: formData.authority_office,
-      amountPutTender: formData.amount_put_tender,
-      contactual: formData.contactual,
-      tenderedAmount: formData.tendered_amount,
-      workOrderNo: formData.workOrderNo + ' dated ' + this.woDate + ' of ' + formData.designation_alias,
-      workOrderDate: this.woDate,
-      commencementDate: this.doc,
-      sectionId: formData.section_id,
-      ComplitionTime: formData.complition_time,
-      dlp: formData.dlp,
-      fy: formData.financial_year,
-      actualComplitionDate: formData.department,
-      display: formData.display,
-      inforce: formData.inforce,
-      remarks: formData.remarks,
-    }
+  // getTenderAuthorityOffice(designationId: number){
+  //   if(designationId == 5){
+  //     this.tenderAuthority = this.designs[0].designation_alias,
+  //     this.officeName = this.authUser.circleName
+  //     console.log(this.tenderAuthority, this.officeName);
+  //   }else if(designationId == 4){
+  //     this.tenderAuthority = this.designs[1].designation_alias,
+  //     this.officeName = this.authUser.divnName
+  //     console.log(this.tenderAuthority, this.officeName);
+  //   }else if(designationId == 3){
+  //     this.tenderAuthority = this.designs[2].designation_alias,
+  //     this.officeName = this.authUser.subDivnName
+  //     console.log(this.tenderAuthority, this.officeName);
+  //   }else{
 
-    console.log('updateTenderDetailseData', updateTenderDetailseData);
+  //   }
 
-    this.tendersService.updateTenderDetails(updateTenderDetailseData).pipe(first()).subscribe(() => {
+  // }
 
-      Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: "Tender details Updated" });
-    }, err => {
-      console.log('ghfhf', err);
-      this.loading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.message, showConfirmButton: false, timer: 2000 });
-    });
-
-  }
-
-  getTenderAuthorityOffice(event: any){
-    console.log(event);
-
-  }
 
   getSearchTableTenderDetails(event: any){
     if(event.length > 0){
@@ -216,10 +251,6 @@ export class TenderDetailsComponent implements OnInit {
     this.getAllTenderDetails();
 
     console.log('Current page: ' + event.page, 'Items per page: ' + event.itemsPerPage, 'Start item :' + startItem, 'End item :' + endItem);
-  }
-
-  formReset(){
-    this.tenderDetailsForm.reset();
   }
 
 

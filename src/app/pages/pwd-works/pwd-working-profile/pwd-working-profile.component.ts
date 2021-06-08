@@ -54,6 +54,7 @@ export class PwdWorkingProfileComponent implements OnInit {
   postingOfficeId: number = null;
   officeId: number = null;
 
+
   constructor(
     private fb: FormBuilder,
     private dropdownService : DropdownService,
@@ -170,7 +171,7 @@ export class PwdWorkingProfileComponent implements OnInit {
     }else{
       this.dropdownService.getAllCirclesByDeprtId(departId).subscribe((response: { circleData: Circle[]; }) => {
         this.circles = response.circleData;
-      });
+     });
     }
   }
 
@@ -222,10 +223,13 @@ export class PwdWorkingProfileComponent implements OnInit {
     this.isCircleFormShow = false;
   }
   showCircleInsertFormIf() {
+    this.isDivisionFormShow = false;
+    this.isSubdivisionFormShow = false;
+    this.isSectionFormShow = false;
+
     const formData = this.pwdWorkingProfileForm.getRawValue();
     if(formData.department != 'null'){
       this.isCircleFormShow = true;
-      // this.isCircleFormShow = !this.isCircleFormShow;
       this.dropdownService.getLastCircleID().subscribe((res: any) =>{
         this.newCirId = res.nextCirId[0].newId;
         this.circleForm.patchValue({
@@ -242,6 +246,9 @@ export class PwdWorkingProfileComponent implements OnInit {
     this.isDivisionFormShow = false;
   }
   showDivisionInsertFormIf() {
+    this.isCircleFormShow = false;
+    this.isSubdivisionFormShow = false;
+    this.isSectionFormShow = false;
     const formData = this.pwdWorkingProfileForm.getRawValue();
     if(formData.circle_id != 'null'){
       this.isDivisionFormShow = true;
@@ -260,9 +267,12 @@ export class PwdWorkingProfileComponent implements OnInit {
     this.isSubdivisionFormShow = false;
   }
   showSubDivisionInsertFormIf() {
+    this.isCircleFormShow = false;
+    this.isDivisionFormShow = false;
+    this.isSectionFormShow = false;
     const formData = this.pwdWorkingProfileForm.getRawValue();
     if(formData.division_id != 'null'){
-      this.isSubdivisionFormShow = !this.isSubdivisionFormShow;
+      this.isSubdivisionFormShow = true;
       this.dropdownService.getLastSubDivisionID().subscribe((res: any) =>{
         this.newSubDivId = res.nextSubDivId[0].newId;
         this.subDivisionForm.patchValue({
@@ -278,6 +288,10 @@ export class PwdWorkingProfileComponent implements OnInit {
     this.isSectionFormShow = false;
   }
   showSectionInsertFormIf() {
+    this.isCircleFormShow = false;
+    this.isDivisionFormShow = false;
+    this.isSubdivisionFormShow = false;
+
     const formData = this.pwdWorkingProfileForm.getRawValue();
     if(formData.sub_division_id != 'null'){
       this.isSectionFormShow = true;
@@ -306,11 +320,13 @@ export class PwdWorkingProfileComponent implements OnInit {
     }
 
     this.dropdownService.getNewCircleUnderDeprt(addedData).pipe(first()).subscribe(response => {
+      this.isLoading = false;
       if (response.success === 1){
-
         this.circles.unshift({id: response.circle.id, circle_name: response.circle.circle_name, department_id: response.circle.department_id});
         this.pwdWorkingProfileForm.patchValue({ circle_id: this.circles[0].id });
-        this.isSectionFormShow = false;
+
+        this.isCircleFormShow = false;
+
         Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
       }else if(response.success === 0){
         Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
@@ -332,20 +348,31 @@ export class PwdWorkingProfileComponent implements OnInit {
     const mainFormData = this.pwdWorkingProfileForm.getRawValue();
     const formData = this.divisionForm.getRawValue();
     const addedData = {
-      division_id: formData.newDivId,
       divisionName: formData.divn_name,
+      oldDivisionName: formData.old_divn_name,
       remarks: formData.remarks,
       cirId: mainFormData.circle_id
     }
 
     this.dropdownService.getNewDivisionUnderCircle(addedData).pipe(first()).subscribe(response => {
-      this.divns.unshift({id: response.division.id, division_name: response.division.division_name, circle_id: response.division.circle_id});
-      this.pwdWorkingProfileForm.patchValue({ division_id: this.divns[0].id });
-      Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+      this.isLoading = false;
+      if (response.success === 1){
+        this.divns.unshift({id: response.division.id, division_name: response.division.division_name, circle_id: response.division.circle_id});
+        this.pwdWorkingProfileForm.patchValue({ division_id: this.divns[0].id });
+
+        this.isDivisionFormShow = false;
+
+        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+
+      }else if(response.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+      }else{
+        //
+      }
     },
     (err: any) => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.errors, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });
@@ -357,21 +384,30 @@ export class PwdWorkingProfileComponent implements OnInit {
     const mainFormData = this.pwdWorkingProfileForm.getRawValue();
     const formData = this.subDivisionForm.getRawValue();
     const addedData = {
-      sub_division_id: formData.newSubDivId,
       subDivName: formData.subDivn_name,
+      oldSubDivName: formData.old_subDivn_name,
       remarks: formData.remarks,
-      division_id: mainFormData.division_id
+      divnId: mainFormData.division_id
     }
 
     this.dropdownService.getNewSubDivisionUnderDivision(addedData).pipe(first()).subscribe(response => {
-      this.subDivns.unshift({id: response.subDivision.id, sub_division_name: response.subDivision.sub_division_name, division_id: response.subDivision.division_id});
-      this.pwdWorkingProfileForm.patchValue({ sub_division_id: this.subDivns[0].id });
+      this.isLoading = false;
+      if (response.success === 1){
+        this.subDivns.unshift({id: response.subDivision.id, sub_division_name: response.subDivision.sub_division_name, division_id: response.subDivision.division_id});
+        this.pwdWorkingProfileForm.patchValue({ sub_division_id: this.subDivns[0].id });
 
-      Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+        this.isSubdivisionFormShow = false;
+
+        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+      }else if(response.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+      }else{
+        //
+      }
     },
     (err: any) => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.errors, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });
@@ -383,7 +419,6 @@ export class PwdWorkingProfileComponent implements OnInit {
     const mainFormData = this.pwdWorkingProfileForm.getRawValue();
     const formData = this.sectionForm.getRawValue();
     const addedData = {
-      sectionId: formData.newSecId,
       sectionName: formData.section_name,
       remarks: formData.remarks,
       mobileCUG: formData.mobile,
@@ -391,44 +426,30 @@ export class PwdWorkingProfileComponent implements OnInit {
     }
 
     this.dropdownService.getNewSectionUnderSubDivision(addedData).pipe(first()).subscribe(response => {
-      this.sections.unshift({id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id});
-      this.pwdWorkingProfileForm.patchValue({ section_id: this.sections[0].id });
-      Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+      this.isLoading = false;
+      if (response.success === 1){
+        this.sections.unshift({id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id});
+        this.pwdWorkingProfileForm.patchValue({ section_id: this.sections[0].id });
+
+        this.isSectionFormShow = false;
+
+        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+
+        }else if(response.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+      }else{
+        //
+      }
     },
     (err: any) => {
-      console.log(err);
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err.error, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });
   }
   //-------------------------------------------------------------------------------------------------------------
-  // updateStackyardUnderDivision(){
-  //   this.isLoading = true;
-  //   const mainFormData = this.pwdWorkingProfileForm.getRawValue();
-  //   const formData = this.sectionForm.getRawValue();
-  //   const addedData = {
-  //     sectionId: formData.newSecId,
-  //     sectionName: formData.section_name,
-  //     remarks: formData.remarks,
-  //     mobileCUG: formData.mobile,
-  //     subDivId: mainFormData.sub_division_id
-  //   }
 
-  //   this.dropdownService.getNewSectionUnderSubDivision(addedData).pipe(first()).subscribe(response => {
-  //     this.sections.unshift({id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id});
-  //     this.pwdWorkingProfileForm.patchValue({ section_id: this.sections[0].id });
-  //     Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
-  //   },
-  //   (err: any) => {
-  //     console.log(err);
-  //     this.isLoading = false;
-  //     Swal.fire({ position: 'top-end', icon: 'error',  title: err.error, showConfirmButton: false, timer: 4000
-  //     })
-
-  //   });
-  // }
 
   //--------------------------------------------------------------------------------
 
@@ -464,13 +485,19 @@ export class PwdWorkingProfileComponent implements OnInit {
     console.log(pwdWorkingProfileData);
 
     this.authService.getPwdWorkingUserProfile(pwdWorkingProfileData).pipe(first()).subscribe((res: any) => {
+      this.isLoading = false;
       // this.router.navigate(['/dashboard'], { relativeTo: this.route });
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: res.message  });
     }, err => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.message, showConfirmButton: false, timer: 2000 });
+      Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.message, showConfirmButton: false, timer: 3000 });
     });
 
+  }
+
+  resetPwdWorkingProfile(){
+    this.pwdWorkingProfileForm.reset();
+    this.isLoading = false;
   }
 
 }

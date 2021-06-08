@@ -1,0 +1,159 @@
+<div class="card">
+    <form [formGroup]="tenderDetailsForm" style="margin-bottom: 0px;">
+      <div class="d-flex col-12" style="color: white;">
+        <div class="form-group col-1">
+          <label>ID</label>
+          <input type="text" formControlName="id" class="form-control" readonly required>
+        </div>
+        <div class="col-md-2 px-md-1">
+          <div class="form-group">
+            <label>Department</label>
+            <select formControlName="department_id" class="form-control" required>
+              <option value="null">--Select--</option>
+              <option *ngFor="let item of depts" [value]="item.id">
+                {{ item.department_short_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-2 px-md-1">
+          <div class="form-group">
+            <label>Tender Authority</label>
+            <select (change)="getTenderAuthorityOffice($event.target.value)" formControlName="authority_designation_id" class="form-control" required>
+              <option value="null">--Select--</option>
+              <option *ngFor="let item of designs" [value]="item.id">
+                {{ item.designation_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-1">
+          <label>Tender No</label>
+          <input type="text" formControlName="tdNO" class="form-control" required>
+        </div>
+        <div class="form-group col-1">
+          <label>Work Order No</label>
+          <input type="text" formControlName="woNO" class="form-control" required>
+        </div>
+        <div class="col-md-2 px-md-1">
+          <div class="form-group">
+            <label>Work Order Date</label>
+            <input type="text"
+              class="form-control"
+              placeholder="Select Date"
+              bsDatepicker
+              formControlName="work_order_date"
+              (bsValueChange)="changeWod($event)"
+              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
+              >
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-group">
+            <label>Work under Section</label>
+            <select formControlName="section_id" class="form-control" required>
+              <option value="null">--Select--</option>
+              <option *ngFor="let item of sections" [value]="item.id">
+                {{ item.section_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-1">
+          <label>Display</label>
+          <input type="text" formControlName="display" class="form-control" required>
+        </div>
+        <div class="form-group col-1">
+          <label>Inforce</label>
+          <input type="text" formControlName="inforce" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="d-flex col-12" style="color: white;">
+        <div class="form-group col-2">
+          <label>Agency</label>
+          <input type="text" formControlName="agency" class="form-control" required>
+        </div>
+        <div class="form-group col-2">
+          <label>Amount Put to Tender</label>
+          <input type="text" formControlName="amount_put_tender" class="form-control" required>
+        </div>
+        <div class="form-group col-1">
+          <label>Contactual</label>
+          <input type="text" formControlName="contactual" class="form-control" required>
+        </div>
+        <div class="form-group col-2">
+          <label>Tendered Amount</label>
+          <input type="text" formControlName="tendered_amount" class="form-control" required>
+        </div>
+        <div class="col-md-2 px-md-1">
+          <div class="form-group">
+            <label>Date of Commencement</label>
+            <input type="text"
+              class="form-control"
+              placeholder="Select Date"
+              bsDatepicker
+              formControlName="commencement_date"
+              (bsValueChange)="changeDoc($event)"
+              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
+              >
+          </div>
+        </div>
+        <div class="d-flex col-2">
+          <div class="form-group" style="min-width: 70px;">
+            <label>Time</label>
+            <input type="text" formControlName="complitionTime" tooltip ="Work complition time in NUMBER only" placement="top" class="form-control" required>
+          </div>
+          <div class="form-group" style="min-width: 130px;">
+            <label>Unit</label>
+            <select formControlName="comTimeUnit" class="form-control" required>
+              <option value="null">--Select--</option>
+              <option value="Days">days</option>
+              <option value="Months">months</option>
+              <option value="Years">years</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-1 px-md-1">
+          <div class="form-group">
+            <label>DLP</label>
+            <input type="text" tooltip ="Defects Liability Period" placement="top" formControlName="dlpNum" placeholder="in months" class="form-control" >
+          </div>
+        </div>
+        <div class="col-md-1 px-md-1">
+          <div class="form-group">
+            <label>FY</label>
+            <input type="text" formControlName="financial_year" class="form-control" >
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex col-12" style="color: white;">
+        <div class="col-4">
+          <textarea type="text" rows="1" placeholder="Name of Work" formControlName="work_name" class="form-control"></textarea>
+        </div>
+        <div class="col-2">
+          <textarea type="text" rows="1" placeholder="Remarks (if any)" formControlName="remarks" class="form-control"></textarea>
+        </div>
+        <div class="col-md-2 px-md-1">
+          <div class="form-group">
+            <input type="text"
+              tooltip ="This Field should be filled after final bill and same as per final bill complition date" placement="top"
+              class="form-control"
+              placeholder="Select Actual Complition Date"
+              bsDatepicker
+              formControlName="actualComplitionDate"
+              (bsValueChange)="changeDoc($event)"
+              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-red' }"
+              >
+          </div>
+        </div>
+        <div class="d-flex col-3" style="max-height: 40px;">
+          <button class="btn btn-sm btnCol" [disabled]="!tenderDetailsForm.valid" (click)="getUpdateTenderDetails()">update</button>
+          <button class="btn btn-sm btn-rose" (click)="formReset()" >Reset</button>
+          <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/tender-details']">View Tender details</button>
+        </div>
+      </div>
+    </form>
+  </div>

@@ -183,7 +183,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of jEngrs; let sl = index;" (click)="tenderDetailsById(item.id)">
+                    <tr *ngFor="let item of jEngrs; let sl = index;" (click)="getEngrsDetailsById(item.id)">
                         <td class="text-center" scope="row">{{ item.id }}</td>
                         <td class="text-center" scope="row">{{ item.gradation_sl_no }}</td>
                         <td class="text-left" scope="row">{{ item.engineer_name }}</td>

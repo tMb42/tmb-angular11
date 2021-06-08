@@ -20,10 +20,13 @@ export class AuthUser {
   department_short_name: string;
   designation_id: number;
   department_id: number;
-  circleId: number;
-  divisionId: number;
-  subDivisionId: number;
-  sectionId: number;
+  circleId?: number;
+  circleName?: string;
+  divisionId?: number;
+  divnName?: string;
+  subDivisionId?: number;
+  subDivnName?: string;
+  sectionId?: number;
   designation_name: string;
   designation_alias: string;
   email_verified_at: Date;
@@ -36,5 +39,7 @@ export class AuthUser {
   distId?: number;
   stackId?: number;
   rlyId?: number;
-  pwdProRemarks?: number;
+  officeId?: number;
+  userPosting?: string;
+  pwdProRemarks?: string;
 }

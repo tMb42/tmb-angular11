@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PwdWorksRoutingModule } from './pwd-works-routing.module';
 import { TenderDetailsComponent } from './tender-details/tender-details.component';
 
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -14,12 +16,13 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwdWorkingProfileComponent } from './pwd-working-profile/pwd-working-profile.component';
+import { TenderComponent } from './cpanel/tender/tender.component';
 
 
 console.log('Test for pwd-works Module. Loaded Ok')
 
 @NgModule({
-  declarations: [TenderDetailsComponent, PwdWorkingProfileComponent],
+  declarations: [TenderDetailsComponent, PwdWorkingProfileComponent, TenderComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,6 +30,7 @@ console.log('Test for pwd-works Module. Loaded Ok')
     PaginationModule,
     PwdWorksRoutingModule,
     FontAwesomeModule,
+    MatDatepickerModule,
     AccordionModule.forRoot(),
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
