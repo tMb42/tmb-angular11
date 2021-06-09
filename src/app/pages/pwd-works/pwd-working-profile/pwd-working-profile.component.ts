@@ -13,7 +13,7 @@ import { StackYard } from '../../../models/stackYards.model';
 import { SubDivision } from '../../../models/subDivision.model';
 import { AuthService } from '../../../services/auth.service';
 import { DropdownService } from '../../../services/dropdown.service';
-import { faTrashAlt, faPlus, faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -469,6 +469,10 @@ export class PwdWorkingProfileComponent implements OnInit {
     }else if(this.authUser.designation_id == 5){
       this.officeId = 2;
       this.postingOfficeId = formData.circle_id;
+
+    }else if(this.authUser.designation_id == 6){
+      this.officeId = 1;
+      this.postingOfficeId = formData.department;
     }else{
 
     }
@@ -482,11 +486,9 @@ export class PwdWorkingProfileComponent implements OnInit {
       remarks: formData.remarks,
     }
 
-    console.log(pwdWorkingProfileData);
-
     this.authService.getPwdWorkingUserProfile(pwdWorkingProfileData).pipe(first()).subscribe((res: any) => {
       this.isLoading = false;
-      // this.router.navigate(['/dashboard'], { relativeTo: this.route });
+      this.router.navigate(['/pwd-works'], { relativeTo: this.route });
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: res.message  });
     }, err => {
       this.isLoading = false;

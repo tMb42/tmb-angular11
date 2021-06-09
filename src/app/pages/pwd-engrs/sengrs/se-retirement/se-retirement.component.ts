@@ -20,8 +20,8 @@ export class SeRetirementComponent implements OnInit {
   pageSizes = [10, 20, 50, 100, 200];  //option for items per page
   totalPages: number;
   totalRecords: number;
-  
-  seRetirementList: SEngrs[] = [];  
+
+  seRetirementList: SEngrs[] = [];
   RetirementYearStatistic: any = [];
   RetirementMonthStatistic: any = [];
   Designations: any = [];
@@ -30,20 +30,20 @@ export class SeRetirementComponent implements OnInit {
   totalInYear: any = null;
   totalInMonth: any = null;
   SelectedDesignation: string = null;
-  
+
   designation: any ='';
   retireYear: any = '';
   retireMonth: any = '';
   SeInServiceTotal: any = 0;
-  
-  
+
+
   loading = false;
   expanded = false;
   panelOpenState = true;
 
   constructor(private sengrsService: SengrsService, private fb: FormBuilder) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.getSeRetirementlList();
 
     this.seRetirementForm = this.fb.group({
@@ -55,7 +55,7 @@ export class SeRetirementComponent implements OnInit {
 
   getSeRetirementlList (){
     this.loading = true;
-    
+
     const requestObj = {
       page: this.page,
       itemsPerPage: this.pageSize,
@@ -63,14 +63,14 @@ export class SeRetirementComponent implements OnInit {
       retireYear: this.retireYear,
       retireMonth: this.retireMonth,
     }
-    
+
     this.sengrsService.getSeRetirementDetailslList(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.SeInServiceTotal =  res.seInServiceTotal[0];
       this.seRetirementList = res.seRetirement.data;
-      this.RetirementYearStatistic = res.seRetireYearStatistic; 
-      this.Designations = res.designations; 
-          
+      this.RetirementYearStatistic = res.seRetireYearStatistic;
+      this.Designations = res.designations;
+
       this.totalRecords = res.seRetirement.total;
       this.totalPages = res.seRetirement.total_pages;
       this.currentPage = res.seRetirement.current_page;
@@ -78,7 +78,7 @@ export class SeRetirementComponent implements OnInit {
 
   }
 
-  getRetirementDetailsByDesignation (event: any){    
+  getRetirementDetailsByDesignation (event: any){
     const requestObj = {
       page: this.page,
       itemsPerPage: this.pageSize,
@@ -87,7 +87,7 @@ export class SeRetirementComponent implements OnInit {
 
     this.sengrsService.retirementListByDesignation(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
-      this.SeInServiceTotal = res.seInServiceTotal[0];     
+      this.SeInServiceTotal = res.seInServiceTotal[0];
       this.seRetirementList = res.seDesignationRetirement.data;
       this.RetirementYearStatistic = res.seRetireYearStatistic;
       this.seRetireYearList = res.seRetireYear;
@@ -100,7 +100,7 @@ export class SeRetirementComponent implements OnInit {
 
   }
 
-  getSeRetirementYearList (event: any){    
+  getSeRetirementYearList (event: any){
     const requestObj = {
       page: this.page,
       itemsPerPage: this.pageSize,
@@ -114,7 +114,7 @@ export class SeRetirementComponent implements OnInit {
       this.seRetireMonthList = res.months;
       this.RetirementMonthStatistic = res.seRetireMonthCount;
       this.totalInYear = res.seRetireCountYear[0].total;
-     
+
       this.totalRecords = res.seRetirementYear.total;
       this.totalPages = res.seRetirementYear.total_pages;
       this.currentPage = res.seRetirementYear.current_page;
@@ -130,19 +130,19 @@ export class SeRetirementComponent implements OnInit {
       designationId: this.designation,
       retireYear: this.retireYear,
       retireMonth: event,
-    } 
+    }
 
     this.sengrsService.getSeRetirementListByMonth(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.seRetirementList = res.seRetirementMonth.data;
-      this.totalInMonth = res.seRetireMonthCount[0].total; 
+      this.totalInMonth = res.seRetireMonthCount[0].total;
 
       this.totalRecords = res.seRetirementMonth.total;
       this.totalPages = res.seRetirementMonth.total_pages;
       this.currentPage = res.seRetirementMonth.current_page;
     });
 
-  }  
+  }
 
   onTableSizeChange(event: any): void {
     this.pageSize = event.target.value;

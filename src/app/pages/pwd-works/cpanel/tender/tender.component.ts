@@ -140,7 +140,7 @@ export class TenderComponent implements OnInit {
       skip: (this.page-1) * this.pageSize,
     }
 
-    this.tendersService.getAllTenderDetails(requestObj).pipe(first()).subscribe((res:any) => {
+    this.tendersService.getAllTenderDetailsAsPerAuthUser(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.tenderDetails = res.authTenderDetails.data;
       this.totalRecords = res.authTenderDetails.total;

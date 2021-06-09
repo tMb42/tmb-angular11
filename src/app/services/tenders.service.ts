@@ -17,10 +17,10 @@ export class TendersService {
   tenderDetailsSubject = new Subject<TenderDetails[]>();
 
   constructor(private http: HttpClient) {
-   this.http.get(`${serverUrl}/tendDetails`).subscribe((response: any) => {
-      this.tenderDetails = response.authTenderDetails.data;
-      this.tenderDetailsSubject.next([...this.tenderDetails]);
-    });
+  //  this.http.get(`${serverUrl}/tendDetails`).subscribe((response: any) => {
+  //     this.tenderDetails = response.authTenderDetails.data;
+  //     this.tenderDetailsSubject.next([...this.tenderDetails]);
+  //   });
 
   }
 
@@ -28,8 +28,37 @@ export class TendersService {
     return this.tenderDetailsSubject.asObservable();
   }
 
-  getAllTenderDetails(data: any) {
-    return this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails?page=${data.page}`, { params: { per_page: data.itemsPerPage, skip: data.skip}});
+  getAllTenderDetailsAsPerAuthUser(data: any) {
+    return this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails?page=${data.page}`, { params: { per_page: data.itemsPerPage, designation_id: data.designationId, posting_office_id: data.selectedOffice } });
+  }
+
+  getValidCirclesByDeprtId(deprtId: number) {
+    return this.http.get(`${serverUrl}/circles/${deprtId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getValidDivisionsByCircleId(circleId: number) {
+    return this.http.get(`${serverUrl}/divn/${circleId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getValidSubDivisionsByDivisionId(DivnId: number) {
+    return this.http.get(`${serverUrl}/subDivn/${DivnId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getValidSectionsBySubDivisionId(SubDivnId: number) {
+    return this.http.get(`${serverUrl}/section/${SubDivnId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getTenderDetailsByOfficeId(data: any) {
+    console.log('data', data);
+    return this.http.get<TenderDetails[]>(`${serverUrl}/officeTender?page=${data.page}`, { params: { per_page: data.itemsPerPage, designation_id: data.designationId, posting_office_id: data.selectedOffice }});
   }
 
   getTenderDetailsById(id: number) {

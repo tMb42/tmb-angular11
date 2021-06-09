@@ -12,8 +12,11 @@ const PwdWorksRoutes: Routes = [
     children: [
       {
         path: 'pwd-working-profile',
+        canActivate: [AuthGuard],
+        data: {
+          roles: ["super_admin", "junior_engineer","assistant_engineer", "executive_engineer", "superindending_engineer", "chief_engineer"]
+        },
         component: PwdWorkingProfileComponent,
-        canActivate: [AuthGuard]
       },
       {
         path: 'tender-details',

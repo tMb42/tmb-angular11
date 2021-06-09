@@ -6,6 +6,7 @@ import { PwdWorksRoutingModule } from './pwd-works-routing.module';
 import { TenderDetailsComponent } from './tender-details/tender-details.component';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -31,6 +32,7 @@ console.log('Test for pwd-works Module. Loaded Ok')
     PwdWorksRoutingModule,
     FontAwesomeModule,
     MatDatepickerModule,
+    MatExpansionModule,
     AccordionModule.forRoot(),
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
