@@ -1,20 +1,16 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 };
 exports.__esModule = true;
 exports.TendersService = void 0;
@@ -25,13 +21,14 @@ var environment_1 = require("src/environments/environment");
 var serverUrl = environment_1.environment.baseURL + "/recordSection";
 var TendersService = /** @class */ (function () {
     function TendersService(http) {
-        //  this.http.get(`${serverUrl}/tendDetails`).subscribe((response: any) => {
-        //     this.tenderDetails = response.authTenderDetails.data;
-        //     this.tenderDetailsSubject.next([...this.tenderDetails]);
-        //   });
+        var _this = this;
         this.http = http;
         this.tenderDetails = [];
         this.tenderDetailsSubject = new rxjs_1.Subject();
+        this.http.get(serverUrl + "/tendDetails").subscribe(function (response) {
+            _this.tenderDetails = response.authTenderDetails.data;
+            _this.tenderDetailsSubject.next(__spreadArrays(_this.tenderDetails));
+        });
     }
     TendersService.prototype.getTenderDetailsUpdateListener = function () {
         return this.tenderDetailsSubject.asObservable();
@@ -52,11 +49,19 @@ var TendersService = /** @class */ (function () {
         return this.http.get(serverUrl + "/section/" + SubDivnId).pipe(operators_1.catchError(this.handleError));
     };
     TendersService.prototype.getTenderDetailsByOfficeId = function (data) {
-        console.log('data', data);
         return this.http.get(serverUrl + "/officeTender?page=" + data.page, { params: { per_page: data.itemsPerPage, designation_id: data.designationId, posting_office_id: data.selectedOffice } });
     };
     TendersService.prototype.getTenderDetailsById = function (id) {
         return this.http.get(serverUrl + "/tendDetails/" + id);
+    };
+    TendersService.prototype.saveTenderDetails = function (newTenderData) {
+        var _this = this;
+        return this.http.post(serverUrl + "/tendDetails", newTenderData)
+            .pipe(operators_1.catchError(this.handleError), operators_1.tap(function (res) {
+            _this.tenderDetails.unshift(res.td);
+            _this.tenderDetailsSubject.next(__spreadArrays(_this.tenderDetails));
+            console.log('ii', _this.tenderDetailsSubject.next(__spreadArrays(_this.tenderDetails)));
+        }));
     };
     TendersService.prototype.updateTenderDetails = function (tenderData) {
         var _this = this;
@@ -64,8 +69,8 @@ var TendersService = /** @class */ (function () {
             .pipe(operators_1.catchError(this.handleError), operators_1.tap(function (res) {
             var index = _this.tenderDetails.findIndex(function (x) { return x.id === tenderData.id; });
             _this.tenderDetails[index] = res.td;
-            _this.tenderDetailsSubject.next(__assign({}, _this.tenderDetails));
-            console.log(index);
+            _this.tenderDetailsSubject.next(__spreadArrays(_this.tenderDetails));
+            console.log('index', _this.tenderDetailsSubject.next(__spreadArrays(_this.tenderDetails)));
         }));
     };
     TendersService.prototype.getSearchTenderDetailsData = function (event) {

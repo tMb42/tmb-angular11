@@ -14,7 +14,7 @@ export class TenderDetails {
   section_id: number;
   dlp: string;
   financial_year: string;
-  complition_date: Date;
+  complition_date?: Date;
   display?: number;
   inforce?: number;
   remarks?: any;

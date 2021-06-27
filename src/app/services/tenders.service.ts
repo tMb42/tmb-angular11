@@ -17,11 +17,10 @@ export class TendersService {
   tenderDetailsSubject = new Subject<TenderDetails[]>();
 
   constructor(private http: HttpClient) {
-  //  this.http.get(`${serverUrl}/tendDetails`).subscribe((response: any) => {
-  //     this.tenderDetails = response.authTenderDetails.data;
-  //     this.tenderDetailsSubject.next([...this.tenderDetails]);
-  //   });
-
+    this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails`).subscribe((response: any) => {
+      this.tenderDetails = response.authTenderDetails.data;
+      this.tenderDetailsSubject.next([...this.tenderDetails]);
+    });
   }
 
   getTenderDetailsUpdateListener() {
@@ -57,12 +56,21 @@ export class TendersService {
   }
 
   getTenderDetailsByOfficeId(data: any) {
-    console.log('data', data);
     return this.http.get<TenderDetails[]>(`${serverUrl}/officeTender?page=${data.page}`, { params: { per_page: data.itemsPerPage, designation_id: data.designationId, posting_office_id: data.selectedOffice }});
   }
 
   getTenderDetailsById(id: number) {
-    return this.http.get<TenderDetails>(`${serverUrl}/tendDetails/${id}`);
+    return this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails/${id}`);
+  }
+
+  saveTenderDetails(newTenderData: any) {
+    return this.http.post(`${serverUrl}/tendDetails`, newTenderData)
+    .pipe(catchError(this.handleError), tap((res: any) => {
+        this.tenderDetails.unshift(res.td);
+        this.tenderDetailsSubject.next([...this.tenderDetails]);
+        console.log('ii', this.tenderDetailsSubject.next([...this.tenderDetails]));
+      })
+    );
   }
 
   updateTenderDetails(tenderData: any) {
@@ -70,8 +78,8 @@ export class TendersService {
     .pipe(catchError(this.handleError), tap((res: any) => {
       const index = this.tenderDetails.findIndex(x => x.id === tenderData.id);
         this.tenderDetails[index] = res.td;
-        this.tenderDetailsSubject.next({...this.tenderDetails});
-        console.log(index);
+        this.tenderDetailsSubject.next([...this.tenderDetails]);
+        console.log('index',  this.tenderDetailsSubject.next([...this.tenderDetails]));
       })
     );
   }

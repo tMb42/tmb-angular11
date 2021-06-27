@@ -141,25 +141,25 @@
                 <button class="btn btn-sm btn-rose" (click)="formReset()">Reset</button>
             </div>
             <div id="table-header" class="input-group col-lg-12">
-                <div class="input-group-prepend col-lg-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" style="color: black; font-size: small;">Search</span>
-                    </div>
-                    <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="Search table" >
+              <div class="input-group-prepend col-lg-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" style="color: black; font-size: small;">Search</span>
                 </div>
+                <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="Search table" >
+              </div>
 
-                <div class="input-group-prepend col-lg-6">
-                    <span class="input-group-text" style="color: white; font-size: small;" >  Draft Gradation list of Junior Engineer (Civil) as stood {{ SelectedJeGradationWef.gradation_list_wef | date: 'dd-MM-yyyy' }}  :: Total: {{ SelectedJeGradationWef.total }} </span>
-                </div>
-                <div class="input-group-prepend col-lg-3">
-                    <span class="input-group-text" style="color: black; font-size: small;">Published :</span>
-                    <select formControlName="gradation_list_wef" class="form-control" (change)="aeGradationListByWef($event.target.value)">
-                        <option [selected]="true">--Select Date --</option>
-                        <option *ngFor="let grdnDate of JeGradationDateLists" [value]="grdnDate.gradation_list_wef">
-                            {{ grdnDate.gradation_list_wef | date: 'dd-MM-yyyy'}}
-                        </option>
-                    </select>
-                </div>
+              <div class="input-group-prepend col-lg-6">
+                <span class="input-group-text" style="color: white; font-size: small;" >  Draft Gradation list of Junior Engineer (Civil) as stood {{ SelectedJeGradationWef.gradation_list_wef | date: 'dd-MM-yyyy' }}  :: Total: {{ SelectedJeGradationWef.total }} </span>
+              </div>
+              <div class="input-group-prepend col-lg-3">
+                <span class="input-group-text" style="color: black; font-size: small;">Published :</span>
+                <select formControlName="gradation_list_wef" class="form-control" (change)="aeGradationListByWef($event.target.value)">
+                  <option [selected]="true">--Select Date --</option>
+                  <option *ngFor="let grdnDate of JeGradationDateLists" [value]="grdnDate.gradation_list_wef">
+                    {{ grdnDate.gradation_list_wef | date: 'dd-MM-yyyy'}}
+                  </option>
+                </select>
+              </div>
             </div>
         </form>
         <div class="table-responsive">

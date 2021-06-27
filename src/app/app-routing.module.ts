@@ -79,7 +79,7 @@ const AppRoutes: Routes = [
       loadChildren:()=> import('./pages/control-panel/Control-Panel.module').then(mod => mod.ControlPanelModule)
     }]
   },
-  
+
   {
     path: '',
     component: PwdWorksLayoutComponent,

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-
 import { JengrsService } from 'src/app/services/jengrs.service';
 
 
@@ -10,7 +9,7 @@ import { JengrsService } from 'src/app/services/jengrs.service';
   templateUrl: './je-promotion.component.html',
   styleUrls: ['./je-promotion.component.scss']
 })
-export class JePromotionComponent implements OnInit {  
+export class JePromotionComponent implements OnInit {
   JeForm: FormGroup;
 
   showBoundaryLinks = true;
@@ -22,7 +21,7 @@ export class JePromotionComponent implements OnInit {
   totalPages: number;
   totalRecords: number;
   skip: number;
-  
+
   JePromotionalList: any = [];
   JeCalculatedData: any = [];
   Je50PointRosterPromo: any = [];
@@ -31,7 +30,7 @@ export class JePromotionComponent implements OnInit {
   expanded = false;
   panelOpenState = true;
 
-  constructor(private jengrsService: JengrsService, private fb: FormBuilder) { 
+  constructor(private jengrsService: JengrsService, private fb: FormBuilder) {
     this.getJePromotionalList();
   }
 
@@ -51,7 +50,7 @@ export class JePromotionComponent implements OnInit {
       itemsPerPage: this.pageSize,
       skip: (this.page-1) * this.pageSize
     }
-   
+
     this.jengrsService.getJePromotionalDetails(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.JePromotionalTotal = res.jePromotionalTotal[0];
@@ -63,7 +62,7 @@ export class JePromotionComponent implements OnInit {
 
   getJePromoScopeByPostNo(scopeNo: number){
     if(scopeNo>0){
-      this.loading = true;    
+      this.loading = true;
       this.jengrsService.getCurrentJePromotionalList(scopeNo).pipe(first()).subscribe((res:any) => {
         this.expanded = true;
         this.loading = false;
@@ -92,11 +91,11 @@ export class JePromotionComponent implements OnInit {
     const startItem = (event.page - 1) * event.itemsPerPage + 1;
     const endItem = event.page * event.itemsPerPage;
     this.getJePromotionalList();
-    
+
     console.log('Current page: ' + event.page, 'Items per page: ' + event.itemsPerPage, 'Start item :' + startItem, 'End item :' + endItem);
   }
 
-  
+
 
   getSearchTableData(event: any){
     if(event.length > 0){

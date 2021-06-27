@@ -1,23 +1,27 @@
-<div class="col-lg-12 panel-body">
+<div class="col-lg-12 panel-body" *ngIf="tenderAmountDetails">
   <div class="panel-heading col-lg-12 ">
     <mat-accordion >
       <mat-expansion-panel [expanded]=expanded class="accordion-panel" >
         <mat-expansion-panel-header class="accordion-header">
-          <mat-panel-title>Tender Details</mat-panel-title>
+          <mat-panel-title>Tender Details in last 10 Financial years &nbsp;<p style="color: yellow;">| {{ tenderAmountDetails.officeName }} |</p></mat-panel-title>
           <mat-panel-description>
-            {{ tenderOfficeDetails }} <strong style="color: greenyellow;"> &nbsp; Total Tender:  {{ tenderOfficeDetails.total }}</strong>
+            <p style="color: greenyellow;"> &nbsp; Total Tender:  {{ tenderAmountDetails.total }}</p>
+            <p style="color: whitesmoke;"> &nbsp; | Total Estimated Amount Put to Tender:  {{ tenderAmountDetails.total_estimated_amount | currency:"INR" }}</p>
+            <p style="color: yellow;"> &nbsp; | Total Tendered Amount:  {{ tenderAmountDetails.total_tendered_amount | currency:"INR" }}</p>
           </mat-panel-description>
         </mat-expansion-panel-header>
           <div class="d-flex" style="font-size: medium;">
             <table class="table table-striped table-sm ">
               <tbody>
                 <tr class="reverse-table">
-                  <td style="color: rgb(229, 255, 0);">PSC Batch =></td>
-                  <td style="color: rgb(229, 255, 0);">Total =></td>
+                  <td style="min-width: 50px;">Financial Year =></td>
+                  <td >Estimated Amount Put to Tender =></td>
+                  <td style="background: white; min-width: 50px;" >Tendered Amount =></td>
                 </tr>
-                <tr class="reverse-table">
-                  <td class="text-center" scope="row"></td>
-                  <td style="color: chartreuse;" class="text-left" scope="row"></td>
+                <tr class="reverse-table" *ngFor="let item of tenderAmountStatistic">
+                  <td class="text-center" scope="row">{{ item.financial_year }}</td>
+                  <td style="color: chartreuse; min-width: 50px;"  class="text-center" scope="row">{{ item.total_estimated_amount | currency:"INR"}}</td>
+                  <td style="background: white; min-width: 50px;"  class="text-center" scope="row">{{ item.total_tendered_amount | currency:"INR"}}</td>
                 </tr>
               </tbody>
             </table>
@@ -86,7 +90,7 @@
       </div>
       <span class="spacer"></span>
       <div class="col-2">
-        <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/cpanel-tender']">Add New Tender</button>
+        <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/cpanel/add-tender']">Add New Tender</button>
       </div>
     </div>
 
@@ -94,7 +98,7 @@
       <table class="table table-striped table-hover table-sm ">
         <thead class="table-dark">
           <tr>
-            <th class="text-center text-truncate" scope="col">ID</th>
+            <th class="text-center text-truncate" scope="col">Sl</th>
             <th class="text-center" data-sortable="true" scope="col-2">Name of Work</th>
             <th class="text-center" data-sortable="true" scope="col">Name of Agency</th>
             <th class="text-center" scope="col">Rerence Tender</th>
@@ -115,8 +119,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of tenderDetails;">
-            <td class="text-top" scope="row">{{ item.id }}</td>
+          <tr *ngFor="let item of tenderDetails; let sl = index;" (click)="getEditTenderDetailsById(item.id)">
+            <td class="text-top" scope="row">{{ sl + 1 }}</td>
             <td class="text-justify" scope="row">{{ item.work_name }}</td>
             <td class="text-center" scope="row">{{ item.agency }}</td>
             <td class="text-justify" scope="row">{{ item.tender_no }}</td>

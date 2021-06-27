@@ -18,12 +18,13 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwdWorkingProfileComponent } from './pwd-working-profile/pwd-working-profile.component';
 import { TenderComponent } from './cpanel/tender/tender.component';
+import { TenderEditComponent } from './cpanel/tender-edit/tender-edit.component';
 
 
 console.log('Test for pwd-works Module. Loaded Ok')
 
 @NgModule({
-  declarations: [TenderDetailsComponent, PwdWorkingProfileComponent, TenderComponent],
+  declarations: [TenderDetailsComponent, PwdWorkingProfileComponent, TenderComponent, TenderEditComponent],
   imports: [
     CommonModule,
     FormsModule,

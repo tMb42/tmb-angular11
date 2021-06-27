@@ -7,7 +7,7 @@
   border-radius: 5px;
   padding: 5px;
   position: relative;
-  box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0px;
 }
 
 .form-control {
@@ -44,8 +44,8 @@ label {
 }
 
 .table-responsive {
-  max-height: 500px;
-  max-width: 1430px;
+  max-height: 300px;
+  max-width: 1500px;
 }
 
 #table-header {

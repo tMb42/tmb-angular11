@@ -43,9 +43,18 @@
 }
 
 .table-responsive {
-  max-height: 500px;
-  max-width: 1430px;
+  max-height: 430px;
+  max-width: 1470px;
 }
+
+.reverse-table {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  font-size: 12px;
+  padding: 0px;
+}
+
 
 #table-header {
   position: sticky;
@@ -62,7 +71,7 @@
   position: sticky;
   display: flex;
   border-radius: 5px;
-  margin-top: -15px;
+  margin-top: 0px;
   height: 35px;
   background: linear-gradient(to right, #03b2e7, #48ff48, #df4fd7);
 }
@@ -120,7 +129,6 @@
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 .table td:nth-child(1) {
-  background: rgba(241, 19, 19, 0.8);
   color: white;
 }
 .table td:nth-child(2){

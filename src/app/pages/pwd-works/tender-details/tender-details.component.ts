@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+
 import { DropdownService } from '../../../services/dropdown.service';
 import { TenderDetails } from '../../../models/tenderDetails.model';
 import { TendersService } from '../../../services/tenders.service';
-import Swal from 'sweetalert2';
 import { AuthUser } from '../../../models/auth-user.model';
 import { Department } from '../../..//models/department.model';
 import { Designation } from '../../../models/designation.model';
@@ -14,7 +15,8 @@ import { Section } from '../../../models/section.model';
 import { Circle } from 'src/app/models/circle.model';
 import { Division } from 'src/app/models/division.model';
 import { SubDivision } from 'src/app/models/subDivision.model';
-import { ThisReceiver } from '@angular/compiler';
+
+import Swal from 'sweetalert2';
 
 
 
@@ -40,6 +42,7 @@ export class TenderDetailsComponent implements OnInit {
   divns: Division[] = [];
   subDivns: SubDivision[] = [];
   sections: Section[] = [];
+  tenderAmountStatistic: any = [];
 
   expanded = false;
   loading = false;
@@ -47,8 +50,8 @@ export class TenderDetailsComponent implements OnInit {
   page: number = 1;
   currentPage: number;
   maxSize: number = 4;      //Limit the maximum visible page numbers
-  pageSizes = [5, 10, 20, 50];  //option for items per page
-  pageSize: number = 5;     //default items per page
+  pageSizes = [10, 20, 50, 100];  //option for items per page
+  pageSize: number = 10;     //default items per page
   totalPages: number;
   totalRecords: Number;
   skip: number;
@@ -72,9 +75,9 @@ export class TenderDetailsComponent implements OnInit {
   authDesignId:  number = null;
   officeId:  number = null;
   designId:  number = null;
-  tenderOfficeDetails: any = null;
+  tenderAmountDetails: any = null;
 
-  constructor( private fb: FormBuilder, private authService: AuthService, private tendersService: TendersService, private   dropdownService : DropdownService) {
+  constructor( private fb: FormBuilder, private authService: AuthService, private tendersService: TendersService, private router: Router, private   dropdownService : DropdownService) {
 
     this.minDate = new Date();
     this.maxDate = new Date();
@@ -140,13 +143,6 @@ export class TenderDetailsComponent implements OnInit {
       this.loading = false;
     });
 
-    // this.dropdownService.getDepartments().subscribe((response: { departmentData: Department[]; }) => {
-    //   this.depts = response.departmentData;
-    // });
-
-    // this.dropdownService.getTenderAuthority().subscribe((response: { designationData: Designation[]; }) => {
-    //   this.designs = response.designationData;
-    // });
 
     this.pwdTenderDetailsForm = this.fb.group({
       department_id: new FormControl(null),
@@ -157,6 +153,14 @@ export class TenderDetailsComponent implements OnInit {
     });
 
   }
+
+  getEditTenderDetailsById(id: number) {
+    this.tendersService.getTenderDetailsById(id).pipe(first()).subscribe(() => {
+      this.router.navigate(['pwd-works/cpanel/edit-tender']);
+      this.loading = false;
+    });
+  }
+
 
   getCirclesByDeprtment(dptId: number, design_Id: number){
     this.officeId = dptId;
@@ -207,10 +211,11 @@ export class TenderDetailsComponent implements OnInit {
     this.tendersService.getAllTenderDetailsAsPerAuthUser(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.tenderDetails = res.authTenderDetails.data;
-      this.tenderOfficeDetails = res.tenderTotal[0];
       this.totalRecords = res.authTenderDetails.total;
       this.currentPage = res.authTenderDetails.current_page;
       this.totalPages = res.authTenderDetails.total_pages;
+      this.tenderAmountStatistic = res.fyTotalTenderAmount;
+      this.tenderAmountDetails = res.tenderAmountDetails[0];
     });
   }
 
@@ -227,10 +232,11 @@ export class TenderDetailsComponent implements OnInit {
       this.tendersService.getTenderDetailsByOfficeId(requestObj).pipe(first()).subscribe((res:any) => {
         this.loading = false;
         this.tenderDetails = res.selectedTenderDetails.data;
-        this.tenderOfficeDetails = res.tenderTotal[0];
         this.totalRecords = res.selectedTenderDetails.total;
         this.currentPage = res.selectedTenderDetails.current_page;
         this.totalPages = res.selectedTenderDetails.total_pages;
+        this.tenderAmountStatistic = res.fyTotalTenderAmount;
+        this.tenderAmountDetails = res.tenderAmountDetails[0];
       });
 
     }else if(design_Id == 4){
@@ -243,10 +249,11 @@ export class TenderDetailsComponent implements OnInit {
       this.tendersService.getTenderDetailsByOfficeId(requestObj).pipe(first()).subscribe((res:any) => {
         this.loading = false;
         this.tenderDetails = res.selectedTenderDetails.data;
-        this.tenderOfficeDetails = res.tenderTotal[0];
         this.totalRecords = res.selectedTenderDetails.total;
         this.currentPage = res.selectedTenderDetails.current_page;
         this.totalPages = res.selectedTenderDetails.total_pages;
+        this.tenderAmountStatistic = res.fyTotalTenderAmount;
+        this.tenderAmountDetails = res.tenderAmountDetails[0];
       });
 
     }else if(design_Id == 3){
@@ -259,10 +266,11 @@ export class TenderDetailsComponent implements OnInit {
       this.tendersService.getTenderDetailsByOfficeId(requestObj).pipe(first()).subscribe((res:any) => {
         this.loading = false;
         this.tenderDetails = res.selectedTenderDetails.data;
-        this.tenderOfficeDetails = res.tenderTotal[0];
         this.totalRecords = res.selectedTenderDetails.total;
         this.currentPage = res.selectedTenderDetails.current_page;
         this.totalPages = res.selectedTenderDetails.total_pages;
+        this.tenderAmountStatistic = res.fyTotalTenderAmount;
+        this.tenderAmountDetails = res.tenderAmountDetails[0];
       });
 
     }else if(design_Id == 2){
@@ -275,10 +283,11 @@ export class TenderDetailsComponent implements OnInit {
       this.tendersService.getTenderDetailsByOfficeId(requestObj).pipe(first()).subscribe((res:any) => {
         this.loading = false;
         this.tenderDetails = res.selectedTenderDetails.data;
-        this.tenderOfficeDetails = res.tenderTotal[0];
         this.totalRecords = res.selectedTenderDetails.total;
         this.currentPage = res.selectedTenderDetails.current_page;
         this.totalPages = res.selectedTenderDetails.total_pages;
+        this.tenderAmountStatistic = res.fyTotalTenderAmount;
+        this.tenderAmountDetails = res.tenderAmountDetails[0];
       });
 
     }else{

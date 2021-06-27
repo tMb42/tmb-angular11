@@ -77,7 +77,8 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/pwd-works',
     title: 'PWD-Works',
-    is_departmental: 1,
+    ablity: 1,
+    // is_departmental: 1,
     type: 'link',
     icontype: 'work'
   },
