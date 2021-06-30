@@ -1,5 +1,5 @@
 export class TenderDetails {
-  id: number;
+  id?: number;
   agency: string;
   work_name: any;
   tender_no: any;

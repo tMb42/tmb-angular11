@@ -1,18 +1,25 @@
 
 <div class="container-fluid">
   <div class="wrapper">
-    <div class="navbar-top"> 
+    <div class="navbar-top">
       <mat-toolbar id="toolbar" class="transparent">
         <a class="navbar-brand">
           <span style="font-size: 24px;">tMb</span>
           <img class="image-responsive" src="../assets/img/tmb/logo_tmb.png"  style="max-height: 60px;" />
         </a>
-    
+
         <div class="dropdown">
-          <button class="dashboardbtn" [routerLink]="['dashboard']" routerLinkActive="active"> Dashboard </button>      
+          <button class="dashboardbtn" [routerLink]="['dashboard']" routerLinkActive="active"> Dashboard </button>
         </div>
 
-        <span class="spacer"></span> 
+        <span class="spacer"></span>
+        <div *ngIf="authUser" class="d-flex mt-5" style="font-size: small; color: rgb(188, 24, 221);">
+          <p>{{ authUser.name }},</p>&nbsp;
+          <p>{{ authUser.designation_alias }},</p>&nbsp;
+          <p>{{ authUser.userPosting }},</p>&nbsp;
+          <p>{{ authUser.department_short_name }}</p>
+        </div>
+        <span class="spacer"></span>
 
         <div class="dropdown" style="padding-top: 25px;">
           <button class="dropbtn"> Junior Engineer </button>
@@ -66,4 +73,4 @@
 
 
 
- 
+

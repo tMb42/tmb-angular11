@@ -27,7 +27,7 @@ export class SePromotionComponent implements OnInit {
   Se50PointRosterPromo: any = [];
   SePromotionalTotal: number = null;
   SelectedDesignation: string = null;
-  
+
   designation: any = null;
   SeInServiceTotal: any = 0;
 
@@ -46,8 +46,8 @@ export class SePromotionComponent implements OnInit {
 
   }
 
-  getSeDesignationList(){ 
-    this.loading = true;  
+  getSeDesignationList(){
+    this.loading = true;
     this.sengrsService.getDesignations().pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.Designations = res.designations;
@@ -63,7 +63,7 @@ export class SePromotionComponent implements OnInit {
       itemsPerPage: this.pageSize,
       skip: (this.page-1) * this.pageSize
     }
-   
+
     this.sengrsService.getSePromotionalDetails(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.SePromotionalTotal = res.sePromoTotal[0].total;
@@ -98,7 +98,7 @@ export class SePromotionComponent implements OnInit {
     }
 
   }
-     
+
   onTableSizeChange(event: any): void {
     this.loading = true;
 
@@ -110,7 +110,7 @@ export class SePromotionComponent implements OnInit {
       page: this.page,
       itemsPerPage: this.pageSize,
       skip: (this.page-1) * this.pageSize
-    }   
+    }
     this.sengrsService.getSePromotionalDetails(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.SePromotionalTotal = res.sePromoTotal[0].total;
@@ -118,7 +118,7 @@ export class SePromotionComponent implements OnInit {
       this.totalRecords = res.sePromoTotal[0].total;
     });
 
-  
+
   }
 
   pageChanged(event: any): void {
@@ -131,7 +131,7 @@ export class SePromotionComponent implements OnInit {
       itemsPerPage: this.pageSize,
       skip: (this.page-1) * this.pageSize
     }
-   
+
     this.sengrsService.getSePromotionalDetails(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
       this.SePromotionalTotal = res.sePromoTotal[0].total;
@@ -145,12 +145,12 @@ export class SePromotionComponent implements OnInit {
       this.loading = true;
       this.sengrsService.getSeSearchablePromoTableData(event).pipe(first()).subscribe((res:any) => {
         this.loading = false;
-        this.SePromotionalList = res.aePromoSearch;
+        this.SePromotionalList = res.sePromoSearch;
       });
     }
     if(event.length <= 0){
       this.loading = false;
-     
+
     }
 
   }

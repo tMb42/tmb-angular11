@@ -27,6 +27,7 @@ export class TenderEditComponent implements OnInit {
   sections: Section[] = [];
 
 
+  expanded = false;
   loading = false;
   showBoundaryLinks = true;
   page: number = 1;
@@ -41,8 +42,11 @@ export class TenderEditComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
 
+  tenderedAmount: any = '';
   woDate: any = null;
+  workDate: any = null;
   doc: any = null;
+  workComDate: any = null;
 
   tenderAuthority: string = null;
   officeName: string = null;
@@ -52,13 +56,9 @@ export class TenderEditComponent implements OnInit {
   subDivisionId: number = null;
   divnId: number = null;
   cirId: number = null;
-  officeId:  number = null;
-  designId:  number = null;
+  officeId: number = null;
+  designId: number = null;
   tenderOfficeDetails: any = null;
-
-  amount_put_tender: number = 0;
-  contactual: number = 0;
-  tendered_amount: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -98,6 +98,7 @@ export class TenderEditComponent implements OnInit {
     this.tendersService.getTenderDetailsUpdateListener().subscribe( res => {
       this.loading = false;
       this.tenderDetails = res;
+      this.tenderDetails = res;
     });
 
     this.tendersService.getAllSectionAsPerAuthUserForTenderDetails().subscribe((response: { sections: Section[]; }) => {
@@ -112,22 +113,20 @@ export class TenderEditComponent implements OnInit {
       this.designs = response.designationData;
     });
 
-
     this.tenderEditForm = this.fb.group({
-      id: new FormControl(null, [Validators.required]),
+      id: new FormControl({ value: null, disabled: true}, [Validators.required]),
       department_id: new FormControl(null, [Validators.required]),
       work_name: new FormControl(null, [Validators.required]),
       agency: new FormControl(null, [Validators.required]),
       amount_put_tender: new FormControl(null, [Validators.required]),
       authority_designation_id: new FormControl(null, [Validators.required]),
-      // authority_office: new FormControl(null, [Validators.required]),
       section_id: new FormControl(null, [Validators.required]),
-      tdNO: new FormControl(null, [Validators.required]),
-      woNO: new FormControl(null, [Validators.required]),
+      tdNo: new FormControl(null, [Validators.required]),
+      woNo: new FormControl(null, [Validators.required]),
       work_order_date: new FormControl(null, [Validators.required]),
-      contactual: new FormControl('', [Validators.required]),
-      tendered_amount: new FormControl(null, [Validators.required]),
       commencement_date: new FormControl(null, [Validators.required]),
+      contactual: new FormControl(null, [Validators.required]),
+      tendered_amount: new FormControl({ value: null, disabled: true}, [Validators.required]),
       dlpNum: new FormControl(null, [Validators.required]),
       financial_year: new FormControl(null, [Validators.required]),
       complitionTime: new FormControl(null, [Validators.required]),
@@ -157,6 +156,16 @@ export class TenderEditComponent implements OnInit {
 
   }
 
+  changeWod(value: Date): void {
+    if(value != null){
+      this.woDate = formatDate(value, 'dd-MM-yyyy', 'en');
+      this.workDate = formatDate(value, 'yyyy-MM-dd', 'en');
+    }else{
+      this.woDate = null;
+      this.workDate = null;
+    }
+  }
+
   changeDoc(value: Date): void {
     if(value != null){
       this.doc = formatDate(value, 'yyyy-MM-dd', 'en');
@@ -164,31 +173,29 @@ export class TenderEditComponent implements OnInit {
       this.doc = null;
     }
   }
-
-  changeWod(value: Date): void {
+  changeWorkComlitiondate(value: Date): void {
     if(value != null){
-      this.woDate = formatDate(value, 'yyyy-MM-dd', 'en');
+      this.workComDate = formatDate(value, 'yyyy-MM-dd', 'en');
     }else{
-      this.woDate = null;
+      this.workComDate = null;
     }
   }
 
-
-  getTenderedAmount(): void {
-    const formData = this.tenderEditForm.getRawValue();
-    this.tendered_amount = formData.amountPutTender*formData.contactual
-    console.log('dgdg', this.tendered_amount);
-  }
-
   getEditTenderDetailsById(tenderId: number) {
-    this.loading = true;
-    this.tendersService.getTenderDetailsById(tenderId).subscribe((x: any) => {
-      this.loading = false;
-      this.tenderEditForm.patchValue(x.td);
-      this.deptShortName = x.td.deptName;
-      this.officeName = x.td.authority_office;
-      this.tenderAuthority = x.td.tenderAuthority;
-    });
+    // if(this.workComDate != null){
+      this.loading = true;
+      this.expanded = true;
+      this.tendersService.getTenderDetailsById(tenderId).subscribe((x: any) => {
+        this.loading = false;
+        this.tenderEditForm.patchValue(x.td);
+        this.deptShortName = x.td.deptName;
+        this.officeName = x.td.authority_office;
+        this.tenderAuthority = x.td.tenderAuthority;
+      });
+
+    // }else{
+      // Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: "Update or edit not possible for this tender details" });
+    // }
 
   }
 
@@ -208,7 +215,6 @@ export class TenderEditComponent implements OnInit {
 
   }
 
-
   getUpdateTenderDetails(){
     this.loading = true;
 
@@ -217,31 +223,35 @@ export class TenderEditComponent implements OnInit {
       id: formData.id,
       workName: formData.work_name,
       agency: formData.agency,
-      tenderNo: formData.tdNO + ' of ' + formData.financial_year + ' accepted by ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
+      tender_No: formData.tdNo,
+      work_order_no: formData.tdNo,
+      tenderNo: formData.tdNo + ' of ' + formData.financial_year + ' accepted by ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
       designation_id: formData.authority_designation_id,
       authorityOffice: this.officeName,
       amountPutTender: formData.amount_put_tender,
       contactual: formData.contactual,
       tenderedAmount: formData.tendered_amount,
-      workOrderNo: formData.woNO + ' dated ' + this.woDate + ' of ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
-      workOrderDate: this.woDate,
+      workOrderNo: formData.woNo + ' dated ' + this.woDate + ' of ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
+      workOrderDate: this.workDate,
       commencementDate: this.doc,
       sectionId: formData.section_id,
       ComplitionTime: formData.complitionTime + ' ' + formData.comTimeUnit,
       dlp: formData.dlpNum + ' months',
       fy: formData.financial_year,
-      actualComplitionDate: formData.actualComplitionDate,
+      actualWorkComplitionDate: this.workComDate,
       display: formData.display,
       inforce: formData.inforce,
       remarks: formData.remarks,
     }
 
     this.tendersService.updateTenderDetails(updateTenderDetailseData).subscribe( (res: any) => {
+      //  console.log('res',  res);
       this.loading = false;
       if (res.success === 1){
+        this.expanded = false;
         Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: res.message });
       }else if(res.success === 0){
-        console.log(res);
+        this.expanded = true;
         Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: "Validation Error" });
       }else{
         //
@@ -249,23 +259,11 @@ export class TenderEditComponent implements OnInit {
 
     }, err => {
       this.loading = false;
+      this.expanded = true;
       Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 3000 });
     });
 
   }
-
-  // getCurrentFinancialYear() {
-  //   var financial_year = "";
-  //   console.log('ff', financial_year);
-  //   const today = new Date();
-  //   if ((today.getMonth() + 1) <= 3) {
-  //       financial_year = (today.getFullYear() - 1) + "-" + today.getFullYear()
-  //   } else {
-  //       financial_year = today.getFullYear() + "-" + (today.getFullYear() + 1)
-  //   }
-  //   return financial_year;
-  // }
-
 
   getSearchTableTenderDetails(event: any){
     if(event.length > 0){
@@ -289,16 +287,23 @@ export class TenderEditComponent implements OnInit {
     this.currentPage = this.page;
     this.getAllAuthenticatedTenderDetails();
   }
-
   pageChanged(event: any): void {
     this.page = event.page;
     this.pageSize = event.itemsPerPage;
     this.getAllAuthenticatedTenderDetails();
   }
-
   formReset(){
     this.tenderEditForm.reset();
   }
 
+  //get tendered amount calculation
+  getTenderedAmount(){
+    const apt = this.tenderEditForm.get('amount_put_tender').value;
+    const cPercent = this.tenderEditForm.get('contactual').value;
+    this.tenderEditForm.patchValue({
+      tendered_amount: (apt*(1+(cPercent/100))).toFixed(2)
+    });
+
+  }
 
 }

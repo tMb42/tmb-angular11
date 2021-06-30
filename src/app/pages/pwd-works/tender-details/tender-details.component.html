@@ -89,8 +89,9 @@
         </form>
       </div>
       <span class="spacer"></span>
-      <div class="col-2">
-        <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/cpanel/add-tender']">Add New Tender</button>
+      <div class="col-3">
+        <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/cpanel/add-tender']">Add Tender</button>
+        <button class="btn btn-sm btn-danger" [routerLink]="['/pwd-works/cpanel/edit-tender']">Edit Tender</button>
       </div>
     </div>
 
@@ -103,7 +104,7 @@
             <th class="text-center" data-sortable="true" scope="col">Name of Agency</th>
             <th class="text-center" scope="col">Rerence Tender</th>
             <th class="text-center" scope="col">Amount put to Tender</th>
-            <th class="text-center" scope="col">Contactual %</th>
+            <th class="text-center" scope="col">Contactual</th>
             <th class="text-center" scope="col">Tendered Amount</th>
             <th class="text-center" scope="col">Date of Commencement</th>
             <th class="text-center" scope="col">Complition Time</th>
@@ -119,13 +120,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of tenderDetails; let sl = index;" (click)="getEditTenderDetailsById(item.id)">
+          <tr *ngFor="let item of tenderDetails; let sl = index;">
             <td class="text-top" scope="row">{{ sl + 1 }}</td>
             <td class="text-justify" scope="row">{{ item.work_name }}</td>
             <td class="text-center" scope="row">{{ item.agency }}</td>
             <td class="text-justify" scope="row">{{ item.tender_no }}</td>
             <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
-            <td class="text-center" scope="row">{{ item.contactual}}</td>
+            <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
             <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
             <td class="text-center" scope="row">{{ item.commencement_date }}</td>
             <td class="text-center" scope="row">{{ item.complition_time }}</td>

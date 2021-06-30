@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { AuthUser } from '../../models/auth-user.model';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pwd-engrs-navbar',
@@ -12,7 +13,11 @@ export class PwdEngrsNavbarComponent implements OnInit {
   authUser: AuthUser = null;
   loading = false;
   returnUrl: string;
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.authService.getAuthUser().pipe(first()).subscribe( (response: any) => {
+      this.authUser = response.data;
+    });
+  }
 
   ngOnInit(): void {
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {

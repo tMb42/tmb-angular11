@@ -26,6 +26,8 @@ export class TenderComponent implements OnInit {
   designs: Designation[] = [];
   sections: Section[] = [];
 
+  checked: boolean = true;
+  expanded = true;
   loading = false;
   showBoundaryLinks = true;
   page: number = 1;
@@ -40,8 +42,10 @@ export class TenderComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
 
+  workDate: any = null;
   woDate: any = null;
   doc: any = null;
+  fiscalYear: any = '';
 
   tenderAuthority: string = null;
   officeName: string = null;
@@ -79,12 +83,11 @@ export class TenderComponent implements OnInit {
           });
         })
 
-        // this.getAllTenderDetails();
-
       }
 
   ngOnInit(): void {
     this.getAllTenderDetails();
+    this.getCurrentFinancialYear();
 
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
       this.authUser = res.user;
@@ -108,22 +111,21 @@ export class TenderComponent implements OnInit {
       this.designs = response.designationData;
     });
 
-
     this.newTenderForm = this.fb.group({
-      department_id: new FormControl(null, [Validators.required]),
+      department_id: new FormControl({ value: null, disabled: true}, [Validators.required]),
       work_name: new FormControl(null, [Validators.required]),
       agency: new FormControl(null, [Validators.required]),
       amount_put_tender: new FormControl(null, [Validators.required]),
       authority_designation_id: new FormControl(null, [Validators.required]),
       section_id: new FormControl(null, [Validators.required]),
-      tdNO: new FormControl(null, [Validators.required]),
-      woNO: new FormControl(null, [Validators.required]),
+      tdNo: new FormControl(null, [Validators.required]),
+      woNo: new FormControl(null, [Validators.required]),
       work_order_date: new FormControl(null, [Validators.required]),
       contactual: new FormControl('', [Validators.required]),
-      tendered_amount: new FormControl(null, [Validators.required]),
+      tendered_amount: new FormControl({ value: null, disabled: true}, [Validators.required]),
       commencement_date: new FormControl(null, [Validators.required]),
       dlpNum: new FormControl(null, [Validators.required]),
-      financial_year: new FormControl(null, [Validators.required]),
+      financial_year: new FormControl(this.fiscalYear, [Validators.required]),
       complitionTime: new FormControl(null, [Validators.required]),
       comTimeUnit: new FormControl(null, [Validators.required]),
       remarks: new FormControl(null),
@@ -159,23 +161,16 @@ export class TenderComponent implements OnInit {
     }
   }
 
+
   changeWod(value: Date): void {
     if(value != null){
-      this.woDate = formatDate(value, 'yyyy-MM-dd', 'en');
+      this.woDate = formatDate(value, 'dd-MM-yyyy', 'en');
+      this.workDate = formatDate(value, 'yyyy-MM-dd', 'en');
     }else{
       this.woDate = null;
+      this.workDate = null;
     }
   }
-
-  // tenderDetailsById(tenderId: number) {
-  //   this.loading = true;
-  //   this.tendersService.getTenderDetailsById(tenderId).pipe(first()).subscribe((x: any) => {
-  //     this.loading = false;
-  //     this.newTenderForm.patchValue(x.td);
-  //     this.deptShortName = x.td.deptName;
-  //   });
-
-  // }
 
   getTenderAuthorityOffice(designationId: number){
     if(designationId == 5){
@@ -197,18 +192,19 @@ export class TenderComponent implements OnInit {
     this.loading = true;
 
     const formData = this.newTenderForm.getRawValue();
-    const tenderDetailseData = {
-      id: formData.id,
+    const tenderDetailsData = {
       workName: formData.work_name,
       agency: formData.agency,
-      tenderNo: formData.tdNO + ' of ' + formData.financial_year + ' accepted by ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
+      tender_No: formData.tdNo,
+      work_order_no: formData.tdNo,
+      tenderNo: formData.tdNo + ' of ' + formData.financial_year + ' accepted by ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
       designation_id: formData.authority_designation_id,
       authorityOffice: this.officeName,
       amountPutTender: formData.amount_put_tender,
       contactual: formData.contactual,
-      tenderedAmount: formData.tendered_amount,
-      workOrderNo: formData.woNO + ' dated ' + this.woDate + ' of ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
-      workOrderDate: this.woDate,
+      tenderedAmt: formData.tendered_amount,
+      workOrderNo: formData.woNo + ' dated ' + this.woDate + ' of ' + this.tenderAuthority + '/' + this.officeName + '/' + this.deptShortName,
+      workOrderDate: this.workDate,
       commencementDate: this.doc,
       sectionId: formData.section_id,
       ComplitionTime: formData.complitionTime + ' ' + formData.comTimeUnit,
@@ -220,8 +216,9 @@ export class TenderComponent implements OnInit {
       remarks: formData.remarks,
     }
 
-    this.tendersService.saveTenderDetails(tenderDetailseData).subscribe(() => {
+    this.tendersService.saveTenderDetails(tenderDetailsData).subscribe(() => {
       this.loading = false;
+      this.formReset();
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: "Tender details Updated" });
 
     }, err => {
@@ -231,19 +228,6 @@ export class TenderComponent implements OnInit {
     });
 
   }
-
-  // getCurrentFinancialYear() {
-  //   var financial_year = "";
-  //   console.log('ff', financial_year);
-  //   const today = new Date();
-  //   if ((today.getMonth() + 1) <= 3) {
-  //       financial_year = (today.getFullYear() - 1) + "-" + today.getFullYear()
-  //   } else {
-  //       financial_year = today.getFullYear() + "-" + (today.getFullYear() + 1)
-  //   }
-  //   return financial_year;
-  // }
-
 
   getSearchTableTenderDetails(event: any){
     if(event.length > 0){
@@ -266,23 +250,61 @@ export class TenderComponent implements OnInit {
     this.pageSize = event.target.value;
     this.currentPage = this.page;
     this.getAllTenderDetails();
-
-    console.log('Current page: ' + this.currentPage, 'Items per page: ' + this.pageSize);
   }
 
   pageChanged(event: any): void {
     this.page = event.page;
     this.pageSize = event.itemsPerPage;
-    const startItem = (event.page - 1) * event.itemsPerPage + 1;
-    const endItem = event.page * event.itemsPerPage;
     this.getAllTenderDetails();
-
-    console.log('Current page: ' + event.page, 'Items per page: ' + event.itemsPerPage, 'Start item :' + startItem, 'End item :' + endItem);
   }
 
   formReset(){
-    this.newTenderForm.reset();
+    this.newTenderForm.get('authority_designation_id').reset();
+    this.newTenderForm.get('work_name').reset();
+    this.newTenderForm.get('agency').reset();
+    this.newTenderForm.get('tdNo').reset();
+    this.newTenderForm.get('authority_designation_id').reset();
+    this.newTenderForm.get('amount_put_tender').reset();
+    this.newTenderForm.get('contactual').reset();
+    this.newTenderForm.get('tendered_amount').reset();
+    this.newTenderForm.get('woNo').reset();
+    this.newTenderForm.get('work_order_date').reset();
+    this.newTenderForm.get('section_id').reset();
+    this.newTenderForm.get('commencement_date').reset();
+    this.newTenderForm.get('dlpNum').reset();
+    this.newTenderForm.get('complitionTime').reset();
+    this.newTenderForm.get('comTimeUnit').reset();
+    this.newTenderForm.get('remarks').reset();
   }
 
+  //get current financial year
+  getCurrentFinancialYear() {
+    const today = new Date();
+    if ((today.getMonth() + 1) <= 3) {
+      this.fiscalYear = (today.getFullYear() - 1) + "-" + today.getFullYear();
+    } else {
+      this.fiscalYear = today.getFullYear() + "-" + (today.getFullYear() + 1);
+    }
+  }
+
+  //get tendered amount calculation
+  getTenderedAmount(){
+    const apt = this.newTenderForm.get('amount_put_tender').value;
+    const cPercent = this.newTenderForm.get('contactual').value;
+    if(!this.isChecked){
+      console.log(this.isChecked);
+        this.newTenderForm.patchValue({
+        tendered_amount: (apt*(1+(cPercent/100))).toFixed(2)
+      });
+    }else{
+        this.newTenderForm.patchValue({
+        tendered_amount: (apt*(1+(cPercent/100))).toFixed(0)
+      });
+    }
+
+  }
+  isChecked(event){
+    console.log(event.target.value)
+  }
 
 }

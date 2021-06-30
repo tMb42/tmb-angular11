@@ -7,6 +7,11 @@ import { TenderDetails } from '../models/tenderDetails.model';
 
 const serverUrl = `${environment.baseURL}/recordSection`;
 
+export interface TenderDetailsResponseData {
+  success: number;
+  td: TenderDetails;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +22,8 @@ export class TendersService {
   tenderDetailsSubject = new Subject<TenderDetails[]>();
 
   constructor(private http: HttpClient) {
-    this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails`).subscribe((response: any) => {
+    this.http.get<TenderDetails[]>(`${serverUrl}/tenderUpdate`)
+      .subscribe((response: any) => {
       this.tenderDetails = response.authTenderDetails.data;
       this.tenderDetailsSubject.next([...this.tenderDetails]);
     });
@@ -28,7 +34,7 @@ export class TendersService {
   }
 
   getAllTenderDetailsAsPerAuthUser(data: any) {
-    return this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails?page=${data.page}`, { params: { per_page: data.itemsPerPage, designation_id: data.designationId, posting_office_id: data.selectedOffice } });
+    return this.http.get<TenderDetails[]>(`${serverUrl}/tenderDetails?page=${data.page}`, { params: { per_page: data.itemsPerPage, designation_id: data.designationId, posting_office_id: data.selectedOffice } });
   }
 
   getValidCirclesByDeprtId(deprtId: number) {
@@ -60,28 +66,29 @@ export class TendersService {
   }
 
   getTenderDetailsById(id: number) {
-    return this.http.get<TenderDetails[]>(`${serverUrl}/tendDetails/${id}`);
+    return this.http.get<TenderDetails[]>(`${serverUrl}/tenderDetails/${id}`);
   }
 
   saveTenderDetails(newTenderData: any) {
-    return this.http.post(`${serverUrl}/tendDetails`, newTenderData)
+    return this.http.post(`${serverUrl}/tenderDetails`, newTenderData)
     .pipe(catchError(this.handleError), tap((res: any) => {
         this.tenderDetails.unshift(res.td);
         this.tenderDetailsSubject.next([...this.tenderDetails]);
-        console.log('ii', this.tenderDetailsSubject.next([...this.tenderDetails]));
       })
     );
   }
 
   updateTenderDetails(tenderData: any) {
-    return this.http.put(`${serverUrl}/tendDetails/${tenderData.id}`, tenderData)
-    .pipe(catchError(this.handleError), tap((res: any) => {
-      const index = this.tenderDetails.findIndex(x => x.id === tenderData.id);
-        this.tenderDetails[index] = res.td;
-        this.tenderDetailsSubject.next([...this.tenderDetails]);
-        console.log('index',  this.tenderDetailsSubject.next([...this.tenderDetails]));
-      })
-    );
+    return this.http.put(`${serverUrl}/tenderUpdate/${tenderData.id}`, tenderData)
+    .pipe(catchError(this.handleError), tap((response: TenderDetailsResponseData) => {
+      if (response.success === 1){
+        console.log('tenderDetails', this.tenderDetails);
+        const index = this.tenderDetails.findIndex(x => x.id === tenderData.id);
+          this.tenderDetails[index] = response.td;
+          this.tenderDetailsSubject.next([...this.tenderDetails]);
+          // console.log('index', this.tenderDetails);
+        }
+    }));
   }
 
 

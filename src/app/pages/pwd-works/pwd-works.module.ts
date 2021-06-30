@@ -7,6 +7,7 @@ import { TenderDetailsComponent } from './tender-details/tender-details.componen
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -34,6 +35,7 @@ console.log('Test for pwd-works Module. Loaded Ok')
     FontAwesomeModule,
     MatDatepickerModule,
     MatExpansionModule,
+    MatCheckboxModule,
     AccordionModule.forRoot(),
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),

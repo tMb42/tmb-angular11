@@ -15,11 +15,19 @@
           Suspend
       </button>
        <button
+          tooltip="If you permanently delete your account, plese contact support"
+          class="btn btn-sm btn-rose btn-block"
+          [routerLink]="['/auth/contact']"
+          >
+          Delete
+      </button>
+       <!-- <button
+          tooltip="If you permanently delete your account, plese contact support"
           class="btn btn-sm btn-rose btn-block"
           (click)="deleteMyAccount(authUser.id)"
           >
           Delete
-      </button>
+      </button> -->
     </div>
   </div>
 </div>

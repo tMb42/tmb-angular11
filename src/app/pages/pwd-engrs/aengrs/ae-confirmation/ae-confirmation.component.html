@@ -12,7 +12,7 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="d-flex" style="font-size: medium;">
-                        <table class="table table-striped table-sm ">                  
+                        <table class="table table-striped table-sm ">
                             <tbody>
                                 <tr class="reverse-table">
                                     <td style="color: rgb(229, 255, 0);">Year =></td>
@@ -26,8 +26,8 @@
                         </table>
                     </div>
                 </mat-expansion-panel>
-            </mat-accordion > 
-           
+            </mat-accordion >
+
                 <div id="table-header" class="input-group col-lg-12">
                     <div class="input-group-prepend col-lg-3">
                         <div class="input-group-prepend">
@@ -39,7 +39,7 @@
                     <span class="spacer"></span>
 
                     <div class="input-group-prepend col-lg-5">
-                        <span class="input-group-text" style="color: white; font-size: medium;" > 
+                        <span class="input-group-text" style="color: white; font-size: medium;" >
                             Confimation Details of Assistant Engineer (Civil)
                         </span>
                     </div>
@@ -49,12 +49,12 @@
                             <option [value]='null' [selected]="true">--Select Confirmation Year--</option>
                             <option *ngFor="let item of aeConfirmationYearList" [value]="item.year">
                                 {{ item.year }}
-                            </option>                  
+                            </option>
                         </select>
                     </div>
                 </div>
-           
-            
+
+
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-sm ">
                     <thead class="table-dark">
@@ -86,7 +86,7 @@
                             <td class="text-center" scope="row">{{ item.ee_higher_scale_date }}</td>
                             <td class="text-center" scope="row">{{ item.gradation_list_wef }}</td>
                             <td class="text-justify" scope="row">{{ item.service_status }}</td>
-                            <td class="text-justify" scope="row">{{ item.note }}</td>
+                            <td class="text-justify" scope="row">{{ item.notes }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -95,21 +95,21 @@
                 <span class="spacer"></span>
                 <div *ngIf="loading" class="d-flex align-items-center">
                     <strong>Loading...</strong>
-                    <span class="spinner-border text-light"></span>  
-                    <span class="spinner-border text-danger"></span>  
-                    <span class="spinner-border text-dark"></span>  
+                    <span class="spinner-border text-light"></span>
+                    <span class="spinner-border text-danger"></span>
+                    <span class="spinner-border text-dark"></span>
                 </div>
                 <span class="spacer"></span>
                 <div class="pagination">
-                    <pagination 
-                        [boundaryLinks]="showBoundaryLinks" 
+                    <pagination
+                        [boundaryLinks]="showBoundaryLinks"
                         [totalItems]="totalRecords"
                         [maxSize]="maxSize"
                         [itemsPerPage]="pageSize"
-                        [(ngModel)]="currentPage" 
-                        (pageChanged)="pageChanged($event)" 
+                        [(ngModel)]="currentPage"
+                        (pageChanged)="pageChanged($event)"
                     ></pagination>
-                </div> 
+                </div>
                 <span class="spacer"></span>
                 <div class="d-flex justify-content-right">
                     <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>

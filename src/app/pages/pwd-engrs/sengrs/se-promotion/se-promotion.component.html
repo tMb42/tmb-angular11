@@ -75,7 +75,7 @@
                                 </tr>
                             </thead>
                         </div>
-                        <div class="col-3">  
+                        <div class="col-3">
                             <thead>
                                 <tr>
                                      <th style="color:rgb(0, 255, 98);">
@@ -98,8 +98,8 @@
                         </div>
                     </div>
                 </mat-expansion-panel>
-            </mat-accordion > 
-            <mat-accordion >   
+            </mat-accordion >
+            <mat-accordion >
                 <mat-expansion-panel [expanded]=expanded class="accordion-panel">
                     <mat-expansion-panel-header class="accordion-header">
                         <mat-panel-description> As per 50 point roaster </mat-panel-description>
@@ -131,20 +131,20 @@
         <div class="d-flex">
             <div *ngIf="loading" class="align-items-center col-3">
                 <strong>Loading...</strong>
-                <span class="spinner-border text-primary"></span>  
-                <span class="spinner-border text-light"></span>  
-                <span class="spinner-border text-danger"></span>  
-                <span class="spinner-border text-success"></span>  
-            </div> 
-        </div> 
+                <span class="spinner-border text-primary"></span>
+                <span class="spinner-border text-light"></span>
+                <span class="spinner-border text-danger"></span>
+                <span class="spinner-border text-success"></span>
+            </div>
+        </div>
         <form  class="d-flex" [formGroup]="sePromoForm" style="margin-bottom: 0px;">
             <div id="table-header" class="input-group col-12">
                 <div class="input-group-prepend col-2">
                     <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="Search table" >
                 </div>
                 <div class="input-group-prepend col-5">
-                    <span class="input-group-text" style="color: white; font-size: 16px;" >
-                        Un-Official Promotional Position Details : {{ SelectedDesignation }} : Total in Service: {{ SePromotionalTotal }} 
+                    <span class="input-group-text" style="color: white; font-size: 14px;" >
+                        Un-Official Promotional Position Details : {{ SelectedDesignation }} : Total in Service: {{ SePromotionalTotal }}
                     </span>
                 </div>
 
@@ -156,26 +156,26 @@
                     </span>
                     <select
                         [(ngModel)]="designation"
-                        formControlName="designation" 
-                        class="form-control" 
+                        formControlName="designation"
+                        class="form-control"
                         (change)="sePromoListByDesignation($event.target.value)"
                         >
                         <option [value]="null" [selected]="true">--Select Designation--</option>
                         <option *ngFor="let item of Designations" [value]="item.id" >
                             {{ item.designation_name }}
-                        </option>                  
+                        </option>
                     </select>
-                </div> 
+                </div>
 
                 <div class="input-group-prepend col-2">
                     <div class="input-group">
                         <span class="input-group-text" style="color: rgb(247, 240, 240); font-size: medium;">No of Post</span>
                     </div>
                     <input (keyup)="getSePromoScopeByPostNo($event.target.value)" type="text" class="form-control" placeholder="No of Post" >
-                </div>            
+                </div>
             </div>
         </form>
-        
+
         <div class="table-responsive">
             <table class="table table-striped table-hover table-sm ">
                 <thead class="table-dark">
@@ -211,7 +211,7 @@
                         <td class="text-center" scope="row">{{ item.ce_doj | date: 'dd-MM-yyyy'  }}</td>
                         <td class="text-center" scope="row">{{ item.gradation_list_wef | date: 'dd-MM-yyyy'  }}</td>
                         <td class="text-justify" scope="row">{{ item.service_status }}</td>
-                        <td class="text-justify" scope="row">{{ item.note }}</td>
+                        <td class="text-justify" scope="row">{{ item.notes }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -219,15 +219,15 @@
         <div class="pagination" id="table-pagination" *ngIf="totalRecords">
             <span class="spacer"></span>
             <div class="pagination">
-                <pagination 
-                    [boundaryLinks]="showBoundaryLinks" 
+                <pagination
+                    [boundaryLinks]="showBoundaryLinks"
                     [totalItems]="totalRecords"
                     [maxSize]="maxSize"
                     [itemsPerPage]="pageSize"
-                    [(ngModel)]="currentPage" 
-                    (pageChanged)="pageChanged($event)" 
+                    [(ngModel)]="currentPage"
+                    (pageChanged)="pageChanged($event)"
                 ></pagination>
-            </div> 
+            </div>
             <span class="spacer"></span>
             <div class="d-flex justify-content-right">
                 <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>

@@ -154,14 +154,6 @@ export class TenderDetailsComponent implements OnInit {
 
   }
 
-  getEditTenderDetailsById(id: number) {
-    this.tendersService.getTenderDetailsById(id).pipe(first()).subscribe(() => {
-      this.router.navigate(['pwd-works/cpanel/edit-tender']);
-      this.loading = false;
-    });
-  }
-
-
   getCirclesByDeprtment(dptId: number, design_Id: number){
     this.officeId = dptId;
     this.designId = design_Id;

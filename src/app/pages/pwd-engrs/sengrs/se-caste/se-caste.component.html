@@ -12,7 +12,7 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="d-flex" style="font-size: small;">
-                        <table class="table table-striped table-sm ">                  
+                        <table class="table table-striped table-sm ">
                             <tbody>
                                 <tr class="reverse-table">
                                     <th style="display: flex; margin-left: 10px; font-weight: bold;">
@@ -37,8 +37,8 @@
                         <input (keyup)="getSearchTableData($event.target.value)" type="text" class="form-control" placeholder="Search table data" >
                     </div>
 
-                    <span class="spacer"></span> 
-                    
+                    <span class="spacer"></span>
+
                     <div class="input-group-prepend col-lg-4">
                         <span class="input-group-text" style="color: white; font-size: medium;" >
                             Caste-Wise Details :: {{ SelectedDesignation }} ::
@@ -50,14 +50,14 @@
                         </span>
                         <select
                             [(ngModel)]="designation"
-                            formControlName="designation" 
-                            class="form-control" 
+                            formControlName="designation"
+                            class="form-control"
                             (change)="seCastePromoListByDesignation($event.target.value)"
                             >
                             <option [value]="null" [selected]="true">--Select Designation--</option>
                             <option *ngFor="let item of Designations" [value]="item.id" >
                                 {{ item.designation_name }}
-                            </option>                  
+                            </option>
                         </select>
                     </div>
                     <div class="input-group-prepend col-lg-2">
@@ -67,8 +67,8 @@
                         <input (keyup)="seCastePromoScopeByPostNo($event.target.value)" type="text" class="form-control" placeholder="No of Post" >
                     </div>
                 </div>
-            </form> 
-            
+            </form>
+
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-sm ">
                     <thead class="table-dark">
@@ -89,10 +89,10 @@
                             <th class="text-center" scope="col">Note</th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let item of SePromoCasteGroup">                                              
+                    <tbody *ngFor="let item of SePromoCasteGroup">
                         <tr >
                             <td colspan="13" id="group-header">
-                                {{ item.caste_name }} 
+                                {{ item.caste_name }}
                             </td>
                         </tr>
                         <tr *ngFor="let item of item.groupItem; let sl = index;" >
@@ -109,7 +109,7 @@
                             <td class="text-center" scope="row">{{ item.ce_doj | date: 'dd-MM-yyyy'  }}</td>
                             <td class="text-center" scope="row">{{ item.gradation_list_wef | date: 'dd-MM-yyyy'  }}</td>
                             <td class="text-justify" scope="row">{{ item.service_status }}</td>
-                            <td class="text-justify" scope="row">{{ item.note }}</td>
+                            <td class="text-justify" scope="row">{{ item.notes }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -118,21 +118,21 @@
                 <span class="spacer"></span>
                 <div *ngIf="loading" class="d-flex align-items-center">
                     <strong>Loading...</strong>
-                    <span class="spinner-border text-light"></span>  
-                    <span class="spinner-border text-danger"></span>  
-                    <span class="spinner-border text-dark"></span>  
+                    <span class="spinner-border text-light"></span>
+                    <span class="spinner-border text-danger"></span>
+                    <span class="spinner-border text-dark"></span>
                 </div>
                 <span class="spacer"></span>
                 <div class="pagination">
-                    <pagination 
-                        [boundaryLinks]="showBoundaryLinks" 
+                    <pagination
+                        [boundaryLinks]="showBoundaryLinks"
                         [totalItems]="totalRecords"
                         [maxSize]="maxSize"
                         [itemsPerPage]="pageSize"
-                        [(ngModel)]="currentPage" 
-                        (pageChanged)="pageChanged($event)" 
+                        [(ngModel)]="currentPage"
+                        (pageChanged)="pageChanged($event)"
                     ></pagination>
-                </div> 
+                </div>
                 <span class="spacer"></span>
                 <div class="d-flex justify-content-right">
                     <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>

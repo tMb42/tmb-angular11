@@ -5,8 +5,6 @@
 .card {
   background: rgba(11, 94, 219, 0.5);
   border-radius: 5px;
-  padding: 5px;
-  position: relative;
   margin-bottom: 0px;
 }
 
@@ -18,8 +16,7 @@
   transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
-.form-check,
-label {
+.form-check, label {
   font-size: 12px;
   line-height: 1.42857;
   color: whitesmoke;
@@ -48,6 +45,12 @@ label {
   max-width: 1500px;
 }
 
+.accordion-header {
+  background:  #2b3553;
+  border-radius: 5px;
+  width: 100%;
+}
+
 #table-header {
   position: sticky;
   background: linear-gradient(to right, #1affe0, #eb9e0e, #3105f5);
@@ -64,7 +67,7 @@ label {
   position: sticky;
   display: flex;
   border-radius: 5px;
-  margin-top: -15px;
+  margin-top: 0px;
   height: 35px;
   background: linear-gradient(to right, #03b2e7, #48ff48, #df4fd7);
 }
@@ -88,17 +91,9 @@ label {
   border-radius: 5px;
   vertical-align: bottom;
   width: 100%;
-  margin-top: 0rem;
-  // margin-bottom: 1rem;
   background: rgba(17, 112, 255, 0.5);
   color: white;
   padding: 0px;
-}
-
-.table :hover {
-  background: rgba(17, 17, 16, 0.5);
-  color: greenyellow;
-  border-radius: 5px;
 }
 
 .table td {

@@ -1,140 +1,154 @@
 <div class="card">
-  <form [formGroup]="newTenderForm" style="margin-bottom: 0px;">
-    <div class="d-flex col-12" style="color: white;">
-      <div class="col-md-2 px-md-1">
-        <div class="form-group">
-          <label>Department</label>
-          <select formControlName="department_id" class="form-control" required>
-            <option value="null">--Select--</option>
-            <option *ngFor="let item of depts" [value]="item.id">
-              {{ item.department_short_name }}
-            </option>
-          </select>
+  <mat-accordion>
+    <mat-expansion-panel [expanded]=expanded class="card">
+      <mat-expansion-panel-header class="accordion-header">
+        <mat-panel-title class="mt-2">Add New Tender Details</mat-panel-title>
+        <span class="spacer"></span>
+        <div class="col-4 mt-1">
+          <input (keyup)="getSearchTableTenderDetails($event.target.value)" type="text" class="form-control" placeholder="Search Tender Details" >
         </div>
-      </div>
-
-      <div class="col-md-2 px-md-1">
-        <div class="form-group">
-          <label>Tender Authority</label>
-          <select (change)="getTenderAuthorityOffice($event.target.value)" formControlName="authority_designation_id" class="form-control" required>
-            <option value="null">--Select--</option>
-            <option *ngFor="let item of designs" [value]="item.id">
-              {{ item.designation_name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group col-1">
-        <label>Tender No</label>
-        <input type="text" formControlName="tdNO" class="form-control" required>
-      </div>
-      <div class="form-group col-1">
-        <label>Work Order No</label>
-        <input type="text" formControlName="woNO" class="form-control" required>
-      </div>
-      <div class="col-md-2 px-md-1">
-        <div class="form-group">
-          <label>Work Order Date</label>
-          <input type="text"
-            class="form-control"
-            placeholder="Select Date"
-            bsDatepicker
-            formControlName="work_order_date"
-            (bsValueChange)="changeWod($event)"
-            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
-            >
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="form-group">
-          <label>Work under Section</label>
-          <select formControlName="section_id" class="form-control" required>
-            <option value="null">--Select--</option>
-            <option *ngFor="let item of sections" [value]="item.id">
-              {{ item.section_name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-1 px-md-1">
-        <div class="form-group">
-          <label>DLP</label>
-          <input type="text" tooltip="Defects Liability Period" placement="top" formControlName="dlpNum"
-            placeholder="in months" class="form-control">
-        </div>
-      </div>
-      <div class="col-md-1 px-md-1">
-        <div class="form-group">
-          <label>FY</label>
-          <input type="text" formControlName="financial_year" class="form-control">
-        </div>
-      </div>
-    </div>
-
-    <div class="d-flex col-12" style="color: white;">
-      <div class="form-group col-2">
-        <label>Agency</label>
-        <input type="text" formControlName="agency" class="form-control" required>
-      </div>
-      <div class="form-group col-2">
-        <label>Amount Put to Tender</label>
-        <input type="text" formControlName="amount_put_tender" class="form-control" required>
-      </div>
-      <div class="form-group col-1">
-        <label>Contactual</label>
-        <input type="text" formControlName="contactual" class="form-control" required>
-      </div>
-      <div class="form-group col-2">
-        <label>Tendered Amount</label>
-        <input type="text" formControlName="tendered_amount" class="form-control" required>
-      </div>
-      <div class="col-md-2 px-md-1">
-        <div class="form-group">
-          <label>Date of Commencement</label>
-          <input type="text"
-            class="form-control"
-            placeholder="Select Date"
-            bsDatepicker
-            formControlName="commencement_date"
-            (bsValueChange)="changeDoc($event)"
-            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
-            >
-        </div>
-      </div>
-      <div class="d-flex col-2">
-        <div class="form-group" style="min-width: 70px;">
-          <label>Time</label>
-          <input type="text" formControlName="complitionTime" tooltip ="Work complition time in NUMBER only" placement="top" class="form-control" required>
-        </div>
-        <div class="form-group" style="min-width: 130px;">
-          <label>Unit</label>
-          <select formControlName="comTimeUnit" class="form-control" required>
-            <option value="null">--Select--</option>
-            <option value="Days">days</option>
-            <option value="Months">months</option>
-            <option value="Years">years</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="d-flex col-12" style="color: white;">
-      <div class="col-5">
-        <textarea type="text" rows="1" placeholder="Name of Work" formControlName="work_name" class="form-control"></textarea>
-      </div>
-      <div class="col-4">
-        <textarea type="text" tooltip="You can enter agency's Contact no. etc" rows="1" placeholder="Remarks (if any)" formControlName="remarks" class="form-control"></textarea>
-      </div>
-      <div class="d-flex col-3" style="max-height: 40px;">
-        <button class="btn btn-sm btnCol" [disabled]="!newTenderForm.valid" (click)="addNewTenderDetails()">Submit</button>
-        <button class="btn btn-sm btn-rose" (click)="formReset()" >Reset</button>
+        <button class="btn btn-sm btn-rose" [routerLink]="['/pwd-works/cpanel/edit-tender']">Edit Tender details</button>
         <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/tender-details']">View Tender details</button>
-      </div>
-    </div>
-  </form>
+        <span class="spacer"></span>
+      </mat-expansion-panel-header>
+      <form [formGroup]="newTenderForm" style="margin-bottom: 0px;">
+        <div class="d-flex col-12" style="color: white;">
+          <div class="col-md-2 px-md-1">
+            <div class="form-group">
+              <label>Department</label>
+              <select formControlName="department_id" class="form-control" style="color: white;">
+                <option value="null">--Select--</option>
+                <option *ngFor="let item of depts" [value]="item.id">
+                  {{ item.department_short_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-2 px-md-1">
+            <div class="form-group">
+              <label>Tender Authority</label>
+              <select (change)="getTenderAuthorityOffice($event.target.value)" formControlName="authority_designation_id" class="form-control" required aria-readonly="">
+                <option value="null">--Select--</option>
+                <option *ngFor="let item of designs" [value]="item.id">
+                  {{ item.designation_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-1">
+            <label>Tender No</label>
+            <input type="text" formControlName="tdNo" class="form-control" required>
+          </div>
+          <div class="form-group col-1">
+            <label>Work Order No</label>
+            <input type="text" formControlName="woNo" class="form-control" required>
+          </div>
+          <div class="col-md-2 px-md-1">
+            <div class="form-group">
+              <label>Work Order Date</label>
+              <input type="text"
+                class="form-control"
+                placeholder="Select Date"
+                bsDatepicker
+                formControlName="work_order_date"
+                (bsValueChange)="changeWod($event)"
+                [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
+                >
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label>Work under Section</label>
+              <select formControlName="section_id" class="form-control" required>
+                <option value="null">--Select--</option>
+                <option *ngFor="let item of sections" [value]="item.id">
+                  {{ item.section_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-1 px-md-1">
+            <div class="form-group">
+              <label>DLP</label>
+              <input type="text" tooltip="Defects Liability Period in months" placement="top" formControlName="dlpNum"
+                placeholder="in months" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-1 px-md-1">
+            <div class="form-group">
+              <label>FY</label>
+              <input type="text" formControlName="financial_year" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex col-12" style="color: white;">
+          <div class="form-group col-2">
+            <label>Agency</label>
+            <input type="text" formControlName="agency" class="form-control" required>
+          </div>
+          <div class="form-group col-2">
+            <label>Amount Put to Tender</label>
+            <input type="text" formControlName="amount_put_tender" class="form-control" (keyup)="getTenderedAmount()" required>
+          </div>
+          <div class="form-group col-1">
+            <label>Contactual %</label>
+            <input type="text" formControlName="contactual" class="form-control" (keyup)="getTenderedAmount()" required>
+          </div>
+          <div class="form-group col-2">
+            <label>Tendered Amount</label> &nbsp;
+            <input (change)="isChecked($event)" type="checkbox" [checked]="false" > Rounded
+            <input type="text" formControlName="tendered_amount" class="form-control" required style="color: yellow;">
+          </div>
+          <div class="col-md-2 px-md-1">
+            <div class="form-group">
+              <label>Date of Commencement</label>
+              <input type="text"
+                class="form-control"
+                placeholder="Select Date"
+                bsDatepicker
+                formControlName="commencement_date"
+                (bsValueChange)="changeDoc($event)"
+                [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
+                >
+            </div>
+          </div>
+          <div class="d-flex col-2">
+            <div class="form-group" style="min-width: 70px;">
+              <label>Time</label>
+              <input type="text" formControlName="complitionTime" tooltip ="Work complition time in NUMBER only" placement="top" class="form-control" required>
+            </div>
+            <div class="form-group" style="min-width: 130px;">
+              <label>Unit</label>
+              <select formControlName="comTimeUnit" class="form-control" required>
+                <option value="null">--Select--</option>
+                <option value="Days">days</option>
+                <option value="Months">months</option>
+                <option value="Years">years</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex col-12" style="color: white;">
+          <div class="col-5">
+            <textarea type="text" rows="1" placeholder="Name of Work" formControlName="work_name" class="form-control"></textarea>
+          </div>
+          <div class="col-4">
+            <textarea type="text" tooltip="You can enter agency's Contact no. etc" rows="1" placeholder="Remarks (if any)" formControlName="remarks" class="form-control"></textarea>
+          </div>
+          <div class="d-flex col-3" style="max-height: 40px;">
+            <button class="btn btn-sm btnCol" [disabled]="!newTenderForm.valid" (click)="addNewTenderDetails()">Submit</button>
+            <button class="btn btn-sm btn-rose" (click)="formReset()" >Reset</button>
+          </div>
+        </div>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion >
 </div>
 <div class="table-responsive">
-  <table class="table table-striped table-hover table-sm ">
+  <table class="table table-striped table-sm ">
     <thead class="table-dark">
       <tr>
         <th class="text-center text-truncate" scope="col">ID</th>
@@ -142,7 +156,7 @@
         <th class="text-center" data-sortable="true" scope="col">Name of Agency</th>
         <th class="text-center" scope="col">Rerence Tender</th>
         <th class="text-center" scope="col">Amount put to Tender</th>
-        <th class="text-center" scope="col">Contactual %</th>
+        <th class="text-center" scope="col">Contactual</th>
         <th class="text-center" scope="col">Tendered Amount</th>
         <th class="text-center" scope="col">Date of Commencement</th>
         <th class="text-center" scope="col">Complition Time</th>
@@ -158,13 +172,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of tenderDetails; let sl = index;" (click)="getEditTenderDetailsById(item.id)">
+      <tr *ngFor="let item of tenderDetails; let sl = index;">
         <td class="text-top" scope="row">{{ item.id }}</td>
         <td class="text-justify" scope="row">{{ item.work_name }}</td>
         <td class="text-center" scope="row">{{ item.agency }}</td>
         <td class="text-justify" scope="row">{{ item.tender_no }}</td>
         <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
-        <td class="text-center" scope="row">{{ item.contactual}}</td>
+        <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
         <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
         <td class="text-center" scope="row">{{ item.commencement_date }}</td>
         <td class="text-center" scope="row">{{ item.complition_time }}</td>
@@ -184,3 +198,34 @@
     </tfoot>
   </table>
 </div>
+<div class="pagination" id="table-pagination">
+  <span class="spacer"></span>
+  <div *ngIf="loading" class="d-flex align-items-center">
+    <strong>Loading...</strong>
+    <span class="spinner-border text-light"></span>
+    <span class="spinner-border text-danger"></span>
+    <span class="spinner-border text-dark"></span>
+  </div>
+  <span class="spacer"></span>
+  <div class="pagination">
+    <pagination
+      [boundaryLinks]="showBoundaryLinks"
+      [totalItems]="totalRecords"
+      [maxSize]="maxSize"
+      [itemsPerPage]="pageSize"
+      [(ngModel)]="currentPage"
+      (pageChanged)="pageChanged($event)"
+    ></pagination>
+  </div>
+  <span class="spacer"></span>
+  <div class="d-flex justify-content-right">
+    <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
+      <select (change)="onTableSizeChange($event)" class="custom-select" >
+        <option *ngFor="let size of pageSizes" [ngValue]="size">
+          {{ size }}
+        </option>
+      </select>
+    </div>
+  </div>
+<div>
+

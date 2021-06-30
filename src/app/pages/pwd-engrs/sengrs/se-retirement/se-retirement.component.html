@@ -1,7 +1,7 @@
 
 <div class="panel">
     <div class="panel-heading col-12">
-        <mat-accordion >   
+        <mat-accordion >
             <mat-expansion-panel [expanded]=expanded class="accordion-panel">
                 <mat-expansion-panel-header class="accordion-header">
                     <mat-panel-title>
@@ -10,9 +10,9 @@
                     <mat-panel-description>
                        Retirement Statistic : {{ SelectedDesignation }} : {{ retireYear }} : as per latest published gradation List
                     </mat-panel-description>
-                </mat-expansion-panel-header> 
+                </mat-expansion-panel-header>
                 <div>
-                    <table class="table table-striped table-sm ">                  
+                    <table class="table table-striped table-sm ">
                         <tbody>
                             <tr class="reverse-table">
                                 <td>Year</td>
@@ -23,11 +23,11 @@
                                 <td style="color: chartreuse;" class="text-left" scope="row">{{ item.total }}</td>
                             </tr>
                         </tbody>
-                    </table>  
+                    </table>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
-        <mat-accordion>   
+        <mat-accordion>
             <mat-expansion-panel [expanded]=expanded class="accordion-panel">
                 <mat-expansion-panel-header class="accordion-header">
                     <mat-panel-title>
@@ -38,7 +38,7 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div>
-                    <table class="table table-striped table-sm ">                  
+                    <table class="table table-striped table-sm ">
                         <tbody>
                             <tr class="reverse-table">
                                 <td>Month</td>
@@ -49,7 +49,7 @@
                                 <td style="color: chartreuse;" class="text-left" scope="row">{{ item.total }}</td>
                             </tr>
                         </tbody>
-                    </table>  
+                    </table>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
@@ -59,12 +59,12 @@
             </div>
             <div *ngIf="loading" class="align-items-center col-3">
                 <strong>Loading...</strong>
-                <span class="spinner-border text-primary"></span>  
-                <span class="spinner-border text-light"></span>  
-                <span class="spinner-border text-danger"></span>  
-                <span class="spinner-border text-success"></span>  
-            </div> 
-        </div> 
+                <span class="spinner-border text-primary"></span>
+                <span class="spinner-border text-light"></span>
+                <span class="spinner-border text-danger"></span>
+                <span class="spinner-border text-success"></span>
+            </div>
+        </div>
         <form  class="d-flex" [formGroup]="seRetirementForm" style="margin-bottom: 0px;">
             <div id="table-header" class="input-group col-lg-12">
                 <div class="input-group-prepend col-3">
@@ -73,19 +73,19 @@
                     </span>
                     <select
                         [(ngModel)]="designation"
-                        formControlName="designation" 
-                        class="form-control" 
+                        formControlName="designation"
+                        class="form-control"
                         (change)="getRetirementDetailsByDesignation($event.target.value)"
                         >
                         <option [value]=" " [selected]="true">--Select--</option>
                         <option *ngFor="let item of Designations" [value]="item.id">
                             {{ item.designation_name }}
-                        </option>                  
+                        </option>
                     </select>
-                </div> 
+                </div>
                 <div class="input-group-prepend col-5">
                     <span class="input-group-text" style="color: white; font-size: medium;" >
-                        Total in Service: {{ SeInServiceTotal.total }} :: Retirement Details of Senior Engineers(Civil)  
+                        Total in Service: {{ SeInServiceTotal.total }} :: Retirement Details of Senior Engineers(Civil)
                     </span>
                 </div>
 
@@ -95,16 +95,16 @@
                     <span class="input-group-text" style="color: rgb(250, 243, 243); font-size: medium;">
                         Year: {{ totalInYear }}
                     </span>
-                    <select 
-                        [(ngModel)]="retireYear" 
-                        formControlName="retireYear" 
-                        class="form-control" 
+                    <select
+                        [(ngModel)]="retireYear"
+                        formControlName="retireYear"
+                        class="form-control"
                         (change)="getSeRetirementYearList($event.target.value)"
                         >
                         <option [value]="" [selected]="true">--Select--</option>
                         <option *ngFor="let item of seRetireYearList" [value]="item.year">
                             {{ item.year }}
-                        </option>                  
+                        </option>
                     </select>
                 </div>
 
@@ -114,12 +114,12 @@
                         <option [value]=" " [selected]="true">--Select--</option>
                         <option *ngFor="let item of seRetireMonthList" [value]="item.month_value">
                             {{ item.month_name }}
-                        </option>                  
+                        </option>
                     </select>
-                </div>            
+                </div>
             </div>
         </form>
-        
+
         <div class="table-responsive">
             <table class="table table-striped table-hover table-sm ">
                 <thead class="table-dark">
@@ -155,7 +155,7 @@
                         <td class="text-center" scope="row">{{ item.ce_doj }}</td>
                         <td class="text-center" scope="row">{{ item.gradation_list_wef }}</td>
                         <td class="text-justify" scope="row">{{ item.service_status }}</td>
-                        <td class="text-justify" scope="row">{{ item.note }}</td>
+                        <td class="text-justify" scope="row">{{ item.notes }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -163,15 +163,15 @@
         <div class="pagination" id="table-pagination">
             <span class="spacer"></span>
             <div class="pagination">
-                <pagination 
-                    [boundaryLinks]="showBoundaryLinks" 
+                <pagination
+                    [boundaryLinks]="showBoundaryLinks"
                     [totalItems]="totalRecords"
                     [maxSize]="maxSize"
                     [itemsPerPage]="pageSize"
-                    [(ngModel)]="currentPage" 
-                    (pageChanged)="pageChanged($event)" 
+                    [(ngModel)]="currentPage"
+                    (pageChanged)="pageChanged($event)"
                 ></pagination>
-            </div> 
+            </div>
             <span class="spacer"></span>
             <div class="d-flex justify-content-right">
                 <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
