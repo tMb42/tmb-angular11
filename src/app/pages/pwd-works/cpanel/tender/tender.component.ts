@@ -291,20 +291,18 @@ export class TenderComponent implements OnInit {
   getTenderedAmount(){
     const apt = this.newTenderForm.get('amount_put_tender').value;
     const cPercent = this.newTenderForm.get('contactual').value;
-    if(!this.isChecked){
-      console.log(this.isChecked);
+    if(!this.checked){
+      console.log(this.checked);
         this.newTenderForm.patchValue({
         tendered_amount: (apt*(1+(cPercent/100))).toFixed(2)
       });
     }else{
+      console.log(this.checked);
         this.newTenderForm.patchValue({
         tendered_amount: (apt*(1+(cPercent/100))).toFixed(0)
       });
     }
 
-  }
-  isChecked(event){
-    console.log(event.target.value)
   }
 
 }

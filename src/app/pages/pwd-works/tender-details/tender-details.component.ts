@@ -202,12 +202,20 @@ export class TenderDetailsComponent implements OnInit {
 
     this.tendersService.getAllTenderDetailsAsPerAuthUser(requestObj).pipe(first()).subscribe((res:any) => {
       this.loading = false;
-      this.tenderDetails = res.authTenderDetails.data;
-      this.totalRecords = res.authTenderDetails.total;
-      this.currentPage = res.authTenderDetails.current_page;
-      this.totalPages = res.authTenderDetails.total_pages;
-      this.tenderAmountStatistic = res.fyTotalTenderAmount;
-      this.tenderAmountDetails = res.tenderAmountDetails[0];
+      if (res.success == 1){
+        this.tenderDetails = res.authTenderDetails.data;
+        this.totalRecords = res.authTenderDetails.total;
+        this.currentPage = res.authTenderDetails.current_page;
+        this.totalPages = res.authTenderDetails.total_pages;
+        this.tenderAmountStatistic = res.fyTotalTenderAmount;
+        this.tenderAmountDetails = res.tenderAmountDetails[0];
+      }else if(res.success == 0){
+        this.loading = false;
+        Swal.fire({ position: 'top-end', icon: 'warning', title: res.message, showConfirmButton: false, timer: 4000 });
+      }else{
+        //
+      }
+
     });
   }
 

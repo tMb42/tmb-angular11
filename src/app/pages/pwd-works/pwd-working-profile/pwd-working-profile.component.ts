@@ -116,7 +116,7 @@ export class PwdWorkingProfileComponent implements OnInit {
     });
 
     this.pwdWorkingProfileForm = this.fb.group({
-      department: new FormControl(null, [Validators.required]),
+      department: new FormControl({ value: null, disabled: true}, [Validators.required]),
       circle_id: new FormControl(null, [Validators.required]),
       division_id: new FormControl(null, [Validators.required]),
       sub_division_id: new FormControl(null, [Validators.required]),
@@ -488,8 +488,17 @@ export class PwdWorkingProfileComponent implements OnInit {
 
     this.authService.getPwdWorkingUserProfile(pwdWorkingProfileData).pipe(first()).subscribe((res: any) => {
       this.isLoading = false;
-      this.router.navigate(['/pwd-works'], { relativeTo: this.route });
-      Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: res.message  });
+      if (res.success === 1){
+        this.router.navigate(['/pwd-works'], { relativeTo: this.route });
+        Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: res.message });
+      }else if(res.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: "Validation Error" });
+      }else{
+        this.router.navigate(['/pwd-works/pwd-working-profile']);
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: true,
+        title: 'Sorry! '+ res.authUser.name +'. ' + res.duplicateUser[0].name +', '+ res.duplicateUser[0].designation_name + ' already hold this place of posting. Please request to ' + res.duplicateUser[0].name + ' to his registered mobile no.'+ res.duplicateUser[0].mobile_no + ' for update his current place of posting because only one user hold one place of posting at a time.'});
+      }
+
     }, err => {
       this.isLoading = false;
       Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.message, showConfirmButton: false, timer: 3000 });

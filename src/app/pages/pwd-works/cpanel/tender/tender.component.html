@@ -98,7 +98,7 @@
           </div>
           <div class="form-group col-2">
             <label>Tendered Amount</label> &nbsp;
-            <input (change)="isChecked($event)" type="checkbox" [checked]="false" > Rounded
+            <input (change)="checked = !checked" type="checkbox" [checked]="checked" (change)="getTenderedAmount()"> Rounded
             <input type="text" formControlName="tendered_amount" class="form-control" required style="color: yellow;">
           </div>
           <div class="col-md-2 px-md-1">

@@ -26,7 +26,7 @@ export class TenderEditComponent implements OnInit {
   designs: Designation[] = [];
   sections: Section[] = [];
 
-
+  checked: boolean = true;
   expanded = false;
   loading = false;
   showBoundaryLinks = true;
@@ -181,8 +181,8 @@ export class TenderEditComponent implements OnInit {
     }
   }
 
-  getEditTenderDetailsById(tenderId: number) {
-    // if(this.workComDate != null){
+  getEditTenderDetailsById(tenderId: number, complitinDate:any ) {
+    if(complitinDate == null){
       this.loading = true;
       this.expanded = true;
       this.tendersService.getTenderDetailsById(tenderId).subscribe((x: any) => {
@@ -193,9 +193,9 @@ export class TenderEditComponent implements OnInit {
         this.tenderAuthority = x.td.tenderAuthority;
       });
 
-    // }else{
-      // Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: "Update or edit not possible for this tender details" });
-    // }
+    }else{
+      Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: "Update or edit not possible for this tender details after final bill drawn" });
+    }
 
   }
 
@@ -300,10 +300,17 @@ export class TenderEditComponent implements OnInit {
   getTenderedAmount(){
     const apt = this.tenderEditForm.get('amount_put_tender').value;
     const cPercent = this.tenderEditForm.get('contactual').value;
-    this.tenderEditForm.patchValue({
-      tendered_amount: (apt*(1+(cPercent/100))).toFixed(2)
-    });
+    if(!this.checked){
+        this.tenderEditForm.patchValue({
+        tendered_amount: (apt*(1+(cPercent/100))).toFixed(2)
+      });
+    }else{
+        this.tenderEditForm.patchValue({
+        tendered_amount: (apt*(1+(cPercent/100))).toFixed(0)
+      });
+    }
 
   }
+
 
 }

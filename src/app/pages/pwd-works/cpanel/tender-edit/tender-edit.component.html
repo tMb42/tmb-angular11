@@ -91,7 +91,8 @@
             <input type="text" formControlName="contactual" (keyup)="getTenderedAmount()" class="form-control" required>
           </div>
           <div class="form-group col-2">
-            <label>Tendered Amount</label>
+            <label>Tendered Amount</label> &nbsp;
+            <input (change)="checked = !checked" type="checkbox" [checked]="checked" (change)="getTenderedAmount()"> Rounded
             <input type="text" formControlName="tendered_amount" class="form-control" required style="color: yellow;">
           </div>
           <div class="col-md-2 px-md-1">
@@ -138,7 +139,7 @@
           <div class="col-md-2 px-md-1">
             <div class="form-group">
               <input type="text"
-                tooltip ="This Field should be filled after final bill and same as per final bill complition date" placement="top"
+                tooltip ="This Field should be filled after final bill and same as per final bill complition date. Please remember you never any change this tender details after this update." placement="top"
                 class="form-control"
                 placeholder="Select Actual Complition Date"
                 bsDatepicker
@@ -189,7 +190,7 @@
       </tr>
     </thead>
     <tbody title="click on table row to edit/update tender details">
-      <tr *ngFor="let item of tenderDetails; let sl = index;" (click)="getEditTenderDetailsById(item.id)" >
+      <tr *ngFor="let item of tenderDetails; let sl = index;" (click)="getEditTenderDetailsById(item.id, item.actualComplitionDate)" >
         <td  class="text-top" scope="row">{{ item.id }}</td>
         <td class="text-justify" scope="row">{{ item.work_name }}</td>
         <td class="text-center" scope="row">{{ item.agency }}</td>
@@ -242,9 +243,8 @@
     </div>
   </div>
 <div>
-<div>
+<!-- <div>
   <pre>
     {{ tenderDetails | json }}
   </pre>
-
-</div>
+</div> -->

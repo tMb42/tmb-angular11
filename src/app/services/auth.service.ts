@@ -12,22 +12,24 @@ export interface AuthResponseData {
   message: string,
   userData: {
     token: string,
-    // user: {
-      first_name: string,
-      middle_name: string,
-      last_name: string,
-      name: string,
-      email: string,
-      password: string,
-      password_confirmation: string,
-      device_name: string,
-      roles: string,
-      roleId: string,
-      id: number,
-      dob: Date,
-      designation_id: number,
-      department_id: number,
-    // };
+    first_name: string,
+    middle_name: string,
+    last_name: string,
+    name: string,
+    email: string,
+    password: string,
+    password_confirmation: string,
+    device_name: string,
+    roles: string,
+    roleLabel: string,
+    roleId: string,
+    permissions: string,
+    permissionLabel: string,
+    id: number,
+    dob: Date,
+    designation_id: number,
+    department_id: number,
+
   };
 
 }
@@ -55,6 +57,9 @@ export class AuthService {
   public get userValue(): AuthResponseData {
     return this.userSubject.value;
   }
+  // public get userValue(): AuthResponseData {
+  //   return this.userSubject.value;
+  // }
 
   isAuthenticated(){
     if (this.user){

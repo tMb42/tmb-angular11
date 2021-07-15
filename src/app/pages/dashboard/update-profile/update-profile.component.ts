@@ -33,6 +33,7 @@ export interface Role {
 })
 
 export class UpdateProfileComponent implements OnInit {
+  isDisabled: boolean = false;
   profileUpdateForm: FormGroup;
   checkDOB: FormGroup;
 
@@ -55,6 +56,7 @@ export class UpdateProfileComponent implements OnInit {
   maxDate: Date;
   birthDate: string;
 
+
   constructor(
     private fb: FormBuilder,
     private dropdownService : DropdownService,
@@ -75,6 +77,12 @@ export class UpdateProfileComponent implements OnInit {
     this.authService.getAuthUser().pipe(first()).subscribe((response: any) => {
       this.isLoading = false;
       this.authUser = response.data;
+      if(!response.data.is_pwd_engineer){
+        this.isDisabled = false;
+      }else{
+        this.isDisabled = true;
+      }
+
       this.profileUpdateForm.patchValue({
         email: this.authUser.email,
         firstname: this.authUser.first_name,
@@ -142,7 +150,6 @@ export class UpdateProfileComponent implements OnInit {
       });
     }
 
-
   }
 
   compaireGradationListDOB(value: Date): void {
@@ -187,10 +194,10 @@ export class UpdateProfileComponent implements OnInit {
     }
 
     this.authService.getUpdateUserProfile(updateUserProfileData).pipe(first()).subscribe(() => {
+      this.isLoading = false;
       this.router.navigate(['/dashboard'], { relativeTo: this.route });
       Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: "Your are successfully update your Profile" });
     }, err => {
-      console.log('ghfhf', err);
       this.isLoading = false;
       Swal.fire({ position: 'top-end', icon: 'error',  title: err.error.message, showConfirmButton: false, timer: 2000 });
     });
