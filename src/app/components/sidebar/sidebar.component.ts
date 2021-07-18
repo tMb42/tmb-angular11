@@ -153,7 +153,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
-      this.authUser = res.user;
+      this.authUser = res.userUpDateData;
     });
 
     this.menuItems = ROUTES.filter(menuItem => menuItem);

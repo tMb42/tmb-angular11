@@ -14,15 +14,15 @@ export class AuthGuard implements CanActivate{
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const currentUser = this.authService.userValue;
-
+    console.log('currentUser', currentUser);
     if (currentUser) {
-      const Roles = currentUser.userData.roles;
+      const Roles = currentUser.userUpDateData.roles;
       const permissibleRoles = route.data.roles;
       console.log("User's Roles =>", Roles);
       // console.log("permissibleRoles =>", permissibleRoles);
       if(permissibleRoles){
         for (let i = 0; i < Roles.length; i++) {
-          // const matchedRole = permissibleRoles.indexOf(Roles[i])
+          const matchedRole = permissibleRoles.indexOf(Roles[i])
           // console.log('role =>', Roles[i]);
           // console.log('matchedRole =>', matchedRole);
           if (permissibleRoles.indexOf(Roles[i]) > -1) {
@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate{
 
         // role not authorised so redirect to home page
         this.router.navigate(['/auth']);
-        Swal.fire({ position: 'center', icon: 'warning', title: 'Sorry! ' + currentUser.userData.first_name +' you are not authorised for this page', showConfirmButton: false, timer: 7000 });
+        Swal.fire({ position: 'center', icon: 'warning', title: 'Sorry! ' + currentUser.userUpDateData.first_name +' you are not authorised for this page', showConfirmButton: false, timer: 7000 });
         return false;
 
       }

@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit {
       device_name: this.deviceInfo.deviceType + ' - ' + this.deviceInfo.os_version + ' - ' + this.deviceInfo.browser
     }
 
-      this.authService.login(loginData).pipe(first()).subscribe( response => {
+      this.authService.login(loginData).pipe(first()).subscribe( () => {
       this.isLoading = false;
       // get return url from query parameters or default to home page
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';

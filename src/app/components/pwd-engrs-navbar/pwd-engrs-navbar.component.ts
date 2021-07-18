@@ -21,7 +21,7 @@ export class PwdEngrsNavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
-      this.authUser = res.user;
+      this.authUser = res.userUpDateData;
     });
   }
 

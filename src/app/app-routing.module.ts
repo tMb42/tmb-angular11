@@ -34,7 +34,6 @@ const AppRoutes: Routes = [
   {
     path: '',
     component: PwdEngrsLayoutComponent,
-    canActivate: [AuthGuard],
     children: [
       {
         path: 'engrs',

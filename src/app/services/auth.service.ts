@@ -10,7 +10,7 @@ import { AuthUser } from '../models/auth-user.model';
 export interface AuthResponseData {
   success: number,
   message: string,
-  userData: {
+  userUpDateData: {
     token: string,
     first_name: string,
     middle_name: string,
@@ -50,16 +50,13 @@ export class AuthService {
   public user: Observable<AuthResponseData>;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.userSubject = new BehaviorSubject<AuthResponseData>(JSON.parse(localStorage.getItem('authToken')));
+    this.userSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('authToken')));
     this.user = this.userSubject.asObservable();
   }
 
   public get userValue(): AuthResponseData {
     return this.userSubject.value;
   }
-  // public get userValue(): AuthResponseData {
-  //   return this.userSubject.value;
-  // }
 
   isAuthenticated(){
     if (this.user){
@@ -156,6 +153,7 @@ export class AuthService {
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
+        this.userSubject.next({...res});
       })
     );
   }
@@ -165,6 +163,7 @@ export class AuthService {
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
+        this.userSubject.next({...res});
       })
     );
   }
@@ -174,6 +173,7 @@ export class AuthService {
       tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
+        this.userSubject.next({...res});
       })
     );
   }

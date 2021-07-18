@@ -24,15 +24,15 @@ export class AuthNavbarComponent implements OnInit {
   }
 
   get isLoggedIn() {
-    return this.authService.isLoggedIn(); 
+    return this.authService.isLoggedIn();
   }
 
   logoutCurrentUser(): void {
     this.loading = true;
     this.authService.logout().subscribe(data=>{
-      console.log(data);
+      this.loading = false;
+      Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 });
     });
-    Swal.fire({icon: 'success', title: 'You Are Logout Successfully', showConfirmButton: false, timer: 2000 });
   }
 
 }

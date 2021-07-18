@@ -16,8 +16,8 @@ export class ProfileComponent implements OnInit {
   // authUsers: AuthUser;
   selectedFile: File = null;
   imagePreview: null;
-  isLoading = false;  
-  imageSending = false; 
+  isLoading = false;
+  imageSending = false;
 
   avatar: string;
 
@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.authService.getAuthUser().pipe(first()).subscribe((response: any) => {  
+    this.authService.getAuthUser().pipe(first()).subscribe((response: any) => {
       this.isLoading = false;
       this.authUser = response.data;
     });
@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
 
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
       this.imageSending = false;
-      this.authUser = res.user;
+      this.authUser = res.userUpDateData;
     });
 
   }
@@ -53,15 +53,15 @@ export class ProfileComponent implements OnInit {
       reader.onload = (event:any) => {
         this.imagePreview = event.target.result;
       }
-    }    
+    }
   }
 
   //upload and save images in database through service.js
-  profilePictureUpload() { 
+  profilePictureUpload() {
     this.imageSending = true;
     const avatarFormData = new FormData();
     avatarFormData.append('image', this.selectedFile, this.selectedFile.name);
-    this.authService.uploadUserProfileImage(avatarFormData).subscribe(event => { 
+    this.authService.uploadUserProfileImage(avatarFormData).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress){
         this.imageSending = false;
         console.log('Upload Progress: ', Math.round(event.loaded/event.total*100) + '%');
@@ -80,8 +80,8 @@ export class ProfileComponent implements OnInit {
       this.imageSending = false;
       console.log(err);
       // this.alertService.error(err);
-      Swal.fire({ icon: 'error',  title: err.errors.image[0], showConfirmButton: false, timer: 2000 }); 
-    });  
+      Swal.fire({ icon: 'error',  title: err.errors.image[0], showConfirmButton: false, timer: 2000 });
+    });
 
   }
 
