@@ -15,7 +15,7 @@ import { SendMailComponent } from '../send-mail/send-mail.component';
 const AuthRoutes: Routes = [
   {
     path: '',
-    children: [ 
+    children: [
       {
         path: 'contact',
         component: SendMailComponent
@@ -23,7 +23,7 @@ const AuthRoutes: Routes = [
       {
         path: 'login',
         component: LoginComponent
-      },  
+      },
       {
         path: 'register',
         component: RegisterComponent
@@ -39,7 +39,7 @@ const AuthRoutes: Routes = [
       {
         path: 'reset-password',
         component: PasswordResetComponent
-      },      
+      },
       {
         path: 'google/callback',
         component: GoogleComponent
@@ -52,10 +52,9 @@ const AuthRoutes: Routes = [
         path: 'github/callback',
         component: GithubComponent
       },
-      
     ]
   }
-  
+
 ];
 
 @NgModule({

@@ -4,35 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { AuthUser } from '../models/auth-user.model';
-
-
-export interface AuthResponseData {
-  success: number,
-  message: string,
-  userUpDateData: {
-    token: string,
-    first_name: string,
-    middle_name: string,
-    last_name: string,
-    name: string,
-    email: string,
-    password: string,
-    password_confirmation: string,
-    device_name: string,
-    roles: string,
-    roleLabel: string,
-    roleId: string,
-    permissions: string,
-    permissionLabel: string,
-    id: number,
-    dob: Date,
-    designation_id: number,
-    department_id: number,
-
-  };
-
-}
+import { AuthResponseData, AuthUser } from '../models/auth-user.model';
 
 
 @Injectable({
@@ -43,14 +15,14 @@ export class AuthService {
   serverUrl = environment.baseURL;
 
   url: string;
-  authUser: AuthUser = null;
-  authUserSubject = new Subject<AuthUser>();
+  authUser: AuthResponseData = null;
+  authUserSubject = new Subject<AuthResponseData>();
 
   private userSubject: BehaviorSubject<AuthResponseData>;
   public user: Observable<AuthResponseData>;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.userSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('authToken')));
+    this.userSubject = new BehaviorSubject<AuthResponseData>(JSON.parse(localStorage.getItem('authToken')));
     this.user = this.userSubject.asObservable();
   }
 
@@ -67,7 +39,8 @@ export class AuthService {
   }
 
   getAuthUserUpdateListener() {
-    return this.authUserSubject.asObservable();
+    return this.userSubject.asObservable();
+    // return this.authUserSubject.asObservable();
   }
 
   login(loginData) {
@@ -76,9 +49,9 @@ export class AuthService {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('authToken', JSON.stringify(resData));
         this.userSubject.next({...resData});
+        return resData; // to get res from login.component.ts
       }),
       catchError(this.handleError)
-
     );
   }
 
@@ -152,8 +125,8 @@ export class AuthService {
     return this.http.post<any>(`${this.serverUrl}/user/profile`, profileData).pipe(
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
+        this.user = res;
         this.authUserSubject.next({...this.authUser});
-        this.userSubject.next({...res});
       })
     );
   }
@@ -163,7 +136,6 @@ export class AuthService {
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
-        this.userSubject.next({...res});
       })
     );
   }
@@ -173,7 +145,6 @@ export class AuthService {
       tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
-        this.userSubject.next({...res});
       })
     );
   }
@@ -190,10 +161,8 @@ export class AuthService {
   }
 
   loginFacebookCallback(data) {
-    console.log('data', data);
     return this.http.get(`${this.serverUrl}/auth/facebook/callback`, { params: data })
       .pipe(map((res: any) => {
-        console.log(res);
         if (res.token) {
           localStorage.setItem('authToken', JSON.stringify(res));
           this.userSubject.next({...res});

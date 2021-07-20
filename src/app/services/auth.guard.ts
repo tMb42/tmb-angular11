@@ -14,30 +14,26 @@ export class AuthGuard implements CanActivate{
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const currentUser = this.authService.userValue;
-    console.log('currentUser', currentUser);
-    if (currentUser) {
-      const Roles = currentUser.userUpDateData.roles;
+
+    if(currentUser) {
+      const Roles = currentUser.userData.roles;
       const permissibleRoles = route.data.roles;
-      console.log("User's Roles =>", Roles);
+      // console.log("User's Roles =>", Roles);
       // console.log("permissibleRoles =>", permissibleRoles);
       if(permissibleRoles){
+        // check if route is restricted by role
         for (let i = 0; i < Roles.length; i++) {
-          const matchedRole = permissibleRoles.indexOf(Roles[i])
-          // console.log('role =>', Roles[i]);
-          // console.log('matchedRole =>', matchedRole);
-          if (permissibleRoles.indexOf(Roles[i]) > -1) {
-            return true;
-          }
-
+        console.log("User's Roles =>", Roles[i]);
+        if(permissibleRoles.indexOf(Roles[i]) === -1) {
+          // role not authorised so redirect to home page
+          this.router.navigate(['/auth']);
+          Swal.fire({ position: 'center', icon: 'warning', title: 'Sorry! ' + currentUser.userData.first_name +' you are not authorised for this page', showConfirmButton: false, timer: 7000 });
+          return false;
         }
-
-        // role not authorised so redirect to home page
-        this.router.navigate(['/auth']);
-        Swal.fire({ position: 'center', icon: 'warning', title: 'Sorry! ' + currentUser.userUpDateData.first_name +' you are not authorised for this page', showConfirmButton: false, timer: 7000 });
-        return false;
-
       }
-      return true;
+    }
+    // authorised so return true
+    return true;
 
     }
     // not logged in so redirect to login page with the return url
@@ -45,6 +41,14 @@ export class AuthGuard implements CanActivate{
     Swal.fire({ position: 'center', icon: 'error', title: 'Please login first', showConfirmButton: false, timer: 4000 });
     return false;
   }
+
+
+
+
+
+
+
+
 
 
 }

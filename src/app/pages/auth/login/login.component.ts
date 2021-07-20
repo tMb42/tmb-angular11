@@ -94,22 +94,16 @@ export class LoginComponent implements OnInit {
       device_name: this.deviceInfo.deviceType + ' - ' + this.deviceInfo.os_version + ' - ' + this.deviceInfo.browser
     }
 
-      this.authService.login(loginData).pipe(first()).subscribe( () => {
-      this.isLoading = false;
-      // get return url from query parameters or default to home page
-      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
-      this.router.navigateByUrl(returnUrl);
-      Swal.fire({ position: 'top-end', icon: 'success', title: 'Thank you for signing in', showConfirmButton: false, timer: 2000 });
-    },
-      (err: any) => {
-        console.log(err.error.message);
+      this.authService.login(loginData).pipe(first()).subscribe( res => {
         this.isLoading = false;
-      if(err.error.message !=null){
-        Swal.fire({ position: 'top-end', icon: 'info', title: err.error.message, showConfirmButton: false, timer: 4000 });
-      }else{
-
-      }
-        Swal.fire({position: 'top-end', icon: 'error', title: err.error.errors.message, showConfirmButton: false, timer: 4000 });
+        // get return url from query parameters or default to home page
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+        this.router.navigateByUrl(returnUrl);
+        Swal.fire({ position: 'top-end', icon: 'success', title: res.message, showConfirmButton: false, timer: 2000 });
+      },
+      (err: any) => {
+        this.isLoading = false;
+        Swal.fire({position: 'top-end', icon: 'error', title: err.error.message, showConfirmButton: false, timer: 4000 });
       }
     );
 

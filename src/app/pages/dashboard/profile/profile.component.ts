@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
 
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
       this.imageSending = false;
-      this.authUser = res.userUpDateData;
+      this.authUser = res.userUpdateData;
     });
 
   }
