@@ -88,7 +88,7 @@
     </li>
 
     <li *ngIf="authUser">
-      <ul *ngIf="authUser.gender == '' ">
+      <ul *ngIf="!authUser.mobile">
         <h2 id="message">
             Please Update your profile. It is compulsory for new user to use this website.
         </h2>

@@ -13,7 +13,6 @@ import { AuthUser } from '../../../models/auth-user.model';
 
 export class ProfileComponent implements OnInit {
   authUser: AuthUser = null;
-  // authUsers: AuthUser;
   selectedFile: File = null;
   imagePreview: null;
   isLoading = false;
@@ -30,15 +29,9 @@ export class ProfileComponent implements OnInit {
       this.authUser = response.data;
     });
 
-    // this.authService.getAvaratUpdateListener().subscribe( res => {
-    //   this.imageSending = false;
-    //   this.avatar = res;
-    //   console.log('profile', res)
-    // });
-
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
       this.imageSending = false;
-      this.authUser = res.userUpdateData;
+      this.authUser = res.user;
     });
 
   }

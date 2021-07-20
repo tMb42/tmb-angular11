@@ -1,55 +1,5 @@
-export interface AuthResponseData {
-  success: number,
-  message: string,
-  token: string,
-  userData: {
-    id: number;
-    name: string;
-    first_name?: string;
-    middle_name?: string;
-    last_name?: string;
-    email: string;
-    gender?: string;
-    roles?: string;
-    roleId?: string;
-    permissions?: string;
-    ability_id?: number;
-    dob?: Date;
-    mobile?: number;
-    photo?: string;
-    is_departmental?: number;
-    is_pwd_engineer?: any;
-    department_name?: string;
-    department_short_name?: string;
-    designation_id: number;
-    department_id?: number;
-    circleId?: number;
-    circleName?: string;
-    divisionId?: number;
-    divnName?: string;
-    subDivisionId?: number;
-    subDivnName?: string;
-    sectionId?: number;
-    designation_name?: string;
-    designation_alias?: string;
-    email_verified_at?: Date;
-    created_at?: Date;
-    updated_at?: Date;
-    profile_updated_at?: Date;
-    remarks?: string;
-    inforce?: number;
-    display?: number;
-    distId?: number;
-    stackId?: number;
-    rlyId?: number;
-    officeId?: number;
-    userPosting?: string;
-    pwdProRemarks?: string;
-  };
-
-}
-
 export class AuthUser {
+  token: string;
   success?: number;
   message?: number;
   id: number;
@@ -58,10 +8,10 @@ export class AuthUser {
   middle_name?: string;
   last_name?: string;
   email: string;
-  gender?: string;
-  roles?: string;
-  roleId?: string;
-  permissions?: string;
+  gender: string;
+  roles: string[];
+  roleId?: string[];
+  permissions?: string[];
   ability_id?: number;
   dob?: Date;
   mobile?: number;

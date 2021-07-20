@@ -58,7 +58,7 @@
               </div>
               <div class="form-group col-md-4 pr-md-1" *ngIf="profileUpdateForm.get('isDepartment').value==1">
                 <label>Designation*</label>
-                <select formControlName="designation" class="form-control" >
+                <select formControlName="designation" class="form-control" (change)="compaireGradationListDOB(birthDate)">
                   <option value="1">--Select Designation--</option>
                   <option *ngFor="let designation of designs" [value]="designation.id">
                     {{ designation.designation_name }}

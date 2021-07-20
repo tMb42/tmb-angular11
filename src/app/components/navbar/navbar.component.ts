@@ -229,7 +229,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout().subscribe(data=>{
+    this.authService.logout().subscribe( (data:any) => {
       Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 });
     });
 

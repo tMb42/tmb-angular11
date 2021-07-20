@@ -94,12 +94,12 @@ export class LoginComponent implements OnInit {
       device_name: this.deviceInfo.deviceType + ' - ' + this.deviceInfo.os_version + ' - ' + this.deviceInfo.browser
     }
 
-      this.authService.login(loginData).pipe(first()).subscribe( res => {
+      this.authService.login(loginData).pipe(first()).subscribe( () => {
         this.isLoading = false;
         // get return url from query parameters or default to home page
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
         this.router.navigateByUrl(returnUrl);
-        Swal.fire({ position: 'top-end', icon: 'success', title: res.message, showConfirmButton: false, timer: 2000 });
+        Swal.fire({ position: 'top-end', icon: 'success', title: "Thank you for signing in", showConfirmButton: false, timer: 2000 });
       },
       (err: any) => {
         this.isLoading = false;

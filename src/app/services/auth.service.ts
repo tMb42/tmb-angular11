@@ -4,8 +4,33 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { AuthResponseData, AuthUser } from '../models/auth-user.model';
+import { AuthUser } from '../models/auth-user.model';
 
+export interface AuthResponseData {
+  success: number,
+  message: string,
+  token: string,
+  userData: {
+    id: number,
+    first_name: string,
+    middle_name: string,
+    last_name: string,
+    name: string,
+    email: string,
+    password: string,
+    password_confirmation: string,
+    device_name: string,
+    roles: string[],
+    roleLabel: string[],
+    roleId: string[],
+    permissions: string[],
+    permissionLabel: string[],
+    dob: Date,
+    designation_id: number,
+    department_id: number,
+  };
+
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +40,8 @@ export class AuthService {
   serverUrl = environment.baseURL;
 
   url: string;
-  authUser: AuthResponseData = null;
-  authUserSubject = new Subject<AuthResponseData>();
+  authUser: AuthUser = null;
+  authUserSubject = new Subject<AuthUser>();
 
   private userSubject: BehaviorSubject<AuthResponseData>;
   public user: Observable<AuthResponseData>;
@@ -39,8 +64,7 @@ export class AuthService {
   }
 
   getAuthUserUpdateListener() {
-    return this.userSubject.asObservable();
-    // return this.authUserSubject.asObservable();
+    return this.authUserSubject.asObservable();
   }
 
   login(loginData) {
@@ -49,7 +73,6 @@ export class AuthService {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('authToken', JSON.stringify(resData));
         this.userSubject.next({...resData});
-        return resData; // to get res from login.component.ts
       }),
       catchError(this.handleError)
     );
@@ -125,15 +148,14 @@ export class AuthService {
     return this.http.post<any>(`${this.serverUrl}/user/profile`, profileData).pipe(
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
-        this.user = res;
         this.authUserSubject.next({...this.authUser});
       })
     );
   }
 
   getPwdWorkingUserProfile(pwdWorkingPro) {
-    return this.http.post<any>(`${this.serverUrl}/pwd/working-profile`, pwdWorkingPro).pipe(
-      catchError(this.handleError), tap((res: any) => {
+    return this.http.post<any>(`${this.serverUrl}/pwd/working-profile`, pwdWorkingPro)
+    .pipe(catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
       })
@@ -141,8 +163,8 @@ export class AuthService {
   }
 
   uploadUserProfileImage(uploadImageData) {
-    return this.http.post<any>(`${this.serverUrl}/user/photo`, uploadImageData).pipe(
-      tap((res: any) => {
+    return this.http.post<any>(`${this.serverUrl}/user/photo`, uploadImageData)
+    .pipe(catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
       })

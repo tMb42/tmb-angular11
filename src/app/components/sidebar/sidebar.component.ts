@@ -153,7 +153,8 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getAuthUserUpdateListener().subscribe( (res: any) => {
-      this.authUser = res.userData;
+      this.authUser = res.user;
+      console.log('test', res);
     });
 
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -162,8 +163,6 @@ export class SidebarComponent implements OnInit {
       const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
       this.ps = new PerfectScrollbar(elemSidebar);
     }
-
-
 
   }
 

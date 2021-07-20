@@ -31,9 +31,9 @@ export class PwdWorksNavbarComponent implements OnInit {
 
   logoutCurrentUser(): void {
     this.loading = true;
-    this.authService.logout().subscribe(data=>{
+    this.authService.logout().subscribe( data => {
       this.loading = false;
-     Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 });
+      Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 });
     });
 
   }

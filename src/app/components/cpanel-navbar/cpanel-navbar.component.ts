@@ -24,13 +24,13 @@ export class CpanelNavbarComponent implements OnInit {
   loading = false;
   returnUrl: string;
 
-    private listTitles: any[];
-    location: Location;
-    mobile_menu_visible: any = 0;
-    private nativeElement: Node;
-    private toggleButton: any;
-    private sidebarVisible: boolean;
-    private _router: Subscription;
+  private listTitles: any[];
+  location: Location;
+  mobile_menu_visible: any = 0;
+  private nativeElement: Node;
+  private toggleButton: any;
+  private sidebarVisible: boolean;
+  private _router: Subscription;
 
 
   constructor(private authService: AuthService, location: Location, private renderer: Renderer2, private element: ElementRef, private router: Router,) {
@@ -127,17 +127,17 @@ export class CpanelNavbarComponent implements OnInit {
     }
     return true;
   }
-  
+
   get isLoggedIn() {
-    return this.authService.isLoggedIn(); 
+    return this.authService.isLoggedIn();
   }
-  
+
   logoutCurrentUser(): void {
     this.loading = true;
     this.authService.logout().subscribe(data=>{
-     Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 }); 
+     Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 });
     });
-    
+
   }
 
   sidebarOpen() {
