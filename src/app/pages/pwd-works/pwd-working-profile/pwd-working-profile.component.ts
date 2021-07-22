@@ -327,16 +327,16 @@ export class PwdWorkingProfileComponent implements OnInit {
 
         this.isCircleFormShow = false;
 
-        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
       }else if(response.success === 0){
-        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
       }else{
 
       }
     },
     (err: any) => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'center', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });
@@ -362,17 +362,17 @@ export class PwdWorkingProfileComponent implements OnInit {
 
         this.isDivisionFormShow = false;
 
-        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
 
       }else if(response.success === 0){
-        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
       }else{
         //
       }
     },
     (err: any) => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'center', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });
@@ -398,16 +398,16 @@ export class PwdWorkingProfileComponent implements OnInit {
 
         this.isSubdivisionFormShow = false;
 
-        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
       }else if(response.success === 0){
-        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
       }else{
         //
       }
     },
     (err: any) => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'center', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });
@@ -433,17 +433,17 @@ export class PwdWorkingProfileComponent implements OnInit {
 
         this.isSectionFormShow = false;
 
-        Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
 
         }else if(response.success === 0){
-        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+        Swal.fire({ position: 'center', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
       }else{
         //
       }
     },
     (err: any) => {
       this.isLoading = false;
-      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
+      Swal.fire({ position: 'center', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
       })
 
     });

@@ -149,6 +149,11 @@ export class AuthService {
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
+        // Get back item "auth" from local storage
+        // const authTokenFromLocalStorage = res.userData.roles[0];
+        // console.log(authTokenFromLocalStorage);
+        // // Save the new role with updated value
+        // localStorage.setItem("authToken",JSON.stringify(authTokenFromLocalStorage));
       })
     );
   }

@@ -5,12 +5,17 @@ import { first } from 'rxjs/operators';
 import { DropdownService } from '../../../../services/dropdown.service';
 import { TenderDetails } from '../../../../models/tenderDetails.model';
 import { TendersService } from '../../../../services/tenders.service';
+import { faPlus, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { AuthUser } from '../../../../models/auth-user.model';
 import { Department } from '../../../../models/department.model';
 import { Designation } from '../../../../models/designation.model';
 import { AuthService } from '../../../../services/auth.service';
 import { Section } from '../../../../models/section.model';
+import { Division } from 'src/app/models/division.model';
+import { SubDivision } from 'src/app/models/subDivision.model';
+
+
 
 @Component({
   selector: 'app-tender',
@@ -21,10 +26,23 @@ export class TenderComponent implements OnInit {
   authUser: AuthUser = null;
   tenderDetails: TenderDetails[] = null;
 
+  newSectionEntryForm : FormGroup;
   newTenderForm : FormGroup;
+
+  faPlus = faPlus;
+  faEdit = faUserEdit;
+
+  showUnavailableEntryform: boolean = false;
+  isDivisionFormShow: boolean = false;
+  isSubdivisionFormShow: boolean = false;
+  isSectionFormShow: boolean = false;
+
   depts: Department[] = [];
   designs: Designation[] = [];
   sections: Section[] = [];
+  divns: Division[] = [];
+  subDivns: SubDivision[] = [];
+
 
   checked: boolean = true;
   expanded = true;
@@ -58,6 +76,13 @@ export class TenderComponent implements OnInit {
   officeId:  number = null;
   designId:  number = null;
 
+  divisionForm: FormGroup;
+  subDivisionForm: FormGroup;
+  sectionForm: FormGroup
+  newDivId: number = null;
+  newSubDivId: number = null;
+  newSecId: number = null;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -78,12 +103,29 @@ export class TenderComponent implements OnInit {
           this.cirId = response.data.circleId;
           this.deptShortName = response.data.department_short_name;
           this.loading = false;
+          console.log('subDivns', this.authUser);
           this.newTenderForm.patchValue({
             department_id: this.authUser.department_id,
+            section_id: this.authUser.sectionId,
           });
-        })
+          this.newSectionEntryForm.patchValue({
+            sub_division_id: this.authUser.subDivisionId,
+            section_id: this.authUser.sectionId,
+          });
 
-      }
+        //get sub-division by auto selection of division
+        this.dropdownService.getAllSubDivisionsByDivisionId(this.authUser.divisionId).subscribe((response: { subDivnData: SubDivision[]; }) => {
+          this.subDivns = response.subDivnData;
+        });
+
+        //get section by auto selection of sub-division
+        this.dropdownService.getAllSectionsBySubDivisionId(this.authUser.subDivisionId).subscribe((response: { SecData: Section[]; }) => {
+          this.sections = response.SecData;
+        });
+
+      });
+
+    }
 
   ngOnInit(): void {
     this.getAllTenderDetails();
@@ -131,6 +173,28 @@ export class TenderComponent implements OnInit {
       remarks: new FormControl(null),
       actualComplitionDate: new FormControl(null),
     });
+
+    //---------------------------------------------------------------------
+    this.newSectionEntryForm = this.fb.group({
+      sub_division_id: new FormControl(null, [Validators.required]),
+      section_id: new FormControl(null, [Validators.required]),
+    });
+
+    this.subDivisionForm = this.fb.group({
+      newSubDivId: new FormControl(null, [Validators.required]),
+      subDivn_name: new FormControl(null, [Validators.required]),
+      old_subDivn_name: new FormControl(null),
+      remarks: new FormControl(null),
+    });
+
+    this.sectionForm = this.fb.group({
+      newSecId: new FormControl(null, [Validators.required]),
+      section_name: new FormControl(null, [Validators.required]),
+      mobile: new FormControl(null),
+      remarks: new FormControl(null),
+    });
+
+    //-----------------------------------------------------------------------------
 
   }
 
@@ -190,7 +254,6 @@ export class TenderComponent implements OnInit {
 
   addNewTenderDetails(){
     this.loading = true;
-
     const formData = this.newTenderForm.getRawValue();
     const tenderDetailsData = {
       workName: formData.work_name,
@@ -304,5 +367,152 @@ export class TenderComponent implements OnInit {
     }
 
   }
+
+  //----------------------------------------------------------------------------------------------------------------
+  getDivisionsByCircleId(circleId: number){
+    if(!circleId){
+      this.isDivisionFormShow = false;
+    }else{
+      this.dropdownService.getAllDivisionsByCircleId(circleId).subscribe((response: { divnData: Division[]; }) => {
+        this.divns = response.divnData;
+      });
+    }
+  }
+
+  getSubDivisionsByDivisionId(divnId: number){
+    if(!divnId){
+      this.isSubdivisionFormShow = false;
+    }else{
+      this.dropdownService.getAllSubDivisionsByDivisionId(divnId).subscribe((response: { subDivnData: SubDivision[]; }) => {
+        this.subDivns = response.subDivnData;
+      });
+    }
+  }
+
+  getSectionsBySubDivisionId(subDivnId: number){
+    if(!subDivnId){
+      this.isSectionFormShow = false;
+    }else{
+      this.dropdownService.getAllSectionsBySubDivisionId(subDivnId).subscribe((response: { SecData: Section[]; }) => {
+        this.sections = response.SecData;
+      });
+    }
+  }
+
+  showUnavailableEntryformif(){
+    this.showUnavailableEntryform = true;
+  }
+
+  cancelSubDivision() {
+    this.isSubdivisionFormShow = false;
+  }
+  showSubDivisionInsertFormIf() {
+    this.isSectionFormShow = false;
+    if(this.authUser.divisionId){
+      this.isSubdivisionFormShow = true;
+      this.dropdownService.getLastSubDivisionID().subscribe((res: any) =>{
+        this.newSubDivId = res.nextSubDivId[0].newId;
+        this.subDivisionForm.patchValue({
+          newSubDivId: this.newSubDivId
+        });
+      });
+    }else{
+      this.isSubdivisionFormShow = false;
+    }
+  }
+
+  cancelSection() {
+    this.isSectionFormShow = false;
+  }
+  showSectionInsertFormIf(e) {
+    this.isSubdivisionFormShow = false;
+    const formData = this.newSectionEntryForm.getRawValue();
+    if(formData.sub_division_id){
+      this.isSectionFormShow = true;
+      this.dropdownService.getLastSectionID().subscribe((res: any) =>{
+        this.newSecId = res.nextSecId[0].newId;
+        this.sectionForm.patchValue({
+          newSecId: this.newSecId
+        });
+      });
+    }else{
+      this.isSectionFormShow = false;
+    }
+  }
+
+  //-------------------------------------------------------------------------------------------------------------
+  addNewSubDivision(){
+    this.loading = true;
+    const formData = this.subDivisionForm.getRawValue();
+    const addedData = {
+      subDivName: formData.subDivn_name,
+      oldSubDivName: formData.old_subDivn_name,
+      remarks: formData.remarks,
+      divnId: this.authUser.divisionId
+    }
+
+    this.dropdownService.getNewSubDivisionUnderDivision(addedData).pipe(first()).subscribe(response => {
+      this.loading = false;
+      if (response.success === 1){
+        this.subDivns.unshift({id: response.subDivision.id, sub_division_name: response.subDivision.sub_division_name, division_id: response.subDivision.division_id});
+        this.newSectionEntryForm.patchValue({ sub_division_id: this.subDivns[0].id });
+
+        this.isSubdivisionFormShow = false;
+
+        Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+      }else if(response.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+      }else{
+        //
+      }
+    },
+    (err: any) => {
+      this.loading = false;
+      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
+      })
+
+    });
+  }
+
+  //-------------------------------------------------------------------------------------------------------------
+  addNewSection(){
+    this.loading = true;
+    const mainFormData = this.newSectionEntryForm.getRawValue();
+    const formData = this.sectionForm.getRawValue();
+    const addedData = {
+      sectionName: formData.section_name,
+      remarks: formData.remarks,
+      mobileCUG: formData.mobile,
+      subDivId: mainFormData.sub_division_id
+    }
+
+    this.dropdownService.getNewSectionUnderSubDivision(addedData).pipe(first()).subscribe(response => {
+      this.loading = false;
+      if (response.success === 1){
+        this.sections.unshift({id: response.section.id, section_name: response.section.section_name, sub_division_id: response.section.sub_division_id});
+        this.newSectionEntryForm.patchValue({ section_id: this.sections[0].id });
+        this.newTenderForm.patchValue({ section_id: this.sections[0].id });
+
+        this.isSectionFormShow = false;
+        this.showUnavailableEntryform = false;
+
+        Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
+
+        }else if(response.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 3000, title: response.message });
+      }else{
+        //
+      }
+    },
+    (err: any) => {
+      this.loading = false;
+      Swal.fire({ position: 'top-end', icon: 'error',  title: err, showConfirmButton: false, timer: 4000
+      })
+
+    });
+  }
+
+  //-----------------------------------------------------------------------------------------------------------
+
 
 }

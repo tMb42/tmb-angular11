@@ -8,6 +8,7 @@ import { TenderDetailsComponent } from './tender-details/tender-details.componen
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from "@angular/material/dialog";
 
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -21,9 +22,6 @@ import { PwdWorkingProfileComponent } from './pwd-working-profile/pwd-working-pr
 import { TenderComponent } from './cpanel/tender/tender.component';
 import { TenderEditComponent } from './cpanel/tender-edit/tender-edit.component';
 
-
-console.log('Test for pwd-works Module. Loaded Ok')
-
 @NgModule({
   declarations: [TenderDetailsComponent, PwdWorkingProfileComponent, TenderComponent, TenderEditComponent],
   imports: [
@@ -36,6 +34,7 @@ console.log('Test for pwd-works Module. Loaded Ok')
     MatDatepickerModule,
     MatExpansionModule,
     MatCheckboxModule,
+    MatDialogModule,
     AccordionModule.forRoot(),
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),

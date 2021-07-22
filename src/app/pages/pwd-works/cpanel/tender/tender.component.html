@@ -1,17 +1,105 @@
 <div class="card">
-  <mat-accordion>
-    <mat-expansion-panel [expanded]=expanded class="card">
-      <mat-expansion-panel-header class="accordion-header">
-        <mat-panel-title class="mt-2">Add New Tender Details</mat-panel-title>
-        <span class="spacer"></span>
-        <div class="col-4 mt-1">
-          <input (keyup)="getSearchTableTenderDetails($event.target.value)" type="text" class="form-control" placeholder="Search Tender Details" >
+  <div class="col-12">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-9">
+          <!-- New Sub-Division Entry Form -->
+          <form [formGroup]="subDivisionForm" *ngIf="isSubdivisionFormShow">
+            <h2 style="text-align: center; color: yellow;">New Sub-Division Entry Form</h2>
+            <div class="d-flex col-md-12">
+              <div class="form-group col-3">
+                <label>Name of Sub-Division*</label>
+                <input type="text" formControlName="subDivn_name" placeholder="enter Sub-Division name"
+                  class="form-control" required>
+              </div>
+              <div class="form-group col-3">
+                <label>Old Sub-Division name</label>
+                <input type="text" formControlName="old_subDivn_name" placeholder="Previous name(if any)"
+                  class="form-control">
+              </div>
+              <div class="form-group col-3">
+                <label>Remarks</label>
+                <input type="text" formControlName="remarks" placeholder="enter remarks" class="form-control">
+              </div>
+              <div class="form-group col-3 mt-4">
+                <span class="spacer"></span>
+                <button class="btn btn-sm btnGrn" [disabled]="!subDivisionForm.valid"
+                  (click)="addNewSubDivision()">Submit</button>
+                <button class="btn btn-sm btn-rose" (click)="cancelSubDivision()">Cancel</button>
+              </div>
+            </div>
+          </form>
+          <!-- New Section Entry Form -->
+          <form [formGroup]="sectionForm" *ngIf="isSectionFormShow">
+            <h2 style="text-align: center; color: yellow;">New Section Entry Form</h2>
+            <div class="d-flex col-md-12">
+              <div class="form-group col-3">
+                <label>Name of Section*</label>
+                <input type="text" formControlName="section_name" placeholder="Enter Section name" class="form-control"
+                  required>
+              </div>
+              <div class="form-group col-3">
+                <label>CUG Mobile</label>
+                <input type="text" formControlName="mobile" placeholder="CUG No.(if any)" class="form-control">
+              </div>
+              <div class="form-group col-3">
+                <label>Remarks</label>
+                <input type="text" formControlName="remarks" placeholder="remarks" class="form-control">
+              </div>
+              <div class="form-group col-3 mt-4">
+                <span class="spacer"></span>
+                <button class="btn btn-sm btnGrn" [disabled]="!sectionForm.valid" (click)="addNewSection()">Submit</button>
+                <button class="btn btn-sm btn-rose" (click)="cancelSection()">Cancel</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <button class="btn btn-sm btn-rose" [routerLink]="['/pwd-works/cpanel/edit-tender']">Edit Tender details</button>
-        <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/tender-details']">View Tender details</button>
-        <span class="spacer"></span>
-      </mat-expansion-panel-header>
-      <form [formGroup]="newTenderForm" style="margin-bottom: 0px;">
+        <div class="col-md-3" *ngIf="showUnavailableEntryform">
+          <form [formGroup]="newSectionEntryForm" style="margin-bottom: 0px;">
+            <div class="col-md-12">
+              <div class="form-group col-md-12 pr-md-1">
+                <a class="btn btn-sm btnCol" (click)="showSubDivisionInsertFormIf()"><fa-icon [icon]="faPlus"></fa-icon></a>
+                <label>Sub-Division*</label>
+                <select tooltip ="if your Sub-Division not in dropdown menu. Click on + sign to add your Sub-Division" placement="right" (change)="getSectionsBySubDivisionId($event.target.value)" formControlName="sub_division_id" class="form-control" required>
+                  <option value="null">--Select Sub-Division--</option>
+                  <option *ngFor="let item of subDivns" [value]="item.id">
+                    {{ item.sub_division_name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12" >
+              <div class="form-group col-md-12 pr-md-1">
+                <a class="btn btn-sm btnCol" *ngIf="newSectionEntryForm.value.sub_division_id" (click)="showSectionInsertFormIf($event.target.value)"><fa-icon [icon]="faPlus"></fa-icon></a>
+                <label>Section*</label>
+                <select tooltip ="if your Section not in dropdown menu. Click on + sign to add your Section" placement="left"  formControlName="section_id" class="form-control" required>
+                  <option value="null">--Select Section--</option>
+                  <option *ngFor="let item of sections" [value]="item.id">
+                    {{ item.section_name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-accordion>
+    <form [formGroup]="newTenderForm" style="margin-bottom: 0px;">
+      <mat-expansion-panel [expanded]=expanded class="card">
+        <mat-expansion-panel-header class="accordion-header">
+          <mat-panel-title class="mt-2">Add New Tender Details</mat-panel-title>
+          <span class="spacer"></span>
+          <div class="col-4 mt-1">
+            <input (keyup)="getSearchTableTenderDetails($event.target.value)" type="text" class="form-control" placeholder="Search Tender Details" >
+          </div>
+          <div>
+            <button  class="btn btn-sm btn-rose" [routerLink]="['/pwd-works/cpanel/edit-tender']">Edit Tender details</button>
+            <button class="btn btn-sm btn-info" [routerLink]="['/pwd-works/tender-details']">View Tender details</button>
+          </div>
+          <span class="spacer"></span>
+        </mat-expansion-panel-header>
         <div class="d-flex col-12" style="color: white;">
           <div class="col-md-2 px-md-1">
             <div class="form-group">
@@ -59,6 +147,7 @@
           </div>
           <div class="col-2">
             <div class="form-group">
+              <a class="btn btn-sm btnCol" (click)="showUnavailableEntryformif()"><fa-icon [icon]="faPlus"></fa-icon></a>
               <label>Work under Section</label>
               <select formControlName="section_id" class="form-control" required>
                 <option value="null">--Select--</option>
@@ -143,10 +232,12 @@
             <button class="btn btn-sm btn-rose" (click)="formReset()" >Reset</button>
           </div>
         </div>
-      </form>
-    </mat-expansion-panel>
+      </mat-expansion-panel>
+    </form>
   </mat-accordion >
 </div>
+
+
 <div class="table-responsive">
   <table class="table table-striped table-sm ">
     <thead class="table-dark">
@@ -220,12 +311,11 @@
   <span class="spacer"></span>
   <div class="d-flex justify-content-right">
     <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
-      <select (change)="onTableSizeChange($event)" class="custom-select" >
-        <option *ngFor="let size of pageSizes" [ngValue]="size">
-          {{ size }}
-        </option>
-      </select>
-    </div>
+    <select (change)="onTableSizeChange($event)" class="custom-select" >
+      <option *ngFor="let size of pageSizes" [ngValue]="size">
+        {{ size }}
+      </option>
+    </select>
   </div>
-<div>
+</div>
 
