@@ -134,7 +134,6 @@ export class UserService {
   }
 
   private handleError(errorResponse: HttpErrorResponse){
-    console.log('test', errorResponse);
     if (errorResponse.error.message.includes('1062')){
       return throwError('Record already exists');
     }else {

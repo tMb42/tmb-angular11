@@ -44,11 +44,11 @@ export class AuthService {
   authUserSubject = new Subject<AuthUser>();
 
   private userSubject: BehaviorSubject<AuthResponseData>;
-  public user: Observable<AuthResponseData>;
+  public signedUser: Observable<AuthResponseData>;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.userSubject = new BehaviorSubject<AuthResponseData>(JSON.parse(localStorage.getItem('authToken')));
-    this.user = this.userSubject.asObservable();
+    this.userSubject = new BehaviorSubject<AuthResponseData>(JSON.parse(localStorage.getItem('signedUser')));
+    this.signedUser = this.userSubject.asObservable();
   }
 
   public get userValue(): AuthResponseData {
@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   isAuthenticated(){
-    if (this.user){
+    if (this.signedUser){
       return true;
     }else{
       return false;
@@ -71,7 +71,7 @@ export class AuthService {
     return this.http.post<AuthResponseData>(`${this.serverUrl}/login`, loginData)
       .pipe(map((resData: any) => {
         // store user details and token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('authToken', JSON.stringify(resData));
+        localStorage.setItem('signedUser', JSON.stringify(resData));
         this.userSubject.next({...resData});
       }),
       catchError(this.handleError)
@@ -79,14 +79,14 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    if (localStorage.getItem('authToken')) {
+    if (localStorage.getItem('signedUser')) {
       return true;
     }
       return false;
   }
 
   getAuthorizationToken() {
-    const token_key = JSON.parse(localStorage.getItem('authToken'));
+    const token_key = JSON.parse(localStorage.getItem('signedUser'));
     return token_key.token;
   }
 
@@ -94,8 +94,8 @@ export class AuthService {
     return this.http.post<any>(`${this.serverUrl}/logout`, {})
       .pipe(catchError(this.handleError), tap(() => {
         this.userSubject.next(null);
-        // remove authToken from local storage and set current user to null
-        localStorage.removeItem('authToken');
+        // remove authUser from local storage and set current user to null
+        localStorage.removeItem('signedUser');
         this.router.navigate(['/auth']);
       })
     );
@@ -144,16 +144,19 @@ export class AuthService {
     );
   }
 
+
+
   getUpdateUserProfile(profileData) {
     return this.http.post<any>(`${this.serverUrl}/user/profile`, profileData).pipe(
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
         this.authUserSubject.next({...this.authUser});
-        // Get back item "auth" from local storage
-        // const authTokenFromLocalStorage = res.userData.roles[0];
-        // console.log(authTokenFromLocalStorage);
-        // // Save the new role with updated value
-        // localStorage.setItem("authToken",JSON.stringify(authTokenFromLocalStorage));
+
+        // // Retrieves the string and converts it to a JavaScript object
+        // let retrievedUser = JSON.parse(localStorage.getItem('signedUser.userData'));
+        //  retrievedUser = res;
+        // // Modifies the object, converts it to a string and replaces the existing `ship` in LocalStorage
+        // localStorage.setItem('signedUser', JSON.stringify(retrievedUser));
       })
     );
   }
@@ -191,7 +194,7 @@ export class AuthService {
     return this.http.get(`${this.serverUrl}/auth/facebook/callback`, { params: data })
       .pipe(map((res: any) => {
         if (res.token) {
-          localStorage.setItem('authToken', JSON.stringify(res));
+          localStorage.setItem('signedUser', JSON.stringify(res));
           this.userSubject.next({...res});
         }
       }),
@@ -203,7 +206,7 @@ export class AuthService {
     return this.http.get(`${this.serverUrl}/auth/google/callback`, { params: data })
       .pipe(map((res: any) => {
         if (res.token) {
-          localStorage.setItem('authToken', JSON.stringify(res));
+          localStorage.setItem('signedUser', JSON.stringify(res));
           this.userSubject.next({...res});
         }
       }),
@@ -215,7 +218,7 @@ export class AuthService {
     return this.http.get(`${this.serverUrl}/auth/github/callback`, { params: data })
       .pipe(map((res: any) => {
         if (res.token) {
-          localStorage.setItem('authToken', JSON.stringify(res));
+          localStorage.setItem('signedUser', JSON.stringify(res));
           this.userSubject.next({...res});
         }
       }),
@@ -228,7 +231,7 @@ export class AuthService {
     return this.http.delete(`${this.serverUrl}/users/${params.id}`)
       .pipe(catchError(this.handleError), tap(() => {
         this.userSubject.next(null);
-        localStorage.removeItem('authToken');
+        localStorage.removeItem('signedUser');
         this.router.navigate(['/auth']);
       })
     );
@@ -238,7 +241,7 @@ export class AuthService {
     return this.http.put(`${environment.baseURL}/suspendUser`, data).pipe(
       catchError(this.handleError), tap(() => {
         this.userSubject.next(null);
-        localStorage.removeItem('authToken');
+        localStorage.removeItem('signedUser');
         this.router.navigate(['/auth']);
       }),
 

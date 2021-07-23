@@ -82,11 +82,9 @@ export class TendersService {
     return this.http.put(`${serverUrl}/tenderUpdate/${tenderData.id}`, tenderData)
     .pipe(catchError(this.handleError), tap((response: TenderDetailsResponseData) => {
       if (response.success === 1){
-        console.log('tenderDetails', this.tenderDetails);
         const index = this.tenderDetails.findIndex(x => x.id === tenderData.id);
           this.tenderDetails[index] = response.td;
           this.tenderDetailsSubject.next([...this.tenderDetails]);
-          // console.log('index', this.tenderDetails);
         }
     }));
   }

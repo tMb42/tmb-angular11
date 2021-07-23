@@ -21,9 +21,9 @@ export class AengrsService {
   serverUrl = environment.baseURL;
 
   aEngrs: AEngrs[] = [];
-  aeSubject = new Subject<AEngrs[]>(); 
+  aeSubject = new Subject<AEngrs[]>();
 
-  constructor(private http: HttpClient) 
+  constructor(private http: HttpClient)
     {
       this.http.get(`${serverUrl}/aEngrs`).subscribe((response: any) => {
         this.aEngrs = response.assistantEngineers.data;
@@ -32,7 +32,7 @@ export class AengrsService {
     }
 
   getAeUpdateListener() {
-    return this.aeSubject.asObservable();    
+    return this.aeSubject.asObservable();
   }
 
   getAeLatestGradations(data: any) {
@@ -55,7 +55,7 @@ export class AengrsService {
 
   getAeConfirmationListByYear(data: any) {
    return this.http.get<AEngrs[]>(`${serverUrl}/passedYear?page=${data.page}`, { params: { per_page: data.itemsPerPage, year: data.aeConfirmYear }});
-  } 
+  }
 
   getAeSearchData(data: any) {
     return this.http.get<AEngrs[]>(`${serverUrl}/confirmationSearch/${data}`);
@@ -107,7 +107,6 @@ export class AengrsService {
       const index = this.aEngrs.findIndex(x => x.id === data.id);
         this.aEngrs[index] = res.ae;
         this.aeSubject.next([...this.aEngrs]);
-         console.log('fff',index);
       })
     );
   }

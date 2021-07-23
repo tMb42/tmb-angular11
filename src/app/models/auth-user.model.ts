@@ -1,5 +1,4 @@
 export class AuthUser {
-  token: string;
   success?: number;
   message?: number;
   id: number;

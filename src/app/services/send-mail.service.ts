@@ -15,7 +15,6 @@ export class SendMailService {
   constructor(private http: HttpClient, private router: Router) { }
 
   contactForm(model: any) {
-    console.log(model);
     return this.http.post<any>(`${this.serverUrl}/contact-mail`, model).pipe(
     catchError(this.handleError)
     );

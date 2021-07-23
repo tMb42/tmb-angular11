@@ -14,6 +14,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { Section } from '../../../../models/section.model';
 import { Division } from 'src/app/models/division.model';
 import { SubDivision } from 'src/app/models/subDivision.model';
+import { AlertService } from 'src/app/services/alert.service';
 
 
 
@@ -33,6 +34,7 @@ export class TenderComponent implements OnInit {
   faEdit = faUserEdit;
 
   showUnavailableEntryform: boolean = false;
+  newEnryFormShow: boolean = false;
   isDivisionFormShow: boolean = false;
   isSubdivisionFormShow: boolean = false;
   isSectionFormShow: boolean = false;
@@ -40,6 +42,7 @@ export class TenderComponent implements OnInit {
   depts: Department[] = [];
   designs: Designation[] = [];
   sections: Section[] = [];
+  tenderSection: Section[] = [];
   divns: Division[] = [];
   subDivns: SubDivision[] = [];
 
@@ -82,12 +85,14 @@ export class TenderComponent implements OnInit {
   newDivId: number = null;
   newSubDivId: number = null;
   newSecId: number = null;
+  message: any = null;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private tendersService: TendersService,
     private dropdownService : DropdownService,
+    private alertService: AlertService
     ) {
         this.minDate = new Date();
         this.maxDate = new Date();
@@ -119,9 +124,9 @@ export class TenderComponent implements OnInit {
         });
 
         //get section by auto selection of sub-division
-        this.dropdownService.getAllSectionsBySubDivisionId(this.authUser.subDivisionId).subscribe((response: { SecData: Section[]; }) => {
-          this.sections = response.SecData;
-        });
+        // this.dropdownService.getAllSectionsBySubDivisionId(this.authUser.subDivisionId).subscribe((response: { SecData: Section[]; }) => {
+        //   this.tenderSection = response.SecData;
+        // });
 
       });
 
@@ -400,7 +405,13 @@ export class TenderComponent implements OnInit {
   }
 
   showUnavailableEntryformif(){
-    this.showUnavailableEntryform = true;
+    this.showUnavailableEntryform = !this.showUnavailableEntryform;
+    this.newEnryFormShow = !this.newEnryFormShow;
+    if(this.authUser.designation_id === 2){
+      this.message = "You already hold a section office. If you think selected section offices is not your present office then update your PWD working profile. "
+
+    }
+
   }
 
   cancelSubDivision() {
@@ -409,6 +420,7 @@ export class TenderComponent implements OnInit {
   showSubDivisionInsertFormIf() {
     this.isSectionFormShow = false;
     if(this.authUser.divisionId){
+      this.newEnryFormShow = true;
       this.isSubdivisionFormShow = true;
       this.dropdownService.getLastSubDivisionID().subscribe((res: any) =>{
         this.newSubDivId = res.nextSubDivId[0].newId;
@@ -425,6 +437,7 @@ export class TenderComponent implements OnInit {
     this.isSectionFormShow = false;
   }
   showSectionInsertFormIf(e) {
+    this.newEnryFormShow = true;
     this.isSubdivisionFormShow = false;
     const formData = this.newSectionEntryForm.getRawValue();
     if(formData.sub_division_id){
@@ -493,8 +506,8 @@ export class TenderComponent implements OnInit {
         this.newSectionEntryForm.patchValue({ section_id: this.sections[0].id });
         this.newTenderForm.patchValue({ section_id: this.sections[0].id });
 
-        this.isSectionFormShow = false;
         this.showUnavailableEntryform = false;
+        this.newEnryFormShow = false;
 
         Swal.fire({ position: 'center', icon: 'success', showConfirmButton: false, timer: 3000, title: response.message });
 

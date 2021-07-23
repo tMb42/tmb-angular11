@@ -494,7 +494,6 @@ export class PwdWorkingProfileComponent implements OnInit {
       }else if(res.success === 0){
         Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: "Validation Error" });
       }else{
-        this.router.navigate(['/pwd-works/pwd-working-profile']);
         Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: true,
         title: 'Sorry! '+ res.authUser.name +'. ' + res.duplicateUser[0].name +', '+ res.duplicateUser[0].designation_name + ' already hold this place of posting. Please request to ' + res.duplicateUser[0].name + ' to his registered mobile no.'+ res.duplicateUser[0].mobile_no + ' for update his current place of posting because only one user hold one place of posting at a time.'});
       }
