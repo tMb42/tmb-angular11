@@ -1,0 +1,361 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]=expanded class="card">
+    <mat-expansion-panel-header class="accordion-header">
+      <div class="col-12 mt-1 d-flex">
+        <mat-panel-title class="mt-2">Tender Details for Security Release</mat-panel-title>
+        <div class="col-4 mt-1">
+          <input (keyup)="getSearchTableTenderDetails($event.target.value)" type="text" class="form-control" placeholder="Search" >
+        </div>
+      <span class="spacer"></span>
+    </div>
+    </mat-expansion-panel-header>
+    <div class="col-12" *ngIf="editDetails">
+      <div class="row">
+        <div class="card-entry col-md-4">
+          <div>
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th class="text-center" style="font-size: medium; color:yellow;" [colSpan]="5">Security Released Details</th>
+                </tr>
+                <tr>
+                  <th class="text-center" style="font-size: smaller;" [colSpan]="5">{{securityRulesOrder}}</th>
+                </tr>
+                <tr>
+                  <th class="text-center text-truncate" scope="col">Sl</th>
+                  <th class="text-center" scope="col">DLP</th>
+                  <th class="text-center" scope="col">Released Phase</th>
+                  <th class="text-center" scope="col">Released</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of securityRules; let sl = index;">
+                  <td class="text-center" scope="row">{{ sl + 1 }}</td>
+                  <td class="text-center" scope="row">{{ item.defect_liability_period }}</td>
+                  <td class="text-center" scope="row">{{ item.security_released_period_after }}</td>
+                  <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-show col-md-8">
+          <h4 style="text-align: center; font-size: medium; color: yellow; text-align: center;">Security Recommended Details</h4>
+          <hr style="height:1px; background-color:white">
+          <div class="col-12" >
+            <div class="d-flex col-12">
+              <div id="tender-details" class="col-6">
+                <p><span style="color: rgb(0, 255, 98);">Name of Work: </span>{{ editDetails.work_name }}</p>
+                <p><span style="color: rgb(0, 255, 98);">Agency: </span>{{ editDetails.agency }}</p>
+                <p><span style="color: yellow">Tender no: </span>{{ editDetails.tender_no }}</p>
+                <p><span style="color: rgb(255, 8, 0);">Amount Put to Tender: </span>{{ editDetails.amount_put_tender | currency:"INR" }}</p>
+                <p><span style="color: rgb(255, 8, 0);">Contactual: </span>{{ editDetails.contactual/100 | percent:'0.0-4' }}</p>
+                <p><span style="color: rgb(255, 8, 0);">Tendered Amount: </span>{{ editDetails.tendered_amount | currency:"INR"}}</p>
+                <p><span style="color: rgb(255, 8, 0);">Date of Complition: </span>{{ editDetails.complition_date | date: 'dd-MM-yyyy' }}</p>
+                <p><span style="color: rgb(255, 8, 0);">DLP: </span>{{ editDetails.defect_liability_period }}</p>
+              </div>
+              <div class="form-group col-6">
+                <div class="d-flex" style="font-size: small;" >
+                  <p><span style="color: rgb(255, 238, 0);">Security Due on: </span>{{ securityDueDate }} &nbsp;|</p>
+                  <p><span style="color: rgb(255, 238, 0);">| &nbsp; Total days after due date: </span>{{ diffDlp }} Days </p>
+                </div>
+                <form [formGroup]="newSecurityReleaseForm" style="margin-bottom: 0px;">
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="form-group col-7">
+                        <label>*Security released By</label>
+                        <select formControlName="authDesignId" class="form-control" required style="color: white;">
+                          <option value="null">--Select--</option>
+                          <option *ngFor="let item of designs" [value]="item.id">
+                            {{ item.designation_name }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="form-group col-5">
+                        <label>*Security Released</label>
+                        <select formControlName="dlp_security_releases_id" class="form-control" required tooltip="Recomended Security Released %">
+                          <option value="null">--Select--</option>
+                          <option *ngFor="let item of dueSecurity" [value]="item.id">
+                            {{ item.security_release_percent/100 | percent:'0.0-4' }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="form-group col-5">
+                        <label>*Abstract MB No.</label>
+                        <input formControlName="abstract_mb" class="form-control"  placeholder="MB No" required>
+                      </div>
+                      <div class="form-group col-7">
+                        <label>*Recomended Date</label>
+                        <input type="text"
+                          class="form-control"
+                          placeholder="Select Date"
+                          bsDatepicker
+                          formControlName="security_release_date"
+                          (bsValueChange)="changeDor($event)"
+                          [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', isAnimated: true, containerClass: 'theme-green' }"
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div>
+                      <textarea type="text" rows="1" placeholder="Remarks (if any)" formControlName="remarks" class="form-control"></textarea>
+                    </div>
+                    <div class="d-flex">
+                      <button class="btn btn-sm btnCol btn-block" [disabled]="!newSecurityReleaseForm.valid" (click)="saveSecurityReleaseDetails()">Submit</button>
+                      <button class="btn btn-sm btn-rose btn-block" (click)="formResetwithclose()" >Close</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-tab-group mat-align-tabs="center" class="tab">
+  <mat-tab label="Full Security Due">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-sm ">
+        <thead class="table-dark">
+          <tr>
+            <th class="text-center text-truncate" scope="col">Sl</th>
+            <th class="text-center" data-sortable="true" scope="col-2">Name of Work</th>
+            <th class="text-center" data-sortable="true" scope="col">Name of Agency</th>
+            <th class="text-center" scope="col">Tender No.</th>
+            <th class="text-center" scope="col">Amount put to Tender</th>
+            <th class="text-center" scope="col" style="background: black;" >Contactual</th>
+            <th class="text-center" scope="col">Tendered Amount</th>
+            <th class="text-center" scope="col">Commencement Date</th>
+            <th class="text-center" scope="col">Complition Date</th>
+            <th class="text-center" scope="col">DLP</th>
+            <th class="text-center" scope="col">Security Due on</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of fullSecurityDue; let sl = index;" (click)="getTenderDetailsById(item.id)">
+            <td class="text-top" scope="row">{{ item.id }}</td>
+            <td class="text-justify" scope="row">{{ item.work_name }}</td>
+            <td class="text-center" scope="row">{{ item.agency }}</td>
+            <td class="text-justify" scope="row">{{ item.tender_no }}</td>
+            <td class="text-center" scope="row" style="background: rgba(241, 62, 62, 0.7);">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
+            <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
+            <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
+            <td class="text-center" scope="row">{{ item.commencement_date }}</td>
+            <td class="text-center" scope="row">{{ item.actualComplitionDate }}</td>
+            <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.dlp }}</td>
+             <td class="text-center" scope="row" >{{ item.securityDueDate }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+      </table>
+    </div>
+    <div class="pagination" id="table-pagination">
+      <span class="spacer"></span>
+      <div *ngIf="loading" class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <span class="spinner-border text-light"></span>
+        <span class="spinner-border text-danger"></span>
+        <span class="spinner-border text-dark"></span>
+      </div>
+      <span class="spacer"></span>
+      <div class="pagination">
+        <pagination
+          [boundaryLinks]="showBoundaryLinks"
+          [totalItems]="totalRecords"
+          [maxSize]="maxSize"
+          [itemsPerPage]="pageSize"
+          [(ngModel)]="currentPage"
+          (pageChanged)="pageChanged($event)"
+        ></pagination>
+      </div>
+      <span class="spacer"></span>
+      <div class="d-flex justify-content-right">
+        <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
+        <select (change)="onTableSizeChange($event)" class="custom-select" >
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Part Security Released">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-sm ">
+        <thead class="table-dark">
+          <tr>
+            <th class="text-center" [rowSpan]="2">Sl</th>
+            <th class="text-center" [rowSpan]="2">Name of Work</th>
+            <th class="text-center" [rowSpan]="2">Agency</th>
+            <th class="text-center" [rowSpan]="2">Tender no.</th>
+            <th class="text-center"style="white-space: nowrap;" [rowSpan]="2">Complition Date</th>
+            <th class="text-center" [colSpan]="5">Security Released Details</th>
+            <th class="text-center" [rowSpan]="2" >Amount put to Tender</th>
+            <th class="text-center" [rowSpan]="2">Contactual</th>
+            <th class="text-center" [rowSpan]="2">Tendered Amount</th>
+          </tr>
+           <tr>
+            <th class="text-center" [rowSpan]="1" >DLP</th>
+            <th class="text-center" [rowSpan]="1" >Due Date</th>
+            <th class="text-center" [rowSpan]="1" >Released</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended By</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of partSecurityReleased; let sl = index;" (click)="getTenderDetailsById(item.id)">
+            <td class="text-top" scope="row">{{ sl + 1 }}</td>
+            <td class="text-justify" scope="row">{{ item.work_name }}</td>
+            <td class="text-center" scope="row">{{ item.agency }}</td>
+            <td class="text-justify" scope="row">{{ item.tender_no }}</td>
+            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.defect_liability_period }}</td>
+            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4' }}</td>
+            <td class="text-left" scope="row">{{ item.recomended_by }}</td>
+            <td class="text-center" scope="row">{{ item.recomended_on | date: 'dd-MM-yyyy'}}</td>
+            <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
+            <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
+            <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+      </table>
+    </div>
+  </mat-tab>
+  <mat-tab label="Final Security Released">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-sm ">
+        <thead class="table-dark">
+          <tr>
+            <th class="text-center" [rowSpan]="2">Sl</th>
+            <th class="text-center" [rowSpan]="2">Name of Work</th>
+            <th class="text-center" [rowSpan]="2">Agency</th>
+            <th class="text-center" [rowSpan]="2">Tender no.</th>
+            <th class="text-center"style="white-space: nowrap;" [rowSpan]="2">Complition Date</th>
+            <th class="text-center" [colSpan]="5">Security Released Details</th>
+            <th class="text-center" [rowSpan]="2" >Amount put to Tender</th>
+            <th class="text-center" [rowSpan]="2">Contactual</th>
+            <th class="text-center" [rowSpan]="2">Tendered Amount</th>
+          </tr>
+           <tr>
+            <th class="text-center" [rowSpan]="1" >DLP</th>
+            <th class="text-center" [rowSpan]="1" >Due Date</th>
+            <th class="text-center" [rowSpan]="1" >Released</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended By</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of finalSecurityReleased; let sl = index;">
+            <td class="text-top" scope="row">{{ sl + 1 }}</td>
+            <td class="text-justify" scope="row">{{ item.work_name }}</td>
+            <td class="text-center" scope="row">{{ item.agency }}</td>
+            <td class="text-justify" scope="row">{{ item.tender_no }}</td>
+            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.defect_liability_period }}</td>
+            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4' }}</td>
+            <td class="text-left" scope="row">{{ item.recomended_by }}</td>
+            <td class="text-center" scope="row">{{ item.recomended_on | date: 'dd-MM-yyyy'}}</td>
+            <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
+            <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
+            <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+      </table>
+    </div>
+  </mat-tab>
+  <mat-tab label="Security Released">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-sm ">
+        <thead class="table-dark">
+          <tr>
+            <th class="text-center" [rowSpan]="2">Sl</th>
+            <th class="text-center" [rowSpan]="2">Name of Work</th>
+            <th class="text-center" [rowSpan]="2">Agency</th>
+            <th class="text-center" [rowSpan]="2">Tender no.</th>
+            <th class="text-center"style="white-space: nowrap;" [rowSpan]="2">Complition Date</th>
+            <th class="text-center" [colSpan]="5">Security Released Details</th>
+            <th class="text-center" [rowSpan]="2" >Amount put to Tender</th>
+            <th class="text-center" [rowSpan]="2">Contactual</th>
+            <th class="text-center" [rowSpan]="2">Tendered Amount</th>
+          </tr>
+          <tr>
+            <th class="text-center" [rowSpan]="1" >DLP</th>
+            <th class="text-center" [rowSpan]="1" >Due Date</th>
+            <th class="text-center" [rowSpan]="1" >Released</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended By</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tenderedSecurity; let sl = index;">
+            <td class="text-top" scope="row">{{ sl + 1 }}</td>
+            <td class="text-justify" scope="row">{{ item.work_name }}</td>
+            <td class="text-center" scope="row">{{ item.agency }}</td>
+            <td class="text-justify" scope="row">{{ item.tender_no }}</td>
+            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.defect_liability_period }}</td>
+            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4' }}</td>
+            <td class="text-left" scope="row">{{ item.recomended_by }}</td>
+            <td class="text-center" scope="row">{{ item.recomended_on | date: 'dd-MM-yyyy'}}</td>
+            <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
+            <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
+            <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+      </table>
+    </div>
+    <div class="pagination" id="table-pagination">
+      <span class="spacer"></span>
+      <div *ngIf="loading" class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <span class="spinner-border text-light"></span>
+        <span class="spinner-border text-danger"></span>
+        <span class="spinner-border text-dark"></span>
+      </div>
+      <span class="spacer"></span>
+      <div class="pagination">
+        <pagination
+          [boundaryLinks]="showBoundaryLinks"
+          [totalItems]="totalRecords"
+          [maxSize]="maxSize"
+          [itemsPerPage]="pageSize"
+          [(ngModel)]="currentPage"
+          (pageChanged)="pageChanged($event)"
+        ></pagination>
+      </div>
+      <span class="spacer"></span>
+      <div class="d-flex justify-content-right">
+        <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
+        <select (change)="onTableSizeChange($event)" class="custom-select" >
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+
+

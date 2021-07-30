@@ -161,8 +161,12 @@
           <div class="col-md-1 px-md-1">
             <div class="form-group">
               <label>DLP</label>
-              <input type="text" tooltip="Defects Liability Period in months" placement="top" formControlName="dlpNum"
-                placeholder="in months" class="form-control">
+               <select formControlName="dlps_id" class="form-control" required aria-readonly="">
+                <option value="null">--Select--</option>
+                <option *ngFor="let item of dlps" [value]="item.id">
+                  {{ item.defect_liability_period }}
+                </option>
+              </select>
             </div>
           </div>
           <div class="col-md-1 px-md-1">

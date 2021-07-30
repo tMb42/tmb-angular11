@@ -3,7 +3,7 @@ import { formatDate } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { DropdownService } from '../../../../services/dropdown.service';
-import { TenderDetails } from '../../../../models/tenderDetails.model';
+import { Dlp, TenderDetails } from '../../../../models/tenderDetails.model';
 import { TendersService } from '../../../../services/tenders.service';
 import { faPlus, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
@@ -45,6 +45,7 @@ export class TenderComponent implements OnInit {
   tenderSection: Section[] = [];
   divns: Division[] = [];
   subDivns: SubDivision[] = [];
+  dlps: Dlp[] = [];
 
 
   checked: boolean = true;
@@ -158,6 +159,10 @@ export class TenderComponent implements OnInit {
       this.designs = response.designationData;
     });
 
+    this.dropdownService.getDlp().subscribe((response: { tenderDlps: Dlp[]; }) => {
+      this.dlps = response.tenderDlps;
+    });
+
     this.newTenderForm = this.fb.group({
       department_id: new FormControl({ value: null, disabled: true}, [Validators.required]),
       work_name: new FormControl(null, [Validators.required]),
@@ -171,7 +176,7 @@ export class TenderComponent implements OnInit {
       contactual: new FormControl('', [Validators.required]),
       tendered_amount: new FormControl({ value: null, disabled: true}, [Validators.required]),
       commencement_date: new FormControl(null, [Validators.required]),
-      dlpNum: new FormControl(null, [Validators.required]),
+      dlps_id: new FormControl(null, [Validators.required]),
       financial_year: new FormControl(this.fiscalYear, [Validators.required]),
       complitionTime: new FormControl(null, [Validators.required]),
       comTimeUnit: new FormControl(null, [Validators.required]),
@@ -276,7 +281,7 @@ export class TenderComponent implements OnInit {
       commencementDate: this.doc,
       sectionId: formData.section_id,
       ComplitionTime: formData.complitionTime + ' ' + formData.comTimeUnit,
-      dlp: formData.dlpNum + ' months',
+      dlps_id: formData.dlps_id,
       fy: formData.financial_year,
       actualComplitionDate: formData.actualComplitionDate,
       display: formData.display,
@@ -339,7 +344,7 @@ export class TenderComponent implements OnInit {
     this.newTenderForm.get('work_order_date').reset();
     this.newTenderForm.get('section_id').reset();
     this.newTenderForm.get('commencement_date').reset();
-    this.newTenderForm.get('dlpNum').reset();
+    this.newTenderForm.get('dlps_id').reset();
     this.newTenderForm.get('complitionTime').reset();
     this.newTenderForm.get('comTimeUnit').reset();
     this.newTenderForm.get('remarks').reset();

@@ -9,6 +9,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from "@angular/material/dialog";
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -21,9 +22,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwdWorkingProfileComponent } from './pwd-working-profile/pwd-working-profile.component';
 import { TenderComponent } from './cpanel/tender/tender.component';
 import { TenderEditComponent } from './cpanel/tender-edit/tender-edit.component';
+import { SecurityComponent } from './security/security.component';
 
 @NgModule({
-  declarations: [TenderDetailsComponent, PwdWorkingProfileComponent, TenderComponent, TenderEditComponent],
+  declarations: [TenderDetailsComponent, PwdWorkingProfileComponent, TenderComponent, TenderEditComponent, SecurityComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -34,6 +36,7 @@ import { TenderEditComponent } from './cpanel/tender-edit/tender-edit.component'
     MatDatepickerModule,
     MatExpansionModule,
     MatCheckboxModule,
+    MatTabsModule,
     MatDialogModule,
     AccordionModule.forRoot(),
     PaginationModule.forRoot(),

@@ -15,10 +15,7 @@ import { Section } from '../../../models/section.model';
 import { Circle } from 'src/app/models/circle.model';
 import { Division } from 'src/app/models/division.model';
 import { SubDivision } from 'src/app/models/subDivision.model';
-
 import Swal from 'sweetalert2';
-
-
 
 @Component({
   selector: 'app-tender-details',
@@ -218,7 +215,6 @@ export class TenderDetailsComponent implements OnInit {
 
     });
   }
-
 
   getTenderDetailsByOffice(office_Id: number, design_Id: number){
     if(design_Id == 5){

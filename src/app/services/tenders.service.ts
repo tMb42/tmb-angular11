@@ -3,13 +3,24 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { Subject, throwError } from 'rxjs'
 import { environment } from 'src/environments/environment';
-import { TenderDetails } from '../models/tenderDetails.model';
+import { TenderDetails, TenderedSecurity } from '../models/tenderDetails.model';
 
 const serverUrl = `${environment.baseURL}/recordSection`;
+
+export interface ValidatorErrorResponse {
+  workName?: string;
+  dlps_id?: number;
+}
 
 export interface TenderDetailsResponseData {
   success: number;
   td: TenderDetails;
+  message?: any;
+  error: ValidatorErrorResponse ;
+  total?: number;
+  per_page?: number;
+  current_page?: number;
+  total_pages?: number;
 }
 
 @Injectable({
@@ -21,8 +32,11 @@ export class TendersService {
   tenderDetails: TenderDetails[] = [];
   tenderDetailsSubject = new Subject<TenderDetails[]>();
 
+  tenderSecurity: TenderedSecurity[] = [];
+  tenderSecuritySubject = new Subject<TenderedSecurity[]>();
+
   constructor(private http: HttpClient) {
-    this.http.get<TenderDetails[]>(`${serverUrl}/tenderUpdate`)
+    this.http.get<TenderDetails[]>(`${serverUrl}/tenderDetails`)
       .subscribe((response: any) => {
       this.tenderDetails = response.authTenderDetails.data;
       this.tenderDetailsSubject.next([...this.tenderDetails]);
@@ -31,6 +45,10 @@ export class TendersService {
 
   getTenderDetailsUpdateListener() {
     return this.tenderDetailsSubject.asObservable();
+  }
+
+  getTenderSecurityDetailsListener() {
+    return this.tenderSecuritySubject.asObservable();
   }
 
   getAllTenderDetailsAsPerAuthUser(data: any) {
@@ -70,8 +88,8 @@ export class TendersService {
   }
 
   saveTenderDetails(newTenderData: any) {
-    return this.http.post(`${serverUrl}/tenderDetails`, newTenderData)
-    .pipe(catchError(this.handleError), tap((res: any) => {
+    return this.http.post<TenderDetailsResponseData>(`${serverUrl}/tenderDetails`, newTenderData)
+    .pipe(catchError(this.handleError), tap((res: TenderDetailsResponseData) => {
         this.tenderDetails.unshift(res.td);
         this.tenderDetailsSubject.next([...this.tenderDetails]);
       })
@@ -79,16 +97,16 @@ export class TendersService {
   }
 
   updateTenderDetails(tenderData: any) {
-    return this.http.put(`${serverUrl}/tenderUpdate/${tenderData.id}`, tenderData)
+    return this.http.put<TenderDetailsResponseData>(`${serverUrl}/tenderDetails/${tenderData.id}`, tenderData)
     .pipe(catchError(this.handleError), tap((response: TenderDetailsResponseData) => {
       if (response.success === 1){
         const index = this.tenderDetails.findIndex(x => x.id === tenderData.id);
           this.tenderDetails[index] = response.td;
           this.tenderDetailsSubject.next([...this.tenderDetails]);
+          console.log('index', this.tenderDetails[index]);
         }
     }));
   }
-
 
   getSearchTenderDetailsData(event: any) {
     return this.http.get<TenderDetails[]>(`${serverUrl}/search/${event}`);
@@ -99,6 +117,32 @@ export class TendersService {
       catchError(this.handleError)
     );
   }
+
+  //------------------------------------------------------------------------------------------------
+  getAllTenderDetailsAsPerAuthUserForSecurityRelease(data: any) {
+    return this.http.get<TenderDetails[]>(`${serverUrl}/securityDetails?page=${data.page}`, { params: { per_page: data.itemsPerPage, skip: data.skip, designation_id: data.designationId, posting_office_id: data.selectedOffice } });
+  }
+
+  getSecurityReleasedDetailsByTenderId(data: any) {
+    console.log(data);
+    return this.http.get(`${serverUrl}/securityRelease`, { params: { tenderId: data.tender_id}})
+    .pipe(catchError(this.handleError));
+  }
+
+  saveNewSecurityReleaseDetails(newSecurityData: any) {
+    return this.http.post<TenderedSecurity[]>(`${serverUrl}/tenderedSecurity`, newSecurityData)
+    .pipe(catchError(this.handleError), tap((res: any) => {
+        this.tenderSecurity.unshift(res.data);
+        this.tenderSecuritySubject.next([...this.tenderSecurity]);
+      })
+    );
+  }
+
+  getSearchTenderSecurityDetailsData(event: any) {
+    return this.http.get<TenderedSecurity[]>(`${serverUrl}/tendScrSearch/${event}`);
+  }
+
+  //------------------------------------------------------------------------------------------------
 
 
   private handleError(error: HttpErrorResponse) {

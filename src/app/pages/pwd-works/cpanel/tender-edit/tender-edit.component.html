@@ -149,15 +149,19 @@
                 >
             </div>
           </div>
-          <div class="col-md-1 px-md-1">
+          <div class="d-flex col-md-3 px-md-1">
             <div class="form-group">
-              <input type="text" tooltip="Defects Liability Period in months" placement="top" formControlName="dlpNum"
-                placeholder="DLP (months)" class="form-control">
+              <select formControlName="dlps_id" class="form-control" required aria-readonly="">
+                <option value="null">--Select DLP--</option>
+                <option *ngFor="let item of dlps" [value]="item.id">
+                  {{ item.defect_liability_period }}
+                </option>
+              </select>
             </div>
-          </div>
-          <div class="d-flex col-2" style="max-height: 40px;">
-            <button class="btn btn-sm btnCol" [disabled]="!tenderEditForm.valid" (click)="getUpdateTenderDetails()">update</button>
-            <button class="btn btn-sm btn-rose" (click)="formReset()" >Reset</button>
+            <div class="d-flex col-2" style="max-height: 40px;">
+              <button class="btn btn-sm btnCol" [disabled]="!tenderEditForm.valid" (click)="getUpdateTenderDetails()">update</button>
+              <button class="btn btn-sm btn-rose" (click)="formReset()" >Reset</button>
+            </div>
           </div>
         </div>
       </form>
@@ -169,6 +173,7 @@
   <table class="table table-striped table-hover table-sm ">
     <thead>
       <tr>
+        <th class="text-center text-truncate" scope="col">Sl</th>
         <th class="text-center text-truncate" scope="col">ID</th>
         <th class="text-center" data-sortable="true" scope="col-2">Name of Work</th>
         <th class="text-center" data-sortable="true" scope="col">Name of Agency</th>
@@ -191,6 +196,7 @@
     </thead>
     <tbody title="click on table row to edit/update tender details">
       <tr *ngFor="let item of tenderDetails; let sl = index;" (click)="getEditTenderDetailsById(item.id, item.actualComplitionDate)" >
+        <td  class="text-top" scope="row">{{ sl + 1 }}</td>
         <td  class="text-top" scope="row">{{ item.id }}</td>
         <td class="text-justify" scope="row">{{ item.work_name }}</td>
         <td class="text-center" scope="row">{{ item.agency }}</td>

@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { TenderDetails } from 'src/app/models/tenderDetails.model';
+import { Dlp, TenderDetails } from 'src/app/models/tenderDetails.model';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { TendersService } from 'src/app/services/tenders.service';
 import { AuthUser } from '../../../../models/auth-user.model';
@@ -25,6 +25,8 @@ export class TenderEditComponent implements OnInit {
   depts: Department[] = [];
   designs: Designation[] = [];
   sections: Section[] = [];
+  dlps: Dlp[] = [];
+  validatorError: any = null;
 
   checked: boolean = true;
   expanded = false;
@@ -113,6 +115,10 @@ export class TenderEditComponent implements OnInit {
       this.designs = response.designationData;
     });
 
+    this.dropdownService.getDlp().subscribe((response: { tenderDlps: Dlp[]; }) => {
+      this.dlps = response.tenderDlps;
+    });
+
     this.tenderEditForm = this.fb.group({
       id: new FormControl({ value: null, disabled: true}, [Validators.required]),
       department_id: new FormControl(null, [Validators.required]),
@@ -127,7 +133,7 @@ export class TenderEditComponent implements OnInit {
       commencement_date: new FormControl(null, [Validators.required]),
       contactual: new FormControl(null, [Validators.required]),
       tendered_amount: new FormControl({ value: null, disabled: true}, [Validators.required]),
-      dlpNum: new FormControl(null, [Validators.required]),
+      dlps_id: new FormControl(null, [Validators.required]),
       financial_year: new FormControl(null, [Validators.required]),
       complitionTime: new FormControl(null, [Validators.required]),
       comTimeUnit: new FormControl(null, [Validators.required]),
@@ -216,6 +222,7 @@ export class TenderEditComponent implements OnInit {
   }
 
   getUpdateTenderDetails(){
+    this.validatorError = null;
     this.loading = true;
 
     const formData = this.tenderEditForm.getRawValue();
@@ -236,7 +243,7 @@ export class TenderEditComponent implements OnInit {
       commencementDate: this.doc,
       sectionId: formData.section_id,
       ComplitionTime: formData.complitionTime + ' ' + formData.comTimeUnit,
-      dlp: formData.dlpNum + ' months',
+      dlps_id: formData.dlps_id,
       fy: formData.financial_year,
       actualWorkComplitionDate: this.workComDate,
       display: formData.display,
@@ -254,7 +261,14 @@ export class TenderEditComponent implements OnInit {
         this.expanded = true;
         Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: "Validation Error" });
       }else{
-        //
+        this.validatorError = res.error;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Validation error',
+          showConfirmButton: false,
+          timer: 3000
+        });
       }
 
     }, err => {
@@ -287,11 +301,13 @@ export class TenderEditComponent implements OnInit {
     this.currentPage = this.page;
     this.getAllAuthenticatedTenderDetails();
   }
+
   pageChanged(event: any): void {
     this.page = event.page;
     this.pageSize = event.itemsPerPage;
     this.getAllAuthenticatedTenderDetails();
   }
+
   formReset(){
     this.tenderEditForm.reset();
   }

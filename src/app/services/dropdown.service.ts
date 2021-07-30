@@ -49,6 +49,11 @@ export class DropdownService {
       catchError(this.handleError)
     );
   }
+  getSecurityReleasedByDesignations() {
+    return this.http.get(`${this.serverUrl}/srDesigns`).pipe(
+      catchError(this.handleError)
+    );
+  }
   getAeDesignations() {
     return this.http.get(`${this.serverUrl}/aePost`).pipe(
       catchError(this.handleError)
@@ -56,6 +61,12 @@ export class DropdownService {
   }
   getTenderAuthority() {
     return this.http.get(`${this.serverUrl}/tenderAuthority`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getDlp() {
+    return this.http.get(`${this.serverUrl}/tenderDlp`).pipe(
       catchError(this.handleError)
     );
   }
