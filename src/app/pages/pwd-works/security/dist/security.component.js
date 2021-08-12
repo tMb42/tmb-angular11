@@ -22,6 +22,8 @@ var SecurityComponent = /** @class */ (function () {
         this.loading = false;
         this.expanded = false;
         this.authUser = null;
+        this.tabIndex = 0;
+        this.securityReleaseAction = null;
         this.fullSecurityDue = null;
         this.partSecurityReleased = null;
         this.finalSecurityReleased = null;
@@ -68,8 +70,9 @@ var SecurityComponent = /** @class */ (function () {
         this.dropdownService.getSecurityReleasedByDesignations().subscribe(function (response) {
             _this.designs = response.designationData;
         });
-        this.tendersService.getTenderSecurityDetailsListener().subscribe(function (res) {
-            _this.tenderedSecurity = res;
+        this.tendersService.getTenderSecurityDetailsListener().subscribe(function (response) {
+            _this.tenderedSecurity = response;
+            console.log('tenderedSecurity', _this.tenderedSecurity);
             _this.loading = false;
         });
         this.newSecurityReleaseForm = this.fb.group({
@@ -97,9 +100,10 @@ var SecurityComponent = /** @class */ (function () {
             _this.loading = false;
             if (res.success == 1) {
                 _this.fullSecurityDue = res.fullSecurityDue.data;
-                _this.partSecurityReleased = res.partSecurityReleased;
-                _this.finalSecurityReleased = res.finalSecurityReleased;
-                _this.tenderedSecurity = res.tenderedSecurity;
+                _this.securityReleaseAction = res.securityReleaseAction.data;
+                _this.partSecurityReleased = res.partSecurityReleased.data;
+                _this.finalSecurityReleased = res.finalSecurityReleased.data;
+                _this.tenderedSecurity = res.tenderedSecurity.data;
                 _this.totalRecords = res.fullSecurityDue.total;
                 _this.currentPage = res.fullSecurityDue.current_page;
                 _this.totalPages = res.fullSecurityDue.total_pages;
@@ -183,6 +187,7 @@ var SecurityComponent = /** @class */ (function () {
             _this.loading = false;
             // this.formReset();
             if (res.success === 1) {
+                _this.tabIndex = 4;
                 _this.expanded = false;
                 sweetalert2_1["default"].fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: 'Security Released successfully from this end.' });
             }

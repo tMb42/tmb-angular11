@@ -25,12 +25,15 @@ export interface DueSecurity{
   templateUrl: './security.component.html',
   styleUrls: ['./security.component.scss']
 })
+
 export class SecurityComponent implements OnInit {
   newSecurityReleaseForm: FormGroup;
   loading = false;
   expanded = false;
   authUser: AuthUser = null;
+  tabIndex: number = 0;
 
+  securityReleaseAction: TenderedSecurity[] = null;
   fullSecurityDue: TenderedSecurity[] = null;
   partSecurityReleased: TenderedSecurity[] = null;
   finalSecurityReleased: TenderedSecurity[] = null;
@@ -89,8 +92,9 @@ export class SecurityComponent implements OnInit {
       this.designs = response.designationData;
     });
 
-    this.tendersService.getTenderSecurityDetailsListener().subscribe( (res: any) => {
-      this.tenderedSecurity = res;
+    this.tendersService.getTenderSecurityDetailsListener().subscribe( response => {
+      this.tenderedSecurity = response;
+      console.log('tenderedSecurity', this.tenderedSecurity);
       this.loading = false;
     });
 
@@ -121,9 +125,10 @@ export class SecurityComponent implements OnInit {
       this.loading = false;
       if (res.success == 1){
         this.fullSecurityDue = res.fullSecurityDue.data;
-        this.partSecurityReleased = res.partSecurityReleased;
-        this.finalSecurityReleased = res.finalSecurityReleased;
-        this.tenderedSecurity = res.tenderedSecurity;
+        this.securityReleaseAction = res.securityReleaseAction.data;
+        this.partSecurityReleased = res.partSecurityReleased.data;
+        this.finalSecurityReleased = res.finalSecurityReleased.data;
+        this.tenderedSecurity = res.tenderedSecurity.data;
 
         this.totalRecords = res.fullSecurityDue.total;
         this.currentPage = res.fullSecurityDue.current_page;
@@ -213,6 +218,7 @@ export class SecurityComponent implements OnInit {
       this.loading = false;
       // this.formReset();
       if (res.success === 1){
+        this.tabIndex = 4;
         this.expanded = false;
         Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: 'Security Released successfully from this end.' });
       }else if(res.success === 0){

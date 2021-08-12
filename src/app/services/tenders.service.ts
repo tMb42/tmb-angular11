@@ -124,7 +124,6 @@ export class TendersService {
   }
 
   getSecurityReleasedDetailsByTenderId(data: any) {
-    console.log(data);
     return this.http.get(`${serverUrl}/securityRelease`, { params: { tenderId: data.tender_id}})
     .pipe(catchError(this.handleError));
   }
@@ -132,7 +131,7 @@ export class TendersService {
   saveNewSecurityReleaseDetails(newSecurityData: any) {
     return this.http.post<TenderedSecurity[]>(`${serverUrl}/tenderedSecurity`, newSecurityData)
     .pipe(catchError(this.handleError), tap((res: any) => {
-        this.tenderSecurity.unshift(res.data);
+        console.log(this.tenderSecurity.unshift(res.data));
         this.tenderSecuritySubject.next([...this.tenderSecurity]);
       })
     );

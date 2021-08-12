@@ -187,8 +187,8 @@ export class TenderEditComponent implements OnInit {
     }
   }
 
-  getEditTenderDetailsById(tenderId: number, complitinDate:any ) {
-    if(complitinDate == null){
+  getEditTenderDetailsById(tenderId: number, complitionDate:any ) {
+    // if(!complitionDate){
       this.loading = true;
       this.expanded = true;
       this.tendersService.getTenderDetailsById(tenderId).subscribe((x: any) => {
@@ -199,9 +199,9 @@ export class TenderEditComponent implements OnInit {
         this.tenderAuthority = x.td.tenderAuthority;
       });
 
-    }else{
-      Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: "Update or edit not possible for this tender details after final bill drawn" });
-    }
+    // }else{
+    //   Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: "Update or edit not possible for this tender details after final bill drawn" });
+    // }
 
   }
 

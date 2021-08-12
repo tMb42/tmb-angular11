@@ -119,13 +119,88 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-<mat-tab-group mat-align-tabs="center" class="tab">
+<mat-tab-group mat-align-tabs="center" class="tab" [(selectedIndex)]="tabIndex">
+  <mat-tab label="Security Release in action">
+   <div class="table-responsive">
+      <table class="table table-striped table-hover table-sm ">
+        <thead class="table-dark">
+          <tr>
+            <th class="text-center" [rowSpan]="2">Sl</th>
+            <th class="text-center" [rowSpan]="2">Name of Work</th>
+            <th class="text-center" [rowSpan]="2">Agency</th>
+            <th class="text-center" [rowSpan]="2">Tender no.</th>
+            <th class="text-center"style="white-space: nowrap;" [rowSpan]="2">Complition Date</th>
+            <th class="text-center" [colSpan]="5">Security Released Details</th>
+            <th class="text-center" [rowSpan]="2" >Amount put to Tender</th>
+            <th class="text-center" [rowSpan]="2">Contactual</th>
+            <th class="text-center" [rowSpan]="2">Tendered Amount</th>
+          </tr>
+           <tr>
+            <th class="text-center" [rowSpan]="1" >DLP</th>
+            <th class="text-center" [rowSpan]="1" >Due Date</th>
+            <th class="text-center" [rowSpan]="1" >Released</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended By</th>
+            <th class="text-center" [rowSpan]="1" style="white-space: nowrap;">Recomended Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of securityReleaseAction; let sl = index;" (click)="getTenderDetailsById(item.tender_details_id)">
+            <td class="text-top" scope="row">{{ sl + 1 }}</td>
+            <td class="text-justify" scope="row">{{ item.work_name }}</td>
+            <td class="text-center" scope="row">{{ item.agency }}</td>
+            <td class="text-justify" scope="row">{{ item.tender_no }}</td>
+            <td class="text-center" scope="row">{{ item.actualComplitionDate }}</td>
+            <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.defect_liability_period }}</td>
+            <td class="text-center" scope="row">{{ item.securityDueDate }}</td>
+            <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4' }}</td>
+            <td class="text-left" scope="row">{{ item.recomended_by }}</td>
+            <td class="text-center" scope="row">{{ item.recomended_on }}</td>
+            <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
+            <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
+            <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+      </table>
+    </div>
+    <div class="pagination" id="table-pagination">
+      <span class="spacer"></span>
+      <div *ngIf="loading" class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <span class="spinner-border text-light"></span>
+        <span class="spinner-border text-danger"></span>
+        <span class="spinner-border text-dark"></span>
+      </div>
+      <span class="spacer"></span>
+      <div class="pagination">
+        <pagination
+          [boundaryLinks]="showBoundaryLinks"
+          [totalItems]="totalRecords"
+          [maxSize]="maxSize"
+          [itemsPerPage]="pageSize"
+          [(ngModel)]="currentPage"
+          (pageChanged)="pageChanged($event)"
+        ></pagination>
+      </div>
+      <span class="spacer"></span>
+      <div class="d-flex justify-content-right">
+        <div class="col-md-8 mt-2" style="white-space: nowrap;">Item per Page</div>
+        <select (change)="onTableSizeChange($event)" class="custom-select" >
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </mat-tab>
   <mat-tab label="Full Security Due">
     <div class="table-responsive">
       <table class="table table-striped table-hover table-sm ">
         <thead class="table-dark">
           <tr>
-            <th class="text-center text-truncate" scope="col">Sl</th>
+            <th class="text-center text-truncate" scope="col">ID</th>
             <th class="text-center" data-sortable="true" scope="col-2">Name of Work</th>
             <th class="text-center" data-sortable="true" scope="col">Name of Agency</th>
             <th class="text-center" scope="col">Tender No.</th>
@@ -135,11 +210,11 @@
             <th class="text-center" scope="col">Commencement Date</th>
             <th class="text-center" scope="col">Complition Date</th>
             <th class="text-center" scope="col">DLP</th>
-            <th class="text-center" scope="col">Security Due on</th>
+            <th class="text-center" scope="col">Final Security Due on</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of fullSecurityDue; let sl = index;" (click)="getTenderDetailsById(item.id)">
+          <tr *ngFor="let item of fullSecurityDue;" (click)="getTenderDetailsById(item.id)">
             <td class="text-top" scope="row">{{ item.id }}</td>
             <td class="text-justify" scope="row">{{ item.work_name }}</td>
             <td class="text-center" scope="row">{{ item.agency }}</td>
@@ -212,17 +287,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of partSecurityReleased; let sl = index;" (click)="getTenderDetailsById(item.id)">
+          <tr *ngFor="let item of partSecurityReleased; let sl = index;" (click)="getTenderDetailsById(item.tender_details_id)">
             <td class="text-top" scope="row">{{ sl + 1 }}</td>
             <td class="text-justify" scope="row">{{ item.work_name }}</td>
             <td class="text-center" scope="row">{{ item.agency }}</td>
             <td class="text-justify" scope="row">{{ item.tender_no }}</td>
-            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.actualComplitionDate }}</td>
             <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.defect_liability_period }}</td>
-            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.securityDueDate }}</td>
             <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4' }}</td>
             <td class="text-left" scope="row">{{ item.recomended_by }}</td>
-            <td class="text-center" scope="row">{{ item.recomended_on | date: 'dd-MM-yyyy'}}</td>
+            <td class="text-center" scope="row">{{ item.recomended_on }}</td>
             <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
             <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
             <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
@@ -263,12 +338,12 @@
             <td class="text-justify" scope="row">{{ item.work_name }}</td>
             <td class="text-center" scope="row">{{ item.agency }}</td>
             <td class="text-justify" scope="row">{{ item.tender_no }}</td>
-            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.actualComplitionDate }}</td>
             <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.defect_liability_period }}</td>
-            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.securityDueDate }}</td>
             <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4' }}</td>
             <td class="text-left" scope="row">{{ item.recomended_by }}</td>
-            <td class="text-center" scope="row">{{ item.recomended_on | date: 'dd-MM-yyyy'}}</td>
+            <td class="text-center" scope="row">{{ item.recomended_on }}</td>
             <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
             <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
             <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>
@@ -309,12 +384,12 @@
             <td class="text-justify" scope="row">{{ item.work_name }}</td>
             <td class="text-center" scope="row">{{ item.agency }}</td>
             <td class="text-justify" scope="row">{{ item.tender_no }}</td>
-            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.actualComplitionDate }}</td>
             <td class="text-center" scope="row" style="white-space: nowrap;">{{ item.defect_liability_period }}</td>
-            <td class="text-center" scope="row">{{ item.complition_date | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center" scope="row">{{ item.securityDueDate }}</td>
             <td class="text-center" scope="row">{{ item.security_release_percent/100 | percent:'0.0-4' }}</td>
             <td class="text-left" scope="row">{{ item.recomended_by }}</td>
-            <td class="text-center" scope="row">{{ item.recomended_on | date: 'dd-MM-yyyy'}}</td>
+            <td class="text-center" scope="row">{{ item.recomended_on }}</td>
             <td class="text-center" scope="row">{{ item.amount_put_tender | currency:'INR':'symbol':'4.0-2' }}</td>
             <td class="text-center" scope="row">{{ item.contactual/100 | percent:'0.0-4' }}</td>
             <td class="text-center" scope="row">{{ item.tendered_amount | currency:"INR" }}</td>

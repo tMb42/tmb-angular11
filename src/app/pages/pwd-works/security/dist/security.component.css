@@ -28,9 +28,18 @@
 }
 
 .tab {
-  background: rgba(69, 4, 247, 0.5);
+  background: rgba(8, 174, 216, 0.5);
   border-radius: 1px;
   margin-bottom: -50px;
+}
+
+.tabs .mat-tab-label.mat-tab-label-active {
+  background-color: #e920b7 !important;
+  opacity: 1 !important;
+}
+
+.tabs .mat-ink-bar {
+  background-color: #f80000 !important;
 }
 
 #tender-details {
