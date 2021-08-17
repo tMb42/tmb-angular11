@@ -93,3 +93,16 @@ export class SecurityRules {
   created_at?: Date;
   updated_at?: Date;
 }
+
+export class DueSecurityPercent {
+  id?: number;
+  dlps_id?: number;
+  security_releases_id?: number;
+  security_release_percent: number;
+  defect_liability_period?: string;
+  display?: number;
+  inforce?: number;
+  remarks?: any;
+  created_at?: Date;
+  updated_at?: Date;
+}

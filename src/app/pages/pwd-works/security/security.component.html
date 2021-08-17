@@ -75,7 +75,7 @@
                         <label>*Security Released</label>
                         <select formControlName="dlp_security_releases_id" class="form-control" required tooltip="Recomended Security Released %">
                           <option value="null">--Select--</option>
-                          <option *ngFor="let item of dueSecurity" [value]="item.id">
+                          <option *ngFor="let item of dueSecurityPercent" [value]="item.id">
                             {{ item.security_release_percent/100 | percent:'0.0-4' }}
                           </option>
                         </select>
@@ -125,7 +125,7 @@
       <table class="table table-striped table-hover table-sm ">
         <thead class="table-dark">
           <tr>
-            <th class="text-center" [rowSpan]="2">Sl</th>
+            <th class="text-center" [rowSpan]="2">Id</th>
             <th class="text-center" [rowSpan]="2">Name of Work</th>
             <th class="text-center" [rowSpan]="2">Agency</th>
             <th class="text-center" [rowSpan]="2">Tender no.</th>
@@ -144,8 +144,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of securityReleaseAction; let sl = index;" (click)="getTenderDetailsById(item.tender_details_id)">
-            <td class="text-top" scope="row">{{ sl + 1 }}</td>
+          <tr *ngFor="let item of securityReleaseAction; let sl = index;" (click)="getSecuirityReleasedDetails(item.tender_details_id, item.id)">
+            <td class="text-top" scope="row">{{ item.id }}</td>
             <td class="text-justify" scope="row">{{ item.work_name }}</td>
             <td class="text-center" scope="row">{{ item.agency }}</td>
             <td class="text-justify" scope="row">{{ item.tender_no }}</td>

@@ -8,17 +8,12 @@ import { Designation } from 'src/app/models/designation.model';
 import { Division } from 'src/app/models/division.model';
 import { Section } from 'src/app/models/section.model';
 import { SubDivision } from 'src/app/models/subDivision.model';
-import { SecurityRules, TenderedSecurity } from 'src/app/models/tenderDetails.model';
+import { DueSecurityPercent, SecurityRules, TenderedSecurity } from 'src/app/models/tenderDetails.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { TendersService } from 'src/app/services/tenders.service';
 import Swal from 'sweetalert2';
 
-export interface DueSecurity{
-  id: number;
-  dlps_id: number;
-  security_release_percent: any;
-}
 
 @Component({
   selector: 'app-security',
@@ -31,7 +26,7 @@ export class SecurityComponent implements OnInit {
   loading = false;
   expanded = false;
   authUser: AuthUser = null;
-  tabIndex: number = 0;
+  tabIndex: number = 1;
 
   securityReleaseAction: TenderedSecurity[] = null;
   fullSecurityDue: TenderedSecurity[] = null;
@@ -39,7 +34,7 @@ export class SecurityComponent implements OnInit {
   finalSecurityReleased: TenderedSecurity[] = null;
   tenderedSecurity: TenderedSecurity[] = null;
   editDetails: TenderedSecurity[] = null;
-  dueSecurity: DueSecurity[] = null;
+  dueSecurityPercent: DueSecurityPercent[] = null;
   designs: Designation[] = [];
   divns: Division[] = [];
   subDivns: SubDivision[] = [];
@@ -70,15 +65,19 @@ export class SecurityComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getAuthUser().pipe(first()).subscribe((response: any) => {
+      if(response.data.designation_id == 2){
+        this.tabIndex = 1;
+      }
+      this.tabIndex = 0;
+
       this.authUser = response.data;
       this.newSecurityReleaseForm.patchValue({
-        // division_id: this.authUser.divisionId,
-        // sub_division_id: this.authUser.subDivisionId,
         authDesignId: response.data.designation_id,
         section_id: this.authUser.sectionId,
         office_id: this.authUser.officeId,
       });
       this.loading = false;
+
     });
 
     this.getAllAuthenticatedTenderDetailsForSecurityRelease()
@@ -94,7 +93,6 @@ export class SecurityComponent implements OnInit {
 
     this.tendersService.getTenderSecurityDetailsListener().subscribe( response => {
       this.tenderedSecurity = response;
-      console.log('tenderedSecurity', this.tenderedSecurity);
       this.loading = false;
     });
 
@@ -188,14 +186,47 @@ export class SecurityComponent implements OnInit {
     }
     this.tendersService.getSecurityReleasedDetailsByTenderId(requestObj).subscribe((x: any) => {
       this.loading = false;
-      this.dueSecurity = x.securityDue;
+      this.dueSecurityPercent = x.securityDue;
       this.securityRules = x.securityRules;
       this.securityDueDate = x.securityDueDate;
       this.diffDlp = x.diffDlp;
       this.securityRulesOrder = x.securityRules[0].remarks;
       this.tenderId = x.tenderDetails[0].id;
       this.newSecurityReleaseForm.patchValue(x.tenderDetails);
-      this.editDetails = x.tenderDetails[0];
+       this.editDetails = x.tenderDetails[0];
+      this.newSecurityReleaseForm.patchValue({
+        abstract_mb : x.securityDue[0].abstract_mb
+      });
+
+      if (x.success === 0){
+        Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: x.message });
+      }
+    });
+  }
+
+  getSecuirityReleasedDetails(tenderId: number, tenderSecurityId: number) {
+    this.loading = true;
+    this.expanded = true;
+    const requestObj = {
+      tender_id: tenderId,
+      tendered_secutity_id: tenderSecurityId,
+    }
+    console.log(requestObj);
+    this.tendersService.getSecurityReleasedActionDetailsByTenderId(requestObj).subscribe((x: any) => {
+      this.loading = false;
+      this.dueSecurityPercent = x.releasePercent;
+      this.securityRules = x.securityRules;
+      this.securityDueDate = x.securityDueDate;
+      this.diffDlp = x.diffDlp;
+      this.securityRulesOrder = x.securityRules[0].remarks;
+      this.editDetails = x.securityReleaseAction[0];
+      this.tenderId = x.securityReleaseAction[0].tender_details_id;
+      this.newSecurityReleaseForm.patchValue({
+        abstract_mb : x.securityReleaseAction[0].abstract_mb,
+        dlp_security_releases_id : x.securityReleaseAction[0].dlp_security_releases_id,
+      });
+
+
       if (x.success === 0){
         Swal.fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: x.message });
       }

@@ -54,6 +54,11 @@ export class DropdownService {
       catchError(this.handleError)
     );
   }
+  getSecurityReleasedPercent() {
+    return this.http.get(`${this.serverUrl}/securityRelease`).pipe(
+      catchError(this.handleError)
+    );
+  }
   getAeDesignations() {
     return this.http.get(`${this.serverUrl}/aePost`).pipe(
       catchError(this.handleError)

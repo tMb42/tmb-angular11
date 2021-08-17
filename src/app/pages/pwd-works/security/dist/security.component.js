@@ -22,14 +22,14 @@ var SecurityComponent = /** @class */ (function () {
         this.loading = false;
         this.expanded = false;
         this.authUser = null;
-        this.tabIndex = 0;
+        this.tabIndex = 1;
         this.securityReleaseAction = null;
         this.fullSecurityDue = null;
         this.partSecurityReleased = null;
         this.finalSecurityReleased = null;
         this.tenderedSecurity = null;
         this.editDetails = null;
-        this.dueSecurity = null;
+        this.dueSecurityPercent = null;
         this.designs = [];
         this.divns = [];
         this.subDivns = [];
@@ -52,10 +52,12 @@ var SecurityComponent = /** @class */ (function () {
     SecurityComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.authService.getAuthUser().pipe(operators_1.first()).subscribe(function (response) {
+            if (response.data.designation_id == 2) {
+                _this.tabIndex = 1;
+            }
+            _this.tabIndex = 0;
             _this.authUser = response.data;
             _this.newSecurityReleaseForm.patchValue({
-                // division_id: this.authUser.divisionId,
-                // sub_division_id: this.authUser.subDivisionId,
                 authDesignId: response.data.designation_id,
                 section_id: _this.authUser.sectionId,
                 office_id: _this.authUser.officeId
@@ -72,7 +74,6 @@ var SecurityComponent = /** @class */ (function () {
         });
         this.tendersService.getTenderSecurityDetailsListener().subscribe(function (response) {
             _this.tenderedSecurity = response;
-            console.log('tenderedSecurity', _this.tenderedSecurity);
             _this.loading = false;
         });
         this.newSecurityReleaseForm = this.fb.group({
@@ -158,7 +159,7 @@ var SecurityComponent = /** @class */ (function () {
         };
         this.tendersService.getSecurityReleasedDetailsByTenderId(requestObj).subscribe(function (x) {
             _this.loading = false;
-            _this.dueSecurity = x.securityDue;
+            _this.dueSecurityPercent = x.securityDue;
             _this.securityRules = x.securityRules;
             _this.securityDueDate = x.securityDueDate;
             _this.diffDlp = x.diffDlp;
@@ -166,6 +167,36 @@ var SecurityComponent = /** @class */ (function () {
             _this.tenderId = x.tenderDetails[0].id;
             _this.newSecurityReleaseForm.patchValue(x.tenderDetails);
             _this.editDetails = x.tenderDetails[0];
+            _this.newSecurityReleaseForm.patchValue({
+                abstract_mb: x.securityDue[0].abstract_mb
+            });
+            if (x.success === 0) {
+                sweetalert2_1["default"].fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: x.message });
+            }
+        });
+    };
+    SecurityComponent.prototype.getSecuirityReleasedDetails = function (tenderId, tenderSecurityId) {
+        var _this = this;
+        this.loading = true;
+        this.expanded = true;
+        var requestObj = {
+            tender_id: tenderId,
+            tendered_secutity_id: tenderSecurityId
+        };
+        console.log(requestObj);
+        this.tendersService.getSecurityReleasedActionDetailsByTenderId(requestObj).subscribe(function (x) {
+            _this.loading = false;
+            _this.dueSecurityPercent = x.releasePercent;
+            _this.securityRules = x.securityRules;
+            _this.securityDueDate = x.securityDueDate;
+            _this.diffDlp = x.diffDlp;
+            _this.securityRulesOrder = x.securityRules[0].remarks;
+            _this.editDetails = x.securityReleaseAction[0];
+            _this.tenderId = x.securityReleaseAction[0].tender_details_id;
+            _this.newSecurityReleaseForm.patchValue({
+                abstract_mb: x.securityReleaseAction[0].abstract_mb,
+                dlp_security_releases_id: x.securityReleaseAction[0].dlp_security_releases_id
+            });
             if (x.success === 0) {
                 sweetalert2_1["default"].fire({ position: 'top-end', icon: 'warning', showConfirmButton: false, timer: 4000, title: x.message });
             }
