@@ -247,9 +247,8 @@ export class SecurityComponent implements OnInit {
 
     this.tendersService.saveNewSecurityReleaseDetails(detailsData).subscribe((res: any) => {
       this.loading = false;
-      // this.formReset();
       if (res.success === 1){
-        this.tabIndex = 4;
+        this.tabIndex = 1;
         this.expanded = false;
         Swal.fire({ position: 'top-end', icon: 'success', showConfirmButton: false, timer: 3000, title: 'Security Released successfully from this end.' });
       }else if(res.success === 0){
@@ -262,7 +261,6 @@ export class SecurityComponent implements OnInit {
       }
 
     }, err => {
-      console.log('ghfhf', err);
       this.loading = false;
       Swal.fire({ position: 'top-end', icon: 'error',  title: err.error, showConfirmButton: false, timer: 3000 });
     });

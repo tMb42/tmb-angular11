@@ -20,7 +20,7 @@ export interface AuthResponseData {
     password: string,
     password_confirmation: string,
     device_name: string,
-    roles: string,
+    roles: string[],
     roleLabel: string[],
     roleId: string[],
     permissions: string[],

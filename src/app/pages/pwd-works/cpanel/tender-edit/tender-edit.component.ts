@@ -100,7 +100,6 @@ export class TenderEditComponent implements OnInit {
     this.tendersService.getTenderDetailsUpdateListener().subscribe( res => {
       this.loading = false;
       this.tenderDetails = res;
-      this.tenderDetails = res;
     });
 
     this.tendersService.getAllSectionAsPerAuthUserForTenderDetails().subscribe((response: { sections: Section[]; }) => {
@@ -135,8 +134,8 @@ export class TenderEditComponent implements OnInit {
       tendered_amount: new FormControl({ value: null, disabled: true}, [Validators.required]),
       dlps_id: new FormControl(null, [Validators.required]),
       financial_year: new FormControl(null, [Validators.required]),
-      complitionTime: new FormControl(null, [Validators.required]),
-      comTimeUnit: new FormControl(null, [Validators.required]),
+      CTimeDigit: new FormControl(null, [Validators.required]),
+      tUnit: new FormControl(null, [Validators.required]),
       display: new FormControl(null, [Validators.required]),
       inforce: new FormControl(null, [Validators.required]),
       remarks: new FormControl(null),
@@ -242,7 +241,7 @@ export class TenderEditComponent implements OnInit {
       workOrderDate: this.workDate,
       commencementDate: this.doc,
       sectionId: formData.section_id,
-      ComplitionTime: formData.complitionTime + ' ' + formData.comTimeUnit,
+      ComplitionTime: formData.CTimeDigit + ' ' + formData.tUnit,
       dlps_id: formData.dlps_id,
       fy: formData.financial_year,
       actualWorkComplitionDate: this.workComDate,

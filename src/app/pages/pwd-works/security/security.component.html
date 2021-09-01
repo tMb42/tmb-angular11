@@ -119,7 +119,7 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-<mat-tab-group mat-align-tabs="center" class="tab" [(selectedIndex)]="tabIndex">
+<mat-tab-group mat-align-tabs="center" class="tab" [(selectedIndex)]="tabIndex" *ngIf="authUser">
   <mat-tab label="Security Release in action">
    <div class="table-responsive">
       <table class="table table-striped table-hover table-sm ">
@@ -195,7 +195,7 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Full Security Due">
+  <mat-tab label="Full Security Due" *ngIf="authUser.designation_id == 2">
     <div class="table-responsive">
       <table class="table table-striped table-hover table-sm ">
         <thead class="table-dark">
@@ -263,7 +263,7 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Part Security Released">
+  <mat-tab label="Part Security Released" *ngIf="authUser.designation_id == 2">
     <div class="table-responsive">
       <table class="table table-striped table-hover table-sm ">
         <thead class="table-dark">
@@ -309,7 +309,7 @@
       </table>
     </div>
   </mat-tab>
-  <mat-tab label="Final Security Released">
+  <mat-tab label="Final Security Released" *ngIf="authUser.designation_id == 2">
     <div class="table-responsive">
       <table class="table table-striped table-hover table-sm ">
         <thead class="table-dark">

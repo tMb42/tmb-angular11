@@ -130,24 +130,28 @@ export class PwdWorkingProfileComponent implements OnInit {
     this.circleForm = this.fb.group({
       newCirId: new FormControl(null, [Validators.required]),
       circle_name: new FormControl(null, [Validators.required]),
+      old_circle_name: new FormControl(null),
       remarks: new FormControl(null),
     });
 
     this.divisionForm = this.fb.group({
       newDivId: new FormControl(null, [Validators.required]),
       divn_name: new FormControl(null, [Validators.required]),
+      old_divn_name: new FormControl(null),
       remarks: new FormControl(null),
     });
 
     this.subDivisionForm = this.fb.group({
       newSubDivId: new FormControl(null, [Validators.required]),
       subDivn_name: new FormControl(null, [Validators.required]),
+      old_subDivn_name: new FormControl(null),
       remarks: new FormControl(null),
     });
 
     this.sectionForm = this.fb.group({
       newSecId: new FormControl(null, [Validators.required]),
       section_name: new FormControl(null, [Validators.required]),
+      mobile: new FormControl(null),
       remarks: new FormControl(null),
     });
 
@@ -274,9 +278,9 @@ export class PwdWorkingProfileComponent implements OnInit {
     if(formData.division_id != 'null'){
       this.isSubdivisionFormShow = true;
       this.dropdownService.getLastSubDivisionID().subscribe((res: any) =>{
-        this.newSubDivId = res.nextSubDivId[0].newId;
         this.subDivisionForm.patchValue({
-          newSubDivId: this.newSubDivId
+         newSubDivId: res.nextSubDivId[0].newId
+          // newSubDivId: this.newSubDivId
         });
       });
     }else{
@@ -394,7 +398,9 @@ export class PwdWorkingProfileComponent implements OnInit {
       this.isLoading = false;
       if (response.success === 1){
         this.subDivns.unshift({id: response.subDivision.id, sub_division_name: response.subDivision.sub_division_name, division_id: response.subDivision.division_id});
-        this.pwdWorkingProfileForm.patchValue({ sub_division_id: this.subDivns[0].id });
+        this.pwdWorkingProfileForm.patchValue({
+          sub_division_id: this.subDivns[0].id
+          });
 
         this.isSubdivisionFormShow = false;
 

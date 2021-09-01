@@ -103,7 +103,7 @@ export class TendersService {
         const index = this.tenderDetails.findIndex(x => x.id === tenderData.id);
           this.tenderDetails[index] = response.td;
           this.tenderDetailsSubject.next([...this.tenderDetails]);
-          console.log('index', this.tenderDetails[index]);
+          console.log(this.tenderDetails[index]);
         }
     }));
   }
@@ -136,8 +136,12 @@ export class TendersService {
   saveNewSecurityReleaseDetails(newSecurityData: any) {
     return this.http.post<TenderedSecurity[]>(`${serverUrl}/tenderedSecurity`, newSecurityData)
     .pipe(catchError(this.handleError), tap((res: any) => {
-        console.log(this.tenderSecurity.unshift(res.data));
+        this.tenderSecurity.unshift(res.data);
         this.tenderSecuritySubject.next([...this.tenderSecurity]);
+
+        const index = this.tenderDetails.findIndex(x => x.id === res.data.id);
+          this.tenderDetails.splice(index,1);
+          this.tenderDetailsSubject.next([...this.tenderDetails]);
       })
     );
   }
