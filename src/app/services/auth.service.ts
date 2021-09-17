@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { map, catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthUser } from '../models/auth-user.model';
@@ -150,13 +150,19 @@ export class AuthService {
     return this.http.post<any>(`${this.serverUrl}/user/profile`, profileData).pipe(
       catchError(this.handleError), tap((res: any) => {
         this.authUser = res;
-        this.authUserSubject.next({...this.authUser});
 
-        // // Retrieves the string and converts it to a JavaScript object
-        // let retrievedUser = JSON.parse(localStorage.getItem('signedUser.userData'));
-        //  retrievedUser = res;
-        // // Modifies the object, converts it to a string and replaces the existing `ship` in LocalStorage
-        // localStorage.setItem('signedUser', JSON.stringify(retrievedUser));
+        // Retrieves the string and converts it to a JavaScript object
+        let retrievedUser = JSON.parse(localStorage.getItem('signedUser'));
+
+        // Change value
+        const userUpdatedData = {
+          token: retrievedUser.token,
+          userData: res.userData
+        }
+
+        // Modifies the object, converts it to a string and update the existing `signedUser` in LocalStorage
+        localStorage.setItem('signedUser', JSON.stringify(userUpdatedData));
+        this.authUserSubject.next({...this.authUser});
       })
     );
   }

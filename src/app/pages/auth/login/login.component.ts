@@ -62,11 +62,13 @@ export class LoginComponent implements OnInit {
     }
 
   ngOnInit(): void {
+
     this.loginForm = this.fb.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       rememberMe: new FormControl(false)
     });
+
   }
 
   epicFunction() {

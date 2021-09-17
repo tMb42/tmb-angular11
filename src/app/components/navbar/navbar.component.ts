@@ -34,7 +34,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('app-navbar', {static: false}) button: any;
 
 
-  constructor(private authService: AuthService, location: Location, private renderer: Renderer2, private element: ElementRef, private router: Router,) {
+  constructor(private authService: AuthService, location: Location, private renderer: Renderer2, private element: ElementRef, private router: Router) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;

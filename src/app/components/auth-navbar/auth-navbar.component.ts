@@ -29,7 +29,7 @@ export class AuthNavbarComponent implements OnInit {
 
   logoutCurrentUser(): void {
     this.loading = true;
-    this.authService.logout().subscribe(data=>{
+    this.authService.logout().subscribe((data:any)=>{
       this.loading = false;
       Swal.fire({icon: 'success', title: data.message, showConfirmButton: false, timer: 2000 });
     });
